@@ -1,4 +1,4 @@
-Phase 2 folder has lexerReturn.l file which is main lex file linked with parsing phase and Test folder is for testing the lex phase.
+Phase 2 folder has lexerReturn.l file, main lex file which is linked with parsing phase and Test folder is for testing the lex phase.
 
 Test folder contains lexerDetailed.l, lexerReplace.l, makefile and two directories for input and output files.
 
