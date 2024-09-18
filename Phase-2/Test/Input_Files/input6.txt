@@ -1,0 +1,40 @@
+$include "geo.core";
+$include "geo.utils";
+
+<point> divide_line(point p1, point p2, num m, num n) {
+    ## Calculate the coordinates of the point that divides the line segment
+    num x = (m * p2._x + n * p1._x) / (m + n);
+    num y = (m * p2._y + n * p1._y) / (m + n);
+    
+    ## Return the dividing point
+    return point(x, y);
+}
+
+<void> main() {
+    num x1, y1, x2, y2, m, n;
+
+    ## Input coordinates for P1
+    write "Enter x1,y1 of Point 1:" ~ \n;
+    read x1, y1;
+    write "Enter the x2,y2 point P2:" ~ \n;
+    read x2, y2;
+    
+    ## give the values of m and n
+    write "value of m :" ~ \n;
+    read m;
+    write "value of n " ~ \n;
+    read n;
+    
+    ## intialize the points p1,p2
+    point p1(x1, y1);
+    point p2(x2, y2);
+    
+    ## Calculate the dividing point
+    point dividing_point = divide_line(p1, p2, m, n);
+    
+    #*
+    output the resulting point
+    *#
+
+    write "Required point is " ~ m ~ ":" ~ n ~ " is: (" ~ dividing_point._x ~ ", " ~ dividing_point._y ~ ")\n";
+}

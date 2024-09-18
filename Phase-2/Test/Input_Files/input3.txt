@@ -1,0 +1,24 @@
+## Include necessary geometric utilities
+$include "geo.core";
+$include "geo.utils";
+
+
+<void> main() {
+    equation eq;
+
+    ## Take the equation input from the user in the form ax^2 + by^2 + cx + dy + e = 0
+    write "curve equation : " ~ \n;
+    read eq;
+    curve c(eq);
+
+    ## Calculate the eccentricity
+    if(type(c) == "ellipse"){
+        num e=sqrt(1 - (c._b/c._a));
+        write "curve is ellipse with eccentricity" ~ e ~\n;
+    }
+    elif(type(c) == "hyperbola"){
+        num e=sqrt(1 + (c._b/c._a));
+        write "curve is hyperbola  with eccentricity" ~ e ~\n;
+    }
+
+}

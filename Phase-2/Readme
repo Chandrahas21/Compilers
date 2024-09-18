@@ -1,0 +1,12 @@
+Phase 2 folder has lexerReturn.l file which is main lex file linked with parsing phase and Test folder is for testing the lex phase.
+
+Test folder contains lexerDetailed.l, lexerReplace.l, makefile and two directories for input and output files.
+
+To test follow the following commands:
+open terminal
+make
+./lexerDetailed ./Input_Files/<inputFile_name>.txt ./Output_Files/<outputFile_name>.txt
+
+Example:
+make
+./lexerDetailed ./Input_Files/input1.txt ./Output_Files/output1.txt

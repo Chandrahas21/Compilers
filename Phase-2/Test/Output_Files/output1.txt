@@ -1,0 +1,252 @@
+
+Single Line Comment: ## importing required headers
+
+Punctuator: $
+ Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+ Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+
+Punctuator: {
+  
+Multi Line Comment: #* Finding perpendicular distance between p3 and 
+     line l1 formed by p1,p2  
+     and foot of perpendicular from p3 to line l1 *#
+
+ 
+
+   Non-Primitive Data Type: num
+ Identifier: x1
+Punctuator: ,
+Identifier: y1
+Punctuator: ,
+Identifier: x2
+Punctuator: ,
+Identifier: y2
+Punctuator: ;
+
+   Keyword: write
+ String: "p1 x co-ordinate and y co-ordinate :"
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+   Keyword: read
+ Identifier: x1
+ Operator: ~
+ Identifier: y1
+Punctuator: ;
+
+   Keyword: write
+ String: "p2 x co-ordinate and y co-ordinate :"
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+   Keyword: read
+ Identifier: x2
+ Operator: ~
+ Identifier: y2
+Punctuator: ;
+
+   Single Line Comment: ## scaning x,y co-ordinates of p1,p2
+
+   Non-Primitive Data Type: point
+ Identifier: p1
+Punctuator: (
+Identifier: x1
+Punctuator: ,
+Identifier: y1
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: point
+ Identifier: p2
+Punctuator: (
+Identifier: x2
+Punctuator: ,
+Identifier: y2
+Punctuator: )
+Punctuator: ;
+
+
+   Non-Primitive Data Type: line
+ Identifier: l1
+Punctuator: (
+Identifier: p1
+Punctuator: ,
+Identifier: p2
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: num
+ Identifier: m
+ Operator: =
+ Identifier: l1
+Operator: .
+Member Variable (KeyWord): _slope
+Punctuator: ;
+
+   
+   Keyword: write
+ String: "Line equation formed by p1,p2 :"
+ Operator: ~
+ Identifier: l1
+Operator: .
+Member Variable (KeyWord): _equation
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+   Non-Primitive Data Type: num
+ Identifier: x3
+Punctuator: ,
+Identifier: y3
+Punctuator: ;
+
+   Keyword: write
+ String: "p3 x co-ordinate and y co-ordinate :"
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+   Keyword: read
+ Identifier: x3
+ Operator: ~
+ Identifier: y3
+Punctuator: ;
+
+   
+   Non-Primitive Data Type: point
+ Identifier: p3
+Punctuator: (
+Identifier: x3
+Punctuator: ,
+Identifier: y3
+Punctuator: )
+Punctuator: ;
+
+   Keyword: if
+Punctuator: (
+In-Built Function (Keyword): ispoint
+Punctuator: (
+Identifier: l1
+Punctuator: ,
+Identifier: p3
+Punctuator: )
+ Operator: ==
+ Keyword: true
+Punctuator: )
+Punctuator: {
+
+    Keyword: write
+ String: "distance : 0 ( p3 lies on "
+ Operator: ~
+ Identifier: l1
+Operator: .
+Member Variable (KeyWord): _equation
+ Operator: ~
+ String: " ) "
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: write
+ String: "foot of perpendicular : ("
+ Operator: ~
+Identifier: p3
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: ~
+ String: ","
+ Operator: ~
+Identifier: p3
+Operator: .
+Member Variable (KeyWord): _y
+ Operator: ~
+ String: ")"
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+   Punctuator: }
+ 
+   Keyword: el
+Punctuator: {
+
+    Non-Primitive Data Type: num
+ Identifier: slope
+Operator: =
+ Operator: -
+Integer: 1
+Operator: /
+Identifier: m
+ Punctuator: ;
+
+    Non-Primitive Data Type: line
+ Identifier: perpen
+Punctuator: (
+Identifier: p3
+Punctuator: ,
+Identifier: slope
+Punctuator: )
+Punctuator: ;
+
+    Non-Primitive Data Type: point
+ Identifier: foot
+Operator: =
+In-Built Function (Keyword): intersection
+Punctuator: (
+Identifier: perpen
+Punctuator: ,
+Identifier: l1
+Punctuator: )
+Punctuator: ;
+
+    Keyword: write
+ String: "distance :"
+ Operator: ~
+ In-Built Function (Keyword): distance
+Punctuator: (
+Identifier: l1
+Punctuator: ,
+Identifier: p3
+Punctuator: )
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: write
+ String: "foot of perpendicular: ("
+Operator: ~
+Identifier: foot
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: ~
+String: ","
+ Operator: ~
+ Identifier: foot
+Operator: .
+Member Variable (KeyWord): _y
+ Operator: ~
+ String: ")"
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+   Punctuator: }
+
+   
+Punctuator: }

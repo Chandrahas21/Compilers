@@ -1,0 +1,74 @@
+## importing required headers
+$ include "geo.core";
+$ include "geo.utils";
+
+<void> main()
+{  ## included all datatypes and keywords
+   ## printing the string "Hello World"
+
+   string greet =" First line of code"
+   write "Hello world!, " ~ greet ~ \n ;
+   #*
+    Defining some data types which 
+    represents different Geometrical
+    shapes
+   *#
+   point p(1.9,3.3);
+   point p2(4,56);
+
+   equation cr = "x^2+ y^2 = 16";
+   equation pb = "y^2 = 4x";
+   equation ln = " x+4y = 32";
+   equation ep = " x^2 + 2*y^2 = 1";
+   equation hp = "x^2 - 2*y^2 = 2"; 
+   
+   circle circle_1(p,5.6);
+   circle circle_2(cr)
+
+   line line_1(p,p2);
+   line l2(p,1);
+   line l3(ln);
+   
+   hyperbola h1(p,8.9, 9);
+   hyperbola h2(hp);
+
+   ellipse e1(p,6,3);
+   eliipse e2(ep);
+
+   parabola p1(p,p2);
+   parabola p2(pb);
+
+   bool check = true;
+   int dist = 5;
+   loop (check){
+     if(distance(p,p2) > dist){
+        write "too far \n";
+        skip;
+     }
+     elif(dist < 1){
+        write "too close \n"
+        check = false;
+     }
+     el{
+        write "Distance b/w them is in reachable range " ~\n; 
+        stop;
+     }
+     dist = dist -1;
+     
+   }
+   dist = 3;
+   switch (dist){
+     case 1:
+        write "dist variable became" ~ dist ~ \n ;
+        skip;
+     case 2:
+       write "dist variable became" ~ dist ~ \n ;
+       skip;
+    case 3:
+       write "dist variable became" ~ dist ~ \n ;
+       skip;
+    default:
+       write "dist is out of reachable range,and it is " ~ dist ~ \n;
+   }
+
+}

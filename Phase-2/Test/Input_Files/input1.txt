@@ -1,0 +1,41 @@
+
+## importing required headers
+$ include "geo.core";
+$ include "geo.utils";
+
+<void> main()
+{  #* Finding perpendicular distance between p3 and 
+     line l1 formed by p1,p2  
+     and foot of perpendicular from p3 to line l1 *# 
+
+   num x1,y1,x2,y2;
+   write "p1 x co-ordinate and y co-ordinate :" ~ \n;
+   read x1 ~ y1;
+   write "p2 x co-ordinate and y co-ordinate :" ~ \n;
+   read x2 ~ y2;
+   ## scaning x,y co-ordinates of p1,p2
+   point p1(x1,y1);
+   point p2(x2,y2);
+
+   line l1(p1,p2);
+   num m = l1._slope;
+   
+   write "Line equation formed by p1,p2 :" ~ l1._equation ~ \n;
+   num x3,y3;
+   write "p3 x co-ordinate and y co-ordinate :" ~ \n;
+   read x3 ~ y3;
+   
+   point p3(x3,y3);
+   if(ispoint(l1,p3) == true){
+    write "distance : 0 ( p3 lies on " ~ l1._equation ~ " ) " ~ \n;
+    write "foot of perpendicular : (" ~p3._x ~ "," ~p3._y ~ ")" ~\n;
+   } 
+   el{
+    num slope= -1/m ;
+    line perpen(p3,slope);
+    point foot=intersection(perpen,l1);
+    write "distance :" ~ distance(l1,p3) ~\n;
+    write "foot of perpendicular: ("~foot._x ~"," ~ foot._y ~ ")" ~\n;
+   }
+   
+}

@@ -1,0 +1,22 @@
+
+## importing required headers
+$ include "geo.core";
+$ include "geo.utils";
+
+
+#* This is a comment *#
+#* This is an unterminated comment
+#* This is a comment *# but not really the end *#
+#* This is a comment *# extra text
+#* *#
+#* This is a comment
+that spans multiple lines *#
+
+
+## Test conflicting data types and operator misuse
+num a = true;  ## Assigning a boolean to a num type
+bool flag = a + 5;  ## Invalid operation (boolean + number)
+point _invalidVar(1, 2);  ## Invalid variable starting with '_'
+num result = 4 @ 3;  ## '@' is not a valid operator in GeoX
+num 12abc
+num if = 10;  ## 'if' is a keyword and can't be used as a variable

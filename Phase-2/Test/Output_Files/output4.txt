@@ -1,0 +1,48 @@
+Single Line Comment: ## Basic arithmetic and variable declarations
+
+Punctuator: $
+Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+ Punctuator: {
+
+    Non-Primitive Data Type: num
+ Identifier: a
+ Operator: =
+ Floating Point Number: 5.002
+Punctuator: ;
+
+    Non-Primitive Data Type: num
+ Identifier: b
+ Punctuator: ;
+
+    Keyword: read
+ Identifier: b
+Punctuator: ;
+
+    Non-Primitive Data Type: num
+ Identifier: result
+ Operator: =
+ Identifier: a
+ Operator: +
+ Identifier: b
+Punctuator: ;
+
+    Keyword: write
+ String: "The result of a + b is: "
+ Operator: ~
+ Identifier: result
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+Punctuator: }
+

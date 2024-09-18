@@ -1,0 +1,10 @@
+## Basic arithmetic and variable declarations
+$include "geo.core";
+
+<void> main() {
+    num a = 5.002;
+    num b ;
+    read b;
+    num result = a + b;
+    write "The result of a + b is: " ~ result ~ \n;
+}

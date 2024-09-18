@@ -1,0 +1,27 @@
+$include "geo.core";
+$include "geo.utils";
+
+<num> fibonacci(num n) {
+    ## Base case
+    if (n == 0) {
+        return 0;
+    } elif (n == 1) {
+        return 1;
+    }
+    ## Recursive case
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+<void> main() {
+    num n;
+    ## takes input from the user
+    write "enter n value: " ~ \n;
+    read n;
+    #* 
+    nth fibonacci term
+    *#
+    num fib_term = fibonacci(n);
+    
+    ## result
+    write "The " ~ n ~ "th Fibonacci term is: " ~ fib_term ~ \n;
+}

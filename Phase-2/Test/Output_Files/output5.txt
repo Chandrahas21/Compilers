@@ -1,0 +1,127 @@
+Punctuator: $
+Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+Punctuator: <
+Non-Primitive Data Type: num
+Punctuator: >
+ Identifier: fibonacci
+Punctuator: (
+Non-Primitive Data Type: num
+ Identifier: n
+Punctuator: )
+ Punctuator: {
+
+    Single Line Comment: ## Base case
+
+    Keyword: if
+ Punctuator: (
+Identifier: n
+ Operator: ==
+ Integer: 0
+Punctuator: )
+ Punctuator: {
+
+        Keyword: return
+ Integer: 0
+Punctuator: ;
+
+    Punctuator: }
+ Keyword: elif
+ Punctuator: (
+Identifier: n
+ Operator: ==
+ Integer: 1
+Punctuator: )
+ Punctuator: {
+
+        Keyword: return
+ Integer: 1
+Punctuator: ;
+
+    Punctuator: }
+
+    Single Line Comment: ## Recursive case
+
+    Keyword: return
+ Identifier: fibonacci
+Punctuator: (
+Identifier: n
+ Operator: -
+ Integer: 1
+Punctuator: )
+ Operator: +
+ Identifier: fibonacci
+Punctuator: (
+Identifier: n
+ Operator: -
+ Integer: 2
+Punctuator: )
+Punctuator: ;
+
+Punctuator: }
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+ Punctuator: {
+
+    Non-Primitive Data Type: num
+ Identifier: n
+Punctuator: ;
+
+    Single Line Comment: ## takes input from the user
+
+    Keyword: write
+ String: "enter n value: "
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: n
+Punctuator: ;
+
+    
+Multi Line Comment: #* 
+    nth fibonacci term
+    *#
+
+
+    Non-Primitive Data Type: num
+ Identifier: fib_term
+ Operator: =
+ Identifier: fibonacci
+Punctuator: (
+Identifier: n
+Punctuator: )
+Punctuator: ;
+
+    
+    Single Line Comment: ## result
+
+    Keyword: write
+ String: "The "
+ Operator: ~
+ Identifier: n
+ Operator: ~
+ String: "th Fibonacci term is: "
+ Operator: ~
+ Identifier: fib_term
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+Punctuator: }
+

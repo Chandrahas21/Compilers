@@ -1,0 +1,47 @@
+## importing required headers
+$ include "geo.core";
+$ include "geo.utils";
+
+<void> main(){
+    #* find focus or foci of given curve
+      curve can be parabola,
+      ellipse,hyperbola *#
+    equation eq ;
+    write "curve equation : " ~\n;
+    read eq;
+    curve c(eq);
+    if(type(c) == "parabola"){
+        parabola p(eq);
+        num a = (p._latus_rectum)/4 ;
+        num b = center._x + a;
+        point focus(b,center._y);
+        write "Given " ~ eq ~ " is parabola " ~\n;
+        write "Focus : (" ~ focus._x ~"," ~ focus._y ~")" ~\n;
+    }
+    elif(type(c) == "ellipse"){
+        ellipse ell(eq);
+        point p = ell._center ;
+        num major = ell._a ;
+        num ecc = ell._eccentricity ;
+        num x1= p._x + (major * ecc);
+        num x2 = p._x - (major * ecc);
+        point focus1(x1,p._y);
+        point focus2(x2,p._y);
+        write "Given " ~ eq ~"is ellipse " ~\n;
+        write "Foci : (" ~ focus1._x ~"," ~ focus1._y ~") ("~focus1._x ~","~focus1._y~")" ~\n;
+    }
+    el{
+        hyperbola hy(eq);
+        point p = hy._center ;
+        num a = hy._a ;
+        num ecc = hy._eccentricity ;
+        num x1= p._x + (a * ecc);
+        num y1 = p._y;
+        num x2 = p._x - (a * ecc);
+        point focus1(x1,y1);
+        point focus2(x2,y1);
+        write "Given " ~ eq ~"is ellipse " ~\n;
+        write "Foci : (" ~focus1._x~"," ~focus1._y~") ("~focus1._x~","~focus1._y~")" ~\n;
+   }
+
+}

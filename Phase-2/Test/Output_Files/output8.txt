@@ -1,0 +1,30 @@
+
+Single Line Comment: ## importing required headers
+
+Punctuator: $
+ Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+ Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+
+
+Multi Line Comment: #* This is a comment *#
+
+
+
+Multi Line Comment: #* This is an unterminated comment
+#* This is a comment *#
+
+ Identifier: but
+ Identifier: not
+ Identifier: really
+ Identifier: the
+ Identifier: end
+ Operator: *
+Lexical error: #

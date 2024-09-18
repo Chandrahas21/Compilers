@@ -1,0 +1,132 @@
+Single Line Comment: ## Include necessary geometric utilities
+
+Punctuator: $
+Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+ Punctuator: {
+
+    Non-Primitive Data Type: equation
+ Identifier: eq
+Punctuator: ;
+
+
+    Single Line Comment: ## Take the equation input from the user in the form ax^2 + by^2 + cx + dy + e = 0
+
+    Keyword: write
+ String: "curve equation : "
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: eq
+Punctuator: ;
+
+    Non-Primitive Data Type: curve
+ Identifier: c
+Punctuator: (
+Identifier: eq
+Punctuator: )
+Punctuator: ;
+
+
+    Single Line Comment: ## Calculate the eccentricity
+
+    Keyword: if
+Punctuator: (
+In-Built Function (Keyword): type
+Punctuator: (
+Identifier: c
+Punctuator: )
+ Operator: ==
+ String: "ellipse"
+Punctuator: )
+Punctuator: {
+
+        Non-Primitive Data Type: num
+ Identifier: e
+Operator: =
+In-Built Function (Keyword): sqrt
+Punctuator: (
+Integer: 1
+ Operator: -
+ Punctuator: (
+Identifier: c
+Operator: .
+Member Variable (KeyWord): _b
+Operator: /
+Identifier: c
+Operator: .
+Member Variable (KeyWord): _a
+Punctuator: )
+Punctuator: )
+Punctuator: ;
+
+        Keyword: write
+ String: "curve is ellipse with eccentricity"
+ Operator: ~
+ Identifier: e
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+    Punctuator: }
+
+    Keyword: elif
+Punctuator: (
+In-Built Function (Keyword): type
+Punctuator: (
+Identifier: c
+Punctuator: )
+ Operator: ==
+ String: "hyperbola"
+Punctuator: )
+Punctuator: {
+
+        Non-Primitive Data Type: num
+ Identifier: e
+Operator: =
+In-Built Function (Keyword): sqrt
+Punctuator: (
+Integer: 1
+ Operator: +
+ Punctuator: (
+Identifier: c
+Operator: .
+Member Variable (KeyWord): _b
+Operator: /
+Identifier: c
+Operator: .
+Member Variable (KeyWord): _a
+Punctuator: )
+Punctuator: )
+Punctuator: ;
+
+        Keyword: write
+ String: "curve is hyperbola  with eccentricity"
+ Operator: ~
+ Identifier: e
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+    Punctuator: }
+
+
+Punctuator: }
+

@@ -1,0 +1,240 @@
+Punctuator: $
+Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+Punctuator: <
+Non-Primitive Data Type: point
+Punctuator: >
+ Identifier: divide_line
+Punctuator: (
+Non-Primitive Data Type: point
+ Identifier: p1
+Punctuator: ,
+ Non-Primitive Data Type: point
+ Identifier: p2
+Punctuator: ,
+ Non-Primitive Data Type: num
+ Identifier: m
+Punctuator: ,
+ Non-Primitive Data Type: num
+ Identifier: n
+Punctuator: )
+ Punctuator: {
+
+    Single Line Comment: ## Calculate the coordinates of the point that divides the line segment
+
+    Non-Primitive Data Type: num
+ Identifier: x
+ Operator: =
+ Punctuator: (
+Identifier: m
+ Operator: *
+ Identifier: p2
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: +
+ Identifier: n
+ Operator: *
+ Identifier: p1
+Operator: .
+Member Variable (KeyWord): _x
+Punctuator: )
+ Operator: /
+ Punctuator: (
+Identifier: m
+ Operator: +
+ Identifier: n
+Punctuator: )
+Punctuator: ;
+
+    Non-Primitive Data Type: num
+ Identifier: y
+ Operator: =
+ Punctuator: (
+Identifier: m
+ Operator: *
+ Identifier: p2
+Operator: .
+Member Variable (KeyWord): _y
+ Operator: +
+ Identifier: n
+ Operator: *
+ Identifier: p1
+Operator: .
+Member Variable (KeyWord): _y
+Punctuator: )
+ Operator: /
+ Punctuator: (
+Identifier: m
+ Operator: +
+ Identifier: n
+Punctuator: )
+Punctuator: ;
+
+    
+    Single Line Comment: ## Return the dividing point
+
+    Keyword: return
+ Non-Primitive Data Type: point
+Punctuator: (
+Identifier: x
+Punctuator: ,
+ Identifier: y
+Punctuator: )
+Punctuator: ;
+
+Punctuator: }
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+ Punctuator: {
+
+    Non-Primitive Data Type: num
+ Identifier: x1
+Punctuator: ,
+ Identifier: y1
+Punctuator: ,
+ Identifier: x2
+Punctuator: ,
+ Identifier: y2
+Punctuator: ,
+ Identifier: m
+Punctuator: ,
+ Identifier: n
+Punctuator: ;
+
+
+    Single Line Comment: ## Input coordinates for P1
+
+    Keyword: write
+ String: "Enter x1,y1 of Point 1:"
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: x1
+Punctuator: ,
+ Identifier: y1
+Punctuator: ;
+
+    Keyword: write
+ String: "Enter the x2,y2 point P2:"
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: x2
+Punctuator: ,
+ Identifier: y2
+Punctuator: ;
+
+    
+    Single Line Comment: ## give the values of m and n
+
+    Keyword: write
+ String: "value of m :"
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: m
+Punctuator: ;
+
+    Keyword: write
+ String: "value of n "
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: n
+Punctuator: ;
+
+    
+    Single Line Comment: ## intialize the points p1,p2
+
+    Non-Primitive Data Type: point
+ Identifier: p1
+Punctuator: (
+Identifier: x1
+Punctuator: ,
+ Identifier: y1
+Punctuator: )
+Punctuator: ;
+
+    Non-Primitive Data Type: point
+ Identifier: p2
+Punctuator: (
+Identifier: x2
+Punctuator: ,
+ Identifier: y2
+Punctuator: )
+Punctuator: ;
+
+    
+    Single Line Comment: ## Calculate the dividing point
+
+    Non-Primitive Data Type: point
+ Identifier: dividing_point
+ Operator: =
+ Identifier: divide_line
+Punctuator: (
+Identifier: p1
+Punctuator: ,
+ Identifier: p2
+Punctuator: ,
+ Identifier: m
+Punctuator: ,
+ Identifier: n
+Punctuator: )
+Punctuator: ;
+
+    
+    
+Multi Line Comment: #*
+    output the resulting point
+    *#
+
+
+
+    Keyword: write
+ String: "Required point is "
+ Operator: ~
+ Identifier: m
+ Operator: ~
+ String: ":"
+ Operator: ~
+ Identifier: n
+ Operator: ~
+ String: " is: ("
+ Operator: ~
+ Identifier: dividing_point
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: ~
+ String: ", "
+ Operator: ~
+ Identifier: dividing_point
+Operator: .
+Member Variable (KeyWord): _y
+ Operator: ~
+ String: ")\n"
+Punctuator: ;
+
+Punctuator: }
+

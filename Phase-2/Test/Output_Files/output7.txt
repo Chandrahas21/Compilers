@@ -1,0 +1,388 @@
+Single Line Comment: ## importing required headers
+
+Punctuator: $
+ Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+ Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+
+Punctuator: {
+  Single Line Comment: ## included all datatypes and keywords
+
+   Single Line Comment: ## printing the string "Hello World"
+
+
+   Primitive Data Type: string
+ Identifier: greet
+ Operator: =
+String: " First line of code"
+
+   Keyword: write
+ String: "Hello world!, "
+ Operator: ~
+ Identifier: greet
+ Operator: ~
+ New line Character or Tab Character: \n
+ Punctuator: ;
+
+   
+Multi Line Comment: #*
+    Defining some data types which 
+    represents different Geometrical
+    shapes
+   *#
+
+
+   Non-Primitive Data Type: point
+ Identifier: p
+Punctuator: (
+Floating Point Number: 1.9
+Punctuator: ,
+Floating Point Number: 3.3
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: point
+ Identifier: p2
+Punctuator: (
+Integer: 4
+Punctuator: ,
+Integer: 56
+Punctuator: )
+Punctuator: ;
+
+
+   Non-Primitive Data Type: equation
+ Identifier: cr
+ Operator: =
+ Punctuator: "
+Identifier: x
+Operator: ^
+Integer: 2
+Operator: +
+ Identifier: y
+Operator: ^
+Integer: 2
+ Operator: =
+ Integer: 16
+Punctuator: "
+Punctuator: ;
+
+   Non-Primitive Data Type: equation
+ Identifier: pb
+ Operator: =
+ Punctuator: "
+Identifier: y
+Operator: ^
+Integer: 2
+ Operator: =
+ Integer: 4
+Identifier: x
+Punctuator: "
+Punctuator: ;
+
+   Non-Primitive Data Type: equation
+ Identifier: ln
+ Operator: =
+ String: " x+4y = 32"
+Punctuator: ;
+
+   Non-Primitive Data Type: equation
+ Identifier: ep
+ Operator: =
+ Punctuator: "
+ Identifier: x
+Operator: ^
+Integer: 2
+ Operator: +
+ Integer: 2
+Operator: *
+Identifier: y
+Operator: ^
+Integer: 2
+ Operator: =
+ Integer: 1
+Punctuator: "
+Punctuator: ;
+
+   Non-Primitive Data Type: equation
+ Identifier: hp
+ Operator: =
+ Punctuator: "
+Identifier: x
+Operator: ^
+Integer: 2
+ Operator: -
+ Integer: 2
+Operator: *
+Identifier: y
+Operator: ^
+Integer: 2
+ Operator: =
+ Integer: 2
+Punctuator: "
+Punctuator: ;
+ 
+   
+   Non-Primitive Data Type: circle
+ Identifier: circle_1
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Floating Point Number: 5.6
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: circle
+ Identifier: circle_2
+Punctuator: (
+Identifier: cr
+Punctuator: )
+
+
+   Non-Primitive Data Type: line
+ Identifier: line_1
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Identifier: p2
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: line
+ Identifier: l2
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Integer: 1
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: line
+ Identifier: l3
+Punctuator: (
+Identifier: ln
+Punctuator: )
+Punctuator: ;
+
+   
+   Non-Primitive Data Type: hyperbola
+ Identifier: h1
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Floating Point Number: 8.9
+Punctuator: ,
+ Integer: 9
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: hyperbola
+ Identifier: h2
+Punctuator: (
+Identifier: hp
+Punctuator: )
+Punctuator: ;
+
+
+   Non-Primitive Data Type: ellipse
+ Identifier: e1
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Integer: 6
+Punctuator: ,
+Integer: 3
+Punctuator: )
+Punctuator: ;
+
+   Identifier: eliipse
+ Identifier: e2
+Punctuator: (
+Identifier: ep
+Punctuator: )
+Punctuator: ;
+
+
+   Non-Primitive Data Type: parabola
+ Identifier: p1
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Identifier: p2
+Punctuator: )
+Punctuator: ;
+
+   Non-Primitive Data Type: parabola
+ Identifier: p2
+Punctuator: (
+Identifier: pb
+Punctuator: )
+Punctuator: ;
+
+
+   Primitive Data Type: bool
+ Identifier: check
+ Operator: =
+ Keyword: true
+Punctuator: ;
+
+   Identifier: int
+ Identifier: dist
+ Operator: =
+ Integer: 5
+Punctuator: ;
+
+   Keyword: loop
+ Punctuator: (
+Identifier: check
+Punctuator: )
+Punctuator: {
+
+     Keyword: if
+Punctuator: (
+In-Built Function (Keyword): distance
+Punctuator: (
+Identifier: p
+Punctuator: ,
+Identifier: p2
+Punctuator: )
+ Punctuator: >
+ Identifier: dist
+Punctuator: )
+Punctuator: {
+
+        Keyword: write
+ String: "too far \n"
+Punctuator: ;
+
+        Keyword: skip
+Punctuator: ;
+
+     Punctuator: }
+
+     Keyword: elif
+Punctuator: (
+Identifier: dist
+ Punctuator: <
+ Integer: 1
+Punctuator: )
+Punctuator: {
+
+        Keyword: write
+ String: "too close \n"
+
+        Identifier: check
+ Operator: =
+ Keyword: false
+Punctuator: ;
+
+     Punctuator: }
+
+     Keyword: el
+Punctuator: {
+
+        Keyword: write
+ String: "Distance b/w them is in reachable range "
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+ 
+        Keyword: stop
+Punctuator: ;
+
+     Punctuator: }
+
+     Identifier: dist
+ Operator: =
+ Identifier: dist
+ Operator: -
+Integer: 1
+Punctuator: ;
+
+     
+   Punctuator: }
+
+   Identifier: dist
+ Operator: =
+ Integer: 3
+Punctuator: ;
+
+   Keyword: switch
+ Punctuator: (
+Identifier: dist
+Punctuator: )
+Punctuator: {
+
+     Keyword: case
+ Integer: 1
+Punctuator: :
+
+        Keyword: write
+ String: "dist variable became"
+ Operator: ~
+ Identifier: dist
+ Operator: ~
+ New line Character or Tab Character: \n
+ Punctuator: ;
+
+        Keyword: skip
+Punctuator: ;
+
+     Keyword: case
+ Integer: 2
+Punctuator: :
+
+       Keyword: write
+ String: "dist variable became"
+ Operator: ~
+ Identifier: dist
+ Operator: ~
+ New line Character or Tab Character: \n
+ Punctuator: ;
+
+       Keyword: skip
+Punctuator: ;
+
+    Keyword: case
+ Integer: 3
+Punctuator: :
+
+       Keyword: write
+ String: "dist variable became"
+ Operator: ~
+ Identifier: dist
+ Operator: ~
+ New line Character or Tab Character: \n
+ Punctuator: ;
+
+       Keyword: skip
+Punctuator: ;
+
+    Keyword: default
+Punctuator: :
+
+       Keyword: write
+ String: "dist is out of reachable range,and it is "
+ Operator: ~
+ Identifier: dist
+ Operator: ~
+ New line Character or Tab Character: \n
+Punctuator: ;
+
+   Punctuator: }
+
+
+Punctuator: }

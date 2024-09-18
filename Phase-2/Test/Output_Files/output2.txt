@@ -1,0 +1,395 @@
+Single Line Comment: ## importing required headers
+
+Punctuator: $
+ Keyword: include
+ String: "geo.core"
+Punctuator: ;
+
+Punctuator: $
+ Keyword: include
+ String: "geo.utils"
+Punctuator: ;
+
+
+Punctuator: <
+Primitive Data Type: void
+Punctuator: >
+ Keyword: main
+Punctuator: (
+Punctuator: )
+Punctuator: {
+
+    
+Multi Line Comment: #* find focus or foci of given curve
+      curve can be parabola,
+      ellipse,hyperbola *#
+
+
+    Non-Primitive Data Type: equation
+ Identifier: eq
+ Punctuator: ;
+
+    Keyword: write
+ String: "curve equation : "
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+    Keyword: read
+ Identifier: eq
+Punctuator: ;
+
+    Non-Primitive Data Type: curve
+ Identifier: c
+Punctuator: (
+Identifier: eq
+Punctuator: )
+Punctuator: ;
+
+    Keyword: if
+Punctuator: (
+In-Built Function (Keyword): type
+Punctuator: (
+Identifier: c
+Punctuator: )
+ Operator: ==
+ String: "parabola"
+Punctuator: )
+Punctuator: {
+
+        Non-Primitive Data Type: parabola
+ Identifier: p
+Punctuator: (
+Identifier: eq
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: a
+ Operator: =
+ Punctuator: (
+Identifier: p
+Operator: .
+Member Variable (KeyWord): _latus_rectum
+Punctuator: )
+Operator: /
+Integer: 4
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: b
+ Operator: =
+ Identifier: center
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: +
+ Identifier: a
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: focus
+Punctuator: (
+Identifier: b
+Punctuator: ,
+Identifier: center
+Operator: .
+Member Variable (KeyWord): _y
+Punctuator: )
+Punctuator: ;
+
+        Keyword: write
+ String: "Given "
+ Operator: ~
+ Identifier: eq
+ Operator: ~
+ String: " is parabola "
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+        Keyword: write
+ String: "Focus : ("
+ Operator: ~
+ Identifier: focus
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: ~
+String: ","
+ Operator: ~
+ Identifier: focus
+Operator: .
+Member Variable (KeyWord): _y
+ Operator: ~
+String: ")"
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+    Punctuator: }
+
+    Keyword: elif
+Punctuator: (
+In-Built Function (Keyword): type
+Punctuator: (
+Identifier: c
+Punctuator: )
+ Operator: ==
+ String: "ellipse"
+Punctuator: )
+Punctuator: {
+
+        Non-Primitive Data Type: ellipse
+ Identifier: ell
+Punctuator: (
+Identifier: eq
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: p
+ Operator: =
+ Identifier: ell
+Operator: .
+Member Variable (KeyWord): _center
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: major
+ Operator: =
+ Identifier: ell
+Operator: .
+Member Variable (KeyWord): _a
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: ecc
+ Operator: =
+ Identifier: ell
+Operator: .
+Member Variable (KeyWord): _eccentricity
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: x1
+Operator: =
+ Identifier: p
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: +
+ Punctuator: (
+Identifier: major
+ Operator: *
+ Identifier: ecc
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: x2
+ Operator: =
+ Identifier: p
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: -
+ Punctuator: (
+Identifier: major
+ Operator: *
+ Identifier: ecc
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: focus1
+Punctuator: (
+Identifier: x1
+Punctuator: ,
+Identifier: p
+Operator: .
+Member Variable (KeyWord): _y
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: focus2
+Punctuator: (
+Identifier: x2
+Punctuator: ,
+Identifier: p
+Operator: .
+Member Variable (KeyWord): _y
+Punctuator: )
+Punctuator: ;
+
+        Keyword: write
+ String: "Given "
+ Operator: ~
+ Identifier: eq
+ Operator: ~
+String: "is ellipse "
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+        Keyword: write
+ String: "Foci : ("
+ Operator: ~
+ Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: ~
+String: ","
+ Operator: ~
+ Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _y
+ Operator: ~
+String: ") ("
+Operator: ~
+Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: ~
+String: ","
+Operator: ~
+Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _y
+Operator: ~
+String: ")"
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+    Punctuator: }
+
+    Keyword: el
+Punctuator: {
+
+        Non-Primitive Data Type: hyperbola
+ Identifier: hy
+Punctuator: (
+Identifier: eq
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: p
+ Operator: =
+ Identifier: hy
+Operator: .
+Member Variable (KeyWord): _center
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: a
+ Operator: =
+ Identifier: hy
+Operator: .
+Member Variable (KeyWord): _a
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: ecc
+ Operator: =
+ Identifier: hy
+Operator: .
+Member Variable (KeyWord): _eccentricity
+ Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: x1
+Operator: =
+ Identifier: p
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: +
+ Punctuator: (
+Identifier: a
+ Operator: *
+ Identifier: ecc
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: y1
+ Operator: =
+ Identifier: p
+Operator: .
+Member Variable (KeyWord): _y
+Punctuator: ;
+
+        Non-Primitive Data Type: num
+ Identifier: x2
+ Operator: =
+ Identifier: p
+Operator: .
+Member Variable (KeyWord): _x
+ Operator: -
+ Punctuator: (
+Identifier: a
+ Operator: *
+ Identifier: ecc
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: focus1
+Punctuator: (
+Identifier: x1
+Punctuator: ,
+Identifier: y1
+Punctuator: )
+Punctuator: ;
+
+        Non-Primitive Data Type: point
+ Identifier: focus2
+Punctuator: (
+Identifier: x2
+Punctuator: ,
+Identifier: y1
+Punctuator: )
+Punctuator: ;
+
+        Keyword: write
+ String: "Given "
+ Operator: ~
+ Identifier: eq
+ Operator: ~
+String: "is ellipse "
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+        Keyword: write
+ String: "Foci : ("
+ Operator: ~
+Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _x
+Operator: ~
+String: ","
+ Operator: ~
+Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _y
+Operator: ~
+String: ") ("
+Operator: ~
+Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _x
+Operator: ~
+String: ","
+Operator: ~
+Identifier: focus1
+Operator: .
+Member Variable (KeyWord): _y
+Operator: ~
+String: ")"
+ Operator: ~
+New line Character or Tab Character: \n
+Punctuator: ;
+
+   Punctuator: }
+
+
+Punctuator: }
