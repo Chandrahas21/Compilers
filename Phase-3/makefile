@@ -1,30 +1,30 @@
-# Makefile for compiling a Flex lexer
-
-CC = gcc
-
-# Flex tool
+# Variables
+BISON = bison
 FLEX = flex
+CC = gcc
+# CFLAGS = -Wall -g
 
-# Source files
-LEX_SOURCE = lexer.l
-LEX_OUTPUT = lex.yy.c
+# Files
+LEXER = lexer.l
+PARSER = parser.y
+LEXER_C = lex.yy.c
+PARSER_C = parser.tab.c
+PARSER_H = parser.tab.h
+TARGET = parser
 
-# Target executable
-TARGET = lexer
-
-# Default target
+# Rules
 all: $(TARGET)
 
-# Rule to build the target executable
-$(TARGET): $(LEX_OUTPUT)
-	$(CC) -o $(TARGET) $(LEX_OUTPUT)
+$(PARSER_C) $(PARSER_H): $(PARSER)
+	$(BISON) -d $(PARSER)
 
-# Rule to generate the lexer source file from the Flex file
-$(LEX_OUTPUT): $(LEX_SOURCE)
-	$(FLEX) $(LEX_SOURCE)
+$(LEXER_C): $(LEXER)
+	$(FLEX) $(LEXER)
 
-# Clean rule to remove generated files
+$(TARGET): $(LEXER_C) $(PARSER_C)
+	$(CC) -o $(TARGET) $(LEXER_C) $(PARSER_C)
+
 clean:
-	rm -f $(TARGET) $(LEX_OUTPUT) lex.yy.c
+	rm -f $(LEXER_C) $(PARSER_C) $(PARSER_H) $(TARGET)
 
-.PHONY: all clean
+.PHONY: clean
