@@ -4,6 +4,9 @@
     #include "parser.tab.h"
     int yylex();
     int yywrap();
+    extern FILE *yyin;
+    FILE *tokfile;
+    FILE *parsefile;
 %}
 
 comment_Start "#*"
