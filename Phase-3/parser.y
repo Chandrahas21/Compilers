@@ -24,6 +24,7 @@ int yyerror(char* s);
 
 %%
 first : PLUS MINUS SEMICOLON {printf("Valid\n"); }
+      |
       ;
 %%
 
