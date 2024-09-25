@@ -20,11 +20,10 @@ int yyerror(char* s);
 %token FLOATING_POINT_NUMBER
 %token STRING_LITERAL
 
-%start first
 
 %%
-first : PLUS MINUS SEMICOLON {printf("Valid\n"); }
-      ;
+
+
 %%
 
 int yywrap(void) {
