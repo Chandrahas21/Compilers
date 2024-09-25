@@ -1,9 +1,10 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-int yywrap();
-int yylex();          
-int yyerror(char* s); 
+extern FILE *yyin, *tokfile, *parsefile ;
+extern int yylineno;
+int yylex();
+int yyerror(char *s);
 %}
 
 %token COMMENT_SINGLE_LINE COMMENT_MULTI_LINE
@@ -22,20 +23,61 @@ int yyerror(char* s);
 
 
 %%
-
-
+program: PLUS MINUS SEMICOLON { printf("Check\n"); }
+        | 
+        ;
 %%
-
-int yywrap(void) {
-    return 1;
-}
 
 int yyerror(char *s) {
     fprintf(stderr, "%s\n", s);
     return 0;
 }
 
-int main(void) {
-    yyparse();
+int main(int argc, char **argv) {
+    if (argc < 4) {
+        printf("Usage: %s <input file> <token file> <parse file>\n", argv[0]);
+        return 1;
+    }
+
+    FILE *inputFile = fopen(argv[1], "r");
+    if (inputFile == NULL) {
+        printf("Error: Cannot open input file %s\n", argv[1]);
+        return 1;
+    }
+
+    tokfile = fopen(argv[2], "w");
+    if (tokfile == NULL) {
+        printf("Error: Cannot open token file %s\n", argv[2]);
+        fclose(inputFile);
+        return 1;
+    }
+
+    parsefile = fopen(argv[3], "w");
+    if (parsefile == NULL) {
+        printf("Error: Cannot open parse file %s\n", argv[3]);
+        fclose(inputFile);
+        fclose(tokfile);
+        return 1;
+    }
+
+    yyin = inputFile;
+
+    int i = yyparse();
+    if(i == 0){
+        printf("Parsing done successfully\n");
+    }
+    else{
+        printf("Parsing failed\n");
+    }
+
+    // int token = 0;
+    // while ((token = yylex()) != 0) {
+    //     // printf("Token: %d\n", token);
+    // }
+
+    fclose(inputFile);
+    fclose(tokfile);
+    fclose(parsefile);
+
     return 0;
 }
