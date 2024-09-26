@@ -71,6 +71,64 @@ member_variable
     | LATUS_RECTUM
     ;
 
+basic_expression
+    : IDENTIFIER
+    | CONSTANT
+    | STRING_LITERAL
+    | TRUE
+    | FALSE
+    // | expression
+    ;
+
+postfix_expression
+    : basic_expression
+    | postfix_expression LEFT_PAREN RIGHT_PAREN
+	| postfix_expression LEFT_PAREN declaration_arg_list RIGHT_PAREN
+    | postfix_expression INCREMENT
+    | postfix_expression DECREMENT
+    | postfix_expression MEMBER_ACCESS member_variable
+    ;
+
+unary_operator
+    : LOGICAL_NOT
+    | PLUS
+    | MINUS
+    ;
+
+unary_expression
+    : postfix_expression
+    | INCREMENT unary_expression
+    | DECREMENT unary_expression
+    | unary_operator unary_expression
+    ;
+
+/* left_identifier
+    : IDENTIFIER
+    | IDENTIFIER MEMBER_ACCESS member_variable
+    ; */
+
+expression
+    : postfix_expression ASSIGN evalute_expression
+    | evalute_expression
+    ;
+
+evalute_expression
+    : unary_expression
+    | evalute_expression MULTIPLY evalute_expression
+    | evalute_expression DIVIDE evalute_expression
+    | evalute_expression MODULUS evalute_expression
+    | evalute_expression PLUS evalute_expression
+    | evalute_expression MINUS evalute_expression
+    | evalute_expression EQUAL evalute_expression
+    | evalute_expression NOT_EQUAL evalute_expression
+    | evalute_expression GREATER_EQUAL evalute_expression
+    | evalute_expression LESS_EQUAL evalute_expression
+    | evalute_expression GREATER_THAN evalute_expression
+    | evalute_expression LESS_THAN evalute_expression
+    | evalute_expression LOGICAL_AND evalute_expression
+    | evalute_expression LOGICAL_OR evalute_expression
+    | LEFT_PAREN evalute_expression RIGHT_PAREN
+    ;
 
 %%
 
