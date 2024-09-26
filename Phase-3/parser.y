@@ -130,6 +130,68 @@ evalute_expression
     | LEFT_PAREN evalute_expression RIGHT_PAREN
     ;
 
+declaration_type
+    : VOID
+    | STRING
+    | BOOL
+    | NUM
+    | POINT 
+    | EQUATION
+    | LINE
+    | CIRCLE
+    | PARABOLA
+    | HYPERBOLA
+    | ELLIPSE
+    | CURVE
+    ;
+
+declaration_arg_list
+    : postfix_expression
+    | postfix_expression COMMA declaration_arg_list
+    ;
+
+declaration_set_index
+    : IDENTIFIER
+    | IDENTIFIER ASSIGN postfix_expression
+    | IDENTIFIER LEFT_PAREN declaration_arg_list RIGHT_PAREN
+    ;
+
+declaration_set
+    : declaration_set_index
+    | declaration_set_index COMMA declaration_set
+    ;
+
+declaration
+    : declaration_type SEMICOLON // int ; check later
+    | declaration_type declaration_set SEMICOLON 
+    ;
+
+function_arg_list
+    : declaration_type IDENTIFIER
+    | declaration_type IDENTIFIER COMMA function_arg_list
+    ;
+
+default_function_list
+    : MAIN
+    | TO_STRING
+    | DISTANCE
+    | SOLVE
+    | SQRT
+    | ISPOINT
+    | INTERSECTION
+    | TANGENT
+    | SLOPE_LINE
+    | ANGLE
+    | TYPE
+    | IDENTIFIER
+    ;
+
+function_declaration
+    : LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN RIGHT_PAREN
+    | LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN function_arg_list RIGHT_PAREN
+    ;
+
+
 %%
 
 int yyerror(char *s) {
