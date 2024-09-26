@@ -191,6 +191,71 @@ function_declaration
     | LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN function_arg_list RIGHT_PAREN
     ;
 
+statements
+    : selective_statement {printf("Selective Statments\n");}
+    | jump_statements {printf("Jump Statments\n");}
+    | compound_statement {printf("Compound Statments\n");}
+    | label_statement {printf("Label Statments\n");}
+    | iterative_statement {printf("Iterative Statments\n");}
+    ;
+
+/* statement_list
+    : statements
+    | statements statement_list
+    ;
+
+declaration_list
+    : declaration
+    | declaration declaration_list
+    ;
+
+print_list
+    : in_out
+    | in_out print_list
+    ; */
+
+compound_statement
+    // : LEFT_BRACE RIGHT_BRACE
+    : LEFT_BRACE program RIGHT_BRACE
+    ;
+
+selective_statement
+    : SWITCH LEFT_PAREN expression RIGHT_PAREN compound_statement
+    | IF LEFT_PAREN expression RIGHT_PAREN compound_statement
+    | IF LEFT_PAREN expression RIGHT_PAREN compound_statement ELSE compound_statement
+    | IF LEFT_PAREN expression RIGHT_PAREN compound_statement else_if ELSE compound_statement
+    | IF LEFT_PAREN expression RIGHT_PAREN compound_statement else_if
+    ;
+
+else_if
+    : ELIF LEFT_PAREN expression RIGHT_PAREN compound_statement
+    | ELIF LEFT_PAREN expression RIGHT_PAREN compound_statement else_if
+    ;  
+
+constant_expression
+    : CONSTANT 
+    | STRING_LITERAL
+    ;
+
+label_statement
+    : IDENTIFIER COLON statements 
+    | CASE constant_expression COLON statements
+    | DEFAULT COLON statements
+    ;
+
+iterative_statement
+    : LOOP LEFT_PAREN expression RIGHT_PAREN statements
+    | LOOP LEFT_PAREN expression SEMICOLON expression SEMICOLON expression RIGHT_PAREN statements 
+    ;
+
+jump_statements
+    : STOP SEMICOLON 
+    | SKIP SEMICOLON 
+    | RETURN SEMICOLON
+    | RETURN expression SEMICOLON
+    | GOTO IDENTIFIER SEMICOLON
+    ;
+
 
 %%
 
