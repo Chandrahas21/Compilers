@@ -19,74 +19,7 @@ int yyerror(char *s);
 %token STRING_LITERAL CONSTANT
 
 %%
-program:
-    program declaration {printf("Declaration\n");}
-    |
-    ;
 
-mem_var:
-    X
-    | Y
-    | SLOPE
-    | EQUATION_MV
-    | CENTER
-    | RADIUS
-    | A
-    | B
-    | C
-    | F
-    | G
-    | H
-    | DELTA
-    | ECCENTRICITY
-    | LATUS_RECTUM
-    ;
-
-basic_expr:
-    IDENTIFIER 
-    | CONSTANT 
-    | STRING_LITERAL
-    | TRUE
-    | FALSE
-    | IDENTIFIER MEMBER_ACCESS mem_var
-    // | expression
-    ;
-
-declaration_type:
-    VOID
-    | STRING
-    | BOOL
-    | NUM
-    | POINT 
-    | EQUATION
-    | LINE
-    | CIRCLE
-    | PARABOLA
-    | HYPERBOLA
-    | ELLIPSE
-    | CURVE
-    ;
-
-declaration_argument_list:
-    basic_expr
-    | basic_expr COMMA declaration_argument_list
-    ;
-
-declaration_list_index:
-    IDENTIFIER
-    | IDENTIFIER ASSIGN basic_expr
-    | IDENTIFIER LEFT_PAREN declaration_argument_list RIGHT_PAREN
-    ;
-
-declaration_list:
-    declaration_list_index
-    | declaration_list COMMA declaration_list_index
-    ;
-
-declaration:
-    declaration_type SEMICOLON // int ; check later
-    | declaration_type declaration_list SEMICOLON 
-    ;
 %%
 
 int yyerror(char *s) {
