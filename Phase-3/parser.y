@@ -19,6 +19,58 @@ int yyerror(char *s);
 %token STRING_LITERAL CONSTANT
 
 %%
+program
+    : program expression SEMICOLON {printf("Expression\n");}
+    | program declaration {printf("Declaration\n");}
+    | program statements {printf("Statement\n");}
+    | program function_declaration {printf("Function Declaration\n");}
+    | program headers {printf("Headers\n");}
+    | program in_out {printf("Read Write\n");}
+    |
+    ;
+
+headers
+    : DOLLAR INCLUDE STRING_LITERAL SEMICOLON
+    | DOLLAR DEFINE IDENTIFIER CONSTANT SEMICOLON
+    ;
+
+in_out
+    : WRITE TILDE print SEMICOLON
+    | READ TILDE scan SEMICOLON
+    ;
+
+scan
+    : IDENTIFIER
+    | IDENTIFIER TILDE scan
+    ;
+
+print
+    : NEW_LINE_CHARACTER 
+    | TAB_CHARACTER
+    | postfix_expression
+    | NEW_LINE_CHARACTER TILDE print
+    | TAB_CHARACTER TILDE print
+    | postfix_expression TILDE print
+    ;
+
+member_variable
+    : X
+    | Y
+    | SLOPE
+    | EQUATION_MV
+    | CENTER
+    | RADIUS
+    | A
+    | B
+    | C
+    | F
+    | G
+    | H
+    | DELTA
+    | ECCENTRICITY
+    | LATUS_RECTUM
+    ;
+
 
 %%
 
