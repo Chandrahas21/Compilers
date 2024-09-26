@@ -18,6 +18,12 @@ int yyerror(char *s);
 %token NEW_LINE_CHARACTER TAB_CHARACTER
 %token STRING_LITERAL CONSTANT
 
+%left MULTIPLY DIVIDE MODULUS
+%left PLUS MINUS
+%left EQUAL NOT_EQUAL GREATER_EQUAL LESS_EQUAL GREATER_THAN LESS_THAN
+%left LOGICAL_AND LOGICAL_OR
+%right ASSIGN
+
 %%
 program
     : program expression SEMICOLON {printf("Expression\n");}
