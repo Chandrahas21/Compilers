@@ -1,0 +1,13 @@
+## headers
+$include "geo.core";
+$include "geo.utils";
+
+point p1 (1 , 2);
+point p2 (3 , 4);
+## Define a line between points
+line l1(p1 , p2 );
+## Prints line equation
+write ~ " line equation : " ~ l1;
+## Define a circle with center and radius
+circle c1(p1 , 5);
+write ~ " circle equation : \t" ~ c1._equation;
