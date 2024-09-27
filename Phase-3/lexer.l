@@ -32,13 +32,13 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 \#\#(.*) {
     fprintf(tokfile, "Single Line Comment: %s\n", yytext);
     fprintf(parsefile, "%s\n", yytext);
-    return COMMENT_SINGLE_LINE;
+    // return COMMENT_SINGLE_LINE;
 }
 
 {comment_Start}([^\*]|\*+[^\*\#])*\**{comment_End} {
     fprintf(tokfile, "Multi Line Comment: %s\n", yytext);
     fprintf(parsefile, "%s\n", yytext);
-    return COMMENT_MULTI_LINE;
+    // return COMMENT_MULTI_LINE;
 }
 
 {primitive_Data_Types} {
@@ -200,16 +200,16 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 ([0-9]+)([eE][+-]?[0-9]+)? {
     fprintf(tokfile, "Integer: %s\n", yytext);
     fprintf(parsefile, "%s\n", yytext);
-    return INTEGER;
+    return CONSTANT;
 }
 
 ([0-9]+[\.][0-9]+)([eE][+-]?[0-9]+)? {
     fprintf(tokfile, "Floating Point Number: %s\n", yytext);
     fprintf(parsefile, "%s\n", yytext);
-    return FLOATING_POINT_NUMBER;
+    return CONSTANT;
 }
 
-\"[^\"^\n]*\" {
+\"([^\"\n])*\" {
     fprintf(tokfile, "String Literal: %s\n", yytext);
     fprintf(parsefile, "%s\n", yytext);
     return STRING_LITERAL;
@@ -229,4 +229,3 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 int yywrap() {
     return 1;
 }
-
