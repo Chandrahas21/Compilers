@@ -152,8 +152,8 @@ declaration_type
     ;
 
 declaration_arg_list
-    : postfix_expression
-    | postfix_expression COMMA declaration_arg_list
+    : unary_expression
+    | unary_expression COMMA declaration_arg_list
     ;
 
 declaration_set_index
@@ -221,8 +221,8 @@ print_list
     ; */
 
 compound_statement
-    // : LEFT_BRACE RIGHT_BRACE
     : LEFT_BRACE program RIGHT_BRACE
+    /* | LEFT_BRACE RIGHT_BRACE */
     ;
 
 selective_statement
@@ -244,14 +244,14 @@ constant_expression
     ;
 
 label_statement
-    : IDENTIFIER COLON statements 
-    | CASE constant_expression COLON statements
-    | DEFAULT COLON statements
+    : IDENTIFIER COLON compound_statement 
+    | CASE constant_expression COLON compound_statement
+    | DEFAULT COLON compound_statement
     ;
 
 iterative_statement
-    : LOOP LEFT_PAREN expression RIGHT_PAREN statements
-    | LOOP LEFT_PAREN expression SEMICOLON expression SEMICOLON expression RIGHT_PAREN statements 
+    : LOOP LEFT_PAREN expression RIGHT_PAREN compound_statement
+    | LOOP LEFT_PAREN expression SEMICOLON expression SEMICOLON expression RIGHT_PAREN compound_statement 
     ;
 
 jump_statements
@@ -261,8 +261,6 @@ jump_statements
     | RETURN expression SEMICOLON
     | GOTO IDENTIFIER SEMICOLON
     ;
-
-
 %%
 
 int yyerror(char *s) {
