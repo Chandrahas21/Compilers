@@ -1,1 +1,14 @@
-+-
+## Include necessary geometric utilities
+$include "geo.core";
+$include "geo.utils";
+
+
+   num x,y;
+   write ~ "co-ordinates of p1" ~\n;
+   read ~ x ~ y;
+   point p1(x,y);
+   ellipse e(p,n,n);
+   num ecc=e._eccentricity;
+   write ~ "ECCENTRICITY of ellipse  + 1 : " ~ ecc ~\n;
+   string s=e._equation;
+   write ~ "equation of ellipse :" ~ s ~\n;
