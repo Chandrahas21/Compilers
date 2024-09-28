@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-extern FILE *yyin, *tokfile, *parsefile ;
+extern FILE *yyin, *tokenFile, *outputFile ;
 extern int yylineno;
 int yylex();
 int yyerror(char *s);
@@ -18,21 +18,26 @@ int yyerror(char *s);
 %token NEW_LINE_CHARACTER TAB_CHARACTER
 %token STRING_LITERAL CONSTANT
 
-%left MULTIPLY DIVIDE MODULUS
-%left PLUS MINUS
-%left EQUAL NOT_EQUAL GREATER_EQUAL LESS_EQUAL GREATER_THAN LESS_THAN
-%left LOGICAL_AND LOGICAL_OR
 %right ASSIGN
+%left LOGICAL_AND LOGICAL_OR
+%left EQUAL NOT_EQUAL GREATER_EQUAL LESS_EQUAL GREATER_THAN LESS_THAN
+%left PLUS MINUS
+%left EXPONENT
+%left MULTIPLY DIVIDE MODULUS
 
 %%
 program
-    : program expression SEMICOLON {printf("Expression\n");}
-    | program declaration {printf("Declaration\n");}
-    | program statements {printf("Statement\n");}
-    | program function_declaration {printf("Function Declaration\n");}
-    | program headers {printf("Headers\n");}
-    | program in_out {printf("Read Write\n");}
-    |
+    : program all_tokens
+    | 
+    ;
+
+all_tokens
+    : expression SEMICOLON
+    | declaration
+    | statements
+    | function_declaration
+    | headers
+    | in_out
     ;
 
 headers
@@ -90,7 +95,7 @@ basic_expression
 postfix_expression
     : basic_expression
     | postfix_expression LEFT_PAREN RIGHT_PAREN
-    | postfix_expression LEFT_PAREN declaration_arg_list RIGHT_PAREN
+	| postfix_expression LEFT_PAREN declaration_arg_list RIGHT_PAREN
     | default_function_list LEFT_PAREN RIGHT_PAREN
     | default_function_list LEFT_PAREN declaration_arg_list RIGHT_PAREN 
     | postfix_expression INCREMENT
@@ -156,13 +161,13 @@ declaration_type
     ;
 
 declaration_arg_list
-    : unary_expression
-    | unary_expression COMMA declaration_arg_list
+    : expression 
+    | expression COMMA declaration_arg_list
     ;
 
 declaration_set_index
     : IDENTIFIER
-    | IDENTIFIER ASSIGN postfix_expression
+    | IDENTIFIER ASSIGN evalute_expression
     | IDENTIFIER LEFT_PAREN declaration_arg_list RIGHT_PAREN
     ;
 
@@ -182,8 +187,7 @@ function_arg_list
     ;
 
 default_function_list
-    : MAIN
-    | TO_STRING
+    : TO_STRING
     | DISTANCE
     | SOLVE
     | SQRT
@@ -193,12 +197,18 @@ default_function_list
     | SLOPE_LINE
     | ANGLE
     | TYPE
-    | IDENTIFIER
+    | MAIN
     ;
 
 function_declaration
     : LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN RIGHT_PAREN
+    | LESS_THAN declaration_type GREATER_THAN IDENTIFIER LEFT_PAREN RIGHT_PAREN
     | LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN function_arg_list RIGHT_PAREN
+    | LESS_THAN declaration_type GREATER_THAN IDENTIFIER LEFT_PAREN function_arg_list RIGHT_PAREN 
+    // | LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN RIGHT_PAREN compound_statement
+    // | LESS_THAN declaration_type GREATER_THAN default_function_list LEFT_PAREN function_arg_list RIGHT_PAREN compound_statement
+    // | LESS_THAN declaration_type GREATER_THAN IDENTIFIER LEFT_PAREN RIGHT_PAREN compound_statement
+    // | LESS_THAN declaration_type GREATER_THAN IDENTIFIER LEFT_PAREN function_arg_list RIGHT_PAREN compound_statement
     ;
 
 statements
@@ -209,32 +219,16 @@ statements
     | iterative_statement {printf("Iterative Statments\n");}
     ;
 
-/* statement_list
-    : statements
-    | statements statement_list
-    ;
-
-declaration_list
-    : declaration
-    | declaration declaration_list
-    ;
-
-print_list
-    : in_out
-    | in_out print_list
-    ; */
-
 compound_statement
     : LEFT_BRACE program RIGHT_BRACE
-    /* | LEFT_BRACE RIGHT_BRACE */
     ;
 
 selective_statement
     : SWITCH LEFT_PAREN expression RIGHT_PAREN compound_statement
     | IF LEFT_PAREN expression RIGHT_PAREN compound_statement
     | IF LEFT_PAREN expression RIGHT_PAREN compound_statement ELSE compound_statement
-    | IF LEFT_PAREN expression RIGHT_PAREN compound_statement else_if ELSE compound_statement
     | IF LEFT_PAREN expression RIGHT_PAREN compound_statement else_if
+    | IF LEFT_PAREN expression RIGHT_PAREN compound_statement else_if ELSE compound_statement
     ;
 
 else_if
@@ -256,6 +250,7 @@ label_statement
 iterative_statement
     : LOOP LEFT_PAREN expression RIGHT_PAREN compound_statement
     | LOOP LEFT_PAREN expression SEMICOLON expression SEMICOLON expression RIGHT_PAREN compound_statement 
+    | LOOP LEFT_PAREN declaration expression SEMICOLON expression RIGHT_PAREN compound_statement 
     ;
 
 jump_statements
@@ -274,28 +269,28 @@ int yyerror(char *s) {
 
 int main(int argc, char **argv) {
     if (argc < 4) {
-        printf("Usage: %s <input file> <token file> <parse file>\n", argv[0]);
+        printf("Usage: %s <input file> <output file> <token file>\n", argv[0]);
         return 1;
     }
 
     FILE *inputFile = fopen(argv[1], "r");
     if (inputFile == NULL) {
         printf("Error: Cannot open input file %s\n", argv[1]);
-        return 1;
-    }
-
-    tokfile = fopen(argv[2], "w");
-    if (tokfile == NULL) {
-        printf("Error: Cannot open token file %s\n", argv[2]);
         fclose(inputFile);
         return 1;
     }
 
-    parsefile = fopen(argv[3], "w");
-    if (parsefile == NULL) {
+    outputFile = fopen(argv[2], "w");
+    if (outputFile == NULL) {
         printf("Error: Cannot open parse file %s\n", argv[3]);
-        fclose(inputFile);
-        fclose(tokfile);
+        fclose(outputFile);
+        return 1;
+    }
+
+    tokenFile = fopen(argv[3], "w");
+    if (tokenFile == NULL) {
+        printf("Error: Cannot open token file %s\n", argv[2]);
+        fclose(tokenFile);
         return 1;
     }
 
@@ -315,8 +310,8 @@ int main(int argc, char **argv) {
     // }
 
     fclose(inputFile);
-    fclose(tokfile);
-    fclose(parsefile);
+    fclose(outputFile);
+    fclose(tokenFile);
 
     return 0;
 }

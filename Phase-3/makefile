@@ -2,7 +2,6 @@
 BISON = bison
 FLEX = flex
 CC = gcc
-# CFLAGS = -Wall -g
 
 # Files
 LEXER = lexer.l
