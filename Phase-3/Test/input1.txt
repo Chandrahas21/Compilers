@@ -2,7 +2,7 @@
 $include "geo.core";
 $include "geo.utils";
 
-
+<void> main(){
    num x,y;
    write ~ "co-ordinates of p1" ~\n;
    read ~ x ~ y;
@@ -12,3 +12,4 @@ $include "geo.utils";
    write ~ "ECCENTRICITY of ellipse  + 1 : " ~ ecc ~\n;
    string s=e._equation;
    write ~ "equation of ellipse :" ~ s ~\n;
+}
