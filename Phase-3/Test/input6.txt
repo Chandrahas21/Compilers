@@ -1,0 +1,155 @@
+## Include necessary geometric utilities
+$include "geo.core";
+$include "geo.utils";
+
+#* Is given Ellipse,Circle or hyperbola
+ information is correct or not .
+ If correct print yes 
+ if not print no *#
+
+    write ~ "TYPE 1 for ellipse based problems" ~\n;
+    write ~ "TYPE 2 for hyperbola based problems" ~\n;
+    num ty;
+    read ~ ty;
+    if(ty == 1){
+          write ~ "Is given Ellipse information is correct or not : " ~\n;
+          write ~ "1. focus 1(left of center) x,y co-ordinates" ~\n;
+          write ~ "2. focus 2(right of center) x,y co-ordinates" ~\n;
+          write ~ "3. length of conjugate axis(2*b)" ~\n;
+          write ~ "4. length between foci(2*a*e)" ~\n;
+          write ~ "5. length of major axis(2*a)" ~\n;
+          write ~ "6. length of minor axis(2*b)" ~\n;
+          write ~ "7. eccentricity value(e)" ~\n;  
+          num points=0;
+          point p1(-1,-1),p2(-1,-1);num semi_major,semi_minor,e_a,ecc;
+          num i;
+          loop( i=1 ;i <= 7;i++){
+                   if(i == 1){
+                     write ~ "focus 1 x,y co-ordinates :" ~\n;
+                     num x1,y1;
+                     read ~ x1 ~y1;
+                     p1._x=x1;
+                     p1._y=y1;}
+                    elif(i== 2){
+                     write ~ "focus 2 x,y co-ordinates :" ~\n;
+                     num x2,y2;
+                     read ~ x2 ~ y2;
+                     p2._x=x2;
+                     p2._y=y2;
+                     e_a = distance(p1,p2);}
+                    elif(i == 3){
+                     write ~ "length of conjugate axis(2*b) :" ~\n;
+                     num b_2;
+                     read ~ b_2;
+                     semi_minor=(b_2)/2;
+                     semi_major= sqrt( (e_a)^2 + (semi_minor)^2);
+                     ecc = (e_a)/(semi_major);}
+                    elif(i == 4){
+                     write ~ "length between foci(2*a*e) :" ~\n;
+                     num curr1;
+                     read ~ curr1;
+                     if(curr1 != e_a*2){
+                        write ~ "Wrong ellipse information" ~\n;
+                        return ;
+                     }}
+                    elif(i == 5){
+                      write ~ "length of major axis(2*a) :" ~\n;
+                      num curr2;
+                     read ~ curr2;
+                     if(semi_minor != (curr2/2)){
+                        write ~ "Wrong ellipse information" ~\n;
+                        return ;
+                     }}
+                     elif(i == 6){
+                     write ~ "length of minor axis(2*b) :" ~\n;
+                     num curr3;
+                     read ~ curr3;
+                     if(curr3 != b_2){
+                        write ~ "Wrong ellipse information" ~\n;
+                        return ;
+                     }}
+                    el{
+                    write ~ "eccentricity value :" ~\n;
+                     num curr4;
+                     read ~ curr4;
+                     if(curr4 != ecc){
+                        write ~ "Wrong ellipse information" ~\n;
+                        return ;
+                     }
+                     el{
+                        write ~ "Yes, Given information about ellipse is correct" ~\n;
+                     }
+                    }
+                }
+          }
+          el{
+          write ~ "Is given hyperbola information is correct or not : " ~\n;
+          write ~ "1. focus 1(left of center) x,y co-ordinates" ~\n;
+          write ~ "2. focus 2(right of center) x,y co-ordinates" ~\n;
+          write ~ "3. length of conjugate axis(2*b)" ~\n;
+          write ~ "4. length between foci(2*a*e)" ~\n;
+          write ~ "5. length of major axis(2*a)" ~\n;
+          write ~ "6. length of minor axis(2*b)" ~\n;
+          write ~ "7. eccentricity value(e)" ~\n;  
+          num points=0;
+          point p1(-1,-1),p2(-1,-1);num semi_major,semi_minor,e_a,ecc;
+          loop( i=1;i <= 7;i++){
+                     if(i == 1){
+                     write ~ "focus 1 x,y co-ordinates :" ~\n;
+                     num x1,y1;
+                     read ~ x1 ~ y1;
+                     p1._x=x1;
+                     p1._y=y1;}
+                    elif(i== 2){
+                     write ~ "focus 2 x,y co-ordinates :" ~\n;
+                     num x2,y2;
+                     read ~ x2 ~ y2;
+                     p2._x=x2;
+                     p2._y=y2;
+                     e_a=distance(p1,p2);}
+                    elif(i== 3) {
+                     write ~ "length of conjugate axis(2*b) :" ~\n;
+                     num b_2;
+                     read ~ b_2;
+                     semi_minor=(b_2)/2;
+                     semi_major= sqrt((semi_minor)^2 - (e_a)^2);
+                     ecc = (e_a)/(semi_major);}
+                    elif(i== 4){
+                     write ~ "length between foci(2*a*e) :" ~\n;
+                     num curr1;
+                     read ~ curr1;
+                     if(curr1 != e_a*2){
+                        write ~ "Wrong hyperbola information" ~\n;
+                        return ;
+                     }}
+                    elif(i== 5){
+                      write ~ "length of major axis(2*a) :" ~\n;
+                      num curr2;
+                     read ~ curr2;
+                     if(semi_minor != (curr2/2)){
+                        write ~ "Wrong hyperbola information" ~\n;
+                        return ;
+                     }}
+                     elif(i== 6){
+                     write ~ "length of minor axis(2*b) :" ~\n;
+                     num curr3;
+                     read ~ curr3;
+                     if(curr3 != b_2){
+                        write ~ "Wrong hyperbola information" ~\n;
+                        return ;
+                     }}
+                    el{
+                    write ~ "eccentricity value :" ~\n;
+                     num curr4;
+                     read ~ curr4;
+                     if(curr4 != ecc){
+                        write ~ "Wrong hyperbola information" ~\n;
+                        return ;
+                     }
+                     el{
+                        write ~ "Yes, Given information about hyperbola is correct" ~\n;
+                     }  
+                }
+          }
+          }
+    
