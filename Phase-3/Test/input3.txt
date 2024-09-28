@@ -1,7 +1,10 @@
 ## Include necessary geometric utilities
 $include "geo.core";
 $include "geo.utils";
+
+<void> main(){
 ## for labelled statements
+
 ## for goto
 num a=0;
 if(a!=0){
@@ -20,13 +23,18 @@ label2:{
 label3:{
    write ~ "HI label3"~\n;}
 
+
+
 num a= 2.3;
 a = 0.3;
 
 ## Declarative statements
 num n = 2;
+
  point p(1.2, 2.5);
+
 equation e("y = mx + c");
+
  line l(p, 5.6);
  line l(p, p);
  line l(e);
@@ -42,6 +50,11 @@ equation e("y = mx + c");
 
  ellipse e(p, 1, 4);
  ellipse e(e);
+
+
+
+
+
 
 ##compound statements
 num x = 10;
@@ -80,5 +93,5 @@ el{
 }
 
   return ;
-
+}
 
