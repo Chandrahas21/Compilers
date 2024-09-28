@@ -1,0 +1,19 @@
+## Include necessary geometric utilities
+$include "geo.core";
+$include "geo.utils";
+
+<void> main() {
+   num n=((2+3)*7)/(5*((3*2) + 1));
+   if(n == 1){
+    write~ "number is " ~ n ~\n;
+   }
+   num x,y;
+   write~ "co-ordinates of p1" ~\n;
+   read ~x ~ y;
+   point p1(x,y);
+   ellipse e(p,2*n,n);
+   num ecc=e._eccentricity;
+   write~ "ECCENTRICITY of ellipse  + 1 : " ~ (ecc+1) ~\n;
+   string s=e._equation;
+   write~ "equation of ellipse :" ~ s ~\n;
+}
