@@ -5,6 +5,7 @@
     int yylex();
     int yywrap();
     extern FILE *yyin;
+    extern int yylineno;
     FILE *tokenFile;
     FILE *outputFile;
 %}
@@ -217,11 +218,16 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 
 [ \t\n] {
     /* Ignore whitespace */
+    if(strcmp(yytext, "\n") == 0) {
+        yylineno++;
+    }
     fprintf(outputFile, "%s", yytext);
 }
 
 . {
-    fprintf(tokenFile, "Lexical error: %s\n", yytext);
+    printf("Lexical error: %s at line %d.\n", yytext, yylineno);
+    fprintf(outputFile, "Lexical error: %s at line no %d.\n", yytext, yylineno);
+    fprintf(tokenFile, "Lexical error: %s at line no %d.\n", yytext, yylineno);
     exit(1);
 }
 

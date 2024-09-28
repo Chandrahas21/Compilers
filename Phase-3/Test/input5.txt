@@ -15,7 +15,7 @@ $include "geo.utils";
 
 
     ## Compound statements
-    num x = 10;
+    num x = 10
     num y = 20;
 
     if (x > y) {

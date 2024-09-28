@@ -263,7 +263,9 @@ jump_statements
 %%
 
 int yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
+    fprintf(outputFile, "\nError: %s at line %d.\n", s, yylineno);
+    fprintf(tokenFile, "\nError: %s at line %d.\n", s, yylineno);
+    printf("Error: %s at line %d.\n", s, yylineno);
     return 0;
 }
 
@@ -282,14 +284,14 @@ int main(int argc, char **argv) {
 
     outputFile = fopen(argv[2], "w");
     if (outputFile == NULL) {
-        printf("Error: Cannot open parse file %s\n", argv[3]);
+        printf("Error: Cannot open parse file %s\n", argv[2]);
         fclose(outputFile);
         return 1;
     }
 
     tokenFile = fopen(argv[3], "w");
     if (tokenFile == NULL) {
-        printf("Error: Cannot open token file %s\n", argv[2]);
+        printf("Error: Cannot open token file %s\n", argv[3]);
         fclose(tokenFile);
         return 1;
     }
@@ -301,7 +303,7 @@ int main(int argc, char **argv) {
         printf("Parsing done successfully\n");
     }
     else{
-        printf("Parsing failed\n");
+        /* printf("Parsing failed at line no %d\n", yylineno); */
     }
 
     // int token = 0;
