@@ -73,13 +73,14 @@ int main(int argc, char **argv)
     FILE *inputFile = fopen(argv[1], "r");
     if (inputFile == NULL) {
         printf("Error: Cannot open input file %s\n", argv[1]);
+        fclose(inputFile);
         return 1;
     }
 
     outputFile = fopen(argv[2], "w");
     if (outputFile == NULL) {
         printf("Error: Cannot open output file %s\n", argv[2]);
-        fclose(inputFile);
+        fclose(outputFile);
         return 1;
     }
 

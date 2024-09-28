@@ -4,8 +4,8 @@
     int yylex();
     int yywrap();
     extern FILE *yyin;
-    FILE *tokfile;
-    FILE *parsefile;
+    FILE *tokenFile;
+    FILE *outputFile;
 
     #define COMMENT_SINGLE_LINE 1
     #define COMMENT_MULTI_LINE 2
@@ -127,20 +127,20 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 %%
 
 \#\#(.*) {
-    fprintf(tokfile, "Single Line Comment: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Single Line Comment: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
     return COMMENT_SINGLE_LINE;
 }
 
 {comment_Start}([^\*]|\*+[^\*\#])*\**{comment_End} {
-    fprintf(tokfile, "Multi Line Comment: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Multi Line Comment: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
     return COMMENT_MULTI_LINE;
 }
 
 {primitive_Data_Types} {
-    fprintf(tokfile, "Primitive Data Type: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Primitive Data Type: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
     if(strcmp(yytext, "void") == 0) return VOID;
     else if(strcmp(yytext, "string") == 0) return STRING;
     else if(strcmp(yytext, "bool") == 0) return BOOL;
@@ -148,8 +148,8 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 {key_Words} {
-    fprintf(tokfile, "Keyword: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Keyword: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
     if(strcmp(yytext, "if") == 0) return IF;
     else if(strcmp(yytext, "elif") == 0) return ELIF;
     else if(strcmp(yytext, "el") == 0) return ELSE;
@@ -175,8 +175,8 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 {non_Primitive_Data_Types} {
-    fprintf(tokfile, "Non-Primitive Data Type: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Non-Primitive Data Type: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
 
     if(strcmp(yytext, "num") == 0) return NUM;
     else if(strcmp(yytext, "point") == 0) return POINT;
@@ -191,8 +191,8 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 {in_Built} {
-    fprintf(tokfile, "In-Built Function: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "In-Built Function: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
 
     if(strcmp(yytext, "to_string") == 0) return TO_STRING;
     else if(strcmp(yytext, "distance") == 0) return DISTANCE;
@@ -208,8 +208,8 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 {member_Variables} {
-    fprintf(tokfile, "Member Variable: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Member Variable: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
 
     if(strcmp(yytext, "_x") == 0) return X;
     else if(strcmp(yytext, "_y") == 0) return Y;
@@ -230,14 +230,14 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 [a-zA-Z][a-zA-Z0-9_]* {
-    fprintf(tokfile, "Identifier: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Identifier: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
     return IDENTIFIER;
 }
 
 {punctuators} {
-    fprintf(tokfile, "Punctuation: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Punctuation: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
 
     if (strcmp(yytext, ":") == 0) return COLON;
     else if (strcmp(yytext, ";") == 0) return SEMICOLON;
@@ -257,8 +257,8 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 {operators} {
-    fprintf(tokfile, "Operator: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Operator: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
 
     if(strcmp(yytext, "++") == 0) return INCREMENT;
     else if(strcmp(yytext, "--") == 0) return DECREMENT;
@@ -284,8 +284,8 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 {special_Characters} {
-    fprintf(tokfile, "Special Character: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+    fprintf(tokenFile, "Special Character: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
 
     if (strcmp(yytext, "\\n") == 0 )
         return NEW_LINE_CHARACTER;
@@ -295,29 +295,30 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
 }
 
 ([0-9]+)([eE][+-]?[0-9]+)? {
-    fprintf(tokfile, "Integer: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
-    return INTEGER;
+    fprintf(tokenFile, "Integer: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
+    return CONSTANT;
 }
 
 ([0-9]+[\.][0-9]+)([eE][+-]?[0-9]+)? {
-    fprintf(tokfile, "Floating Point Number: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
-    return FLOATING_POINT_NUMBER;
+    fprintf(tokenFile, "Floating Point Number: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
+    return CONSTANT;
 }
 
-\"[^\"^\n]*\" {
-    fprintf(tokfile, "String Literal: %s\n", yytext);
-    fprintf(parsefile, "%s\n", yytext);
+\"[^\"\n]*\" {
+    fprintf(tokenFile, "String Literal: %s\n", yytext);
+    fprintf(outputFile, "%s", yytext);
     return STRING_LITERAL;
 }
 
 [ \t\n] {
     /* Ignore whitespace */
+    fprintf(outputFile, "%s", yytext);
 }
 
 . {
-    fprintf(tokfile, "Lexical error: %s\n", yytext);
+    fprintf(tokenFile, "Lexical error: %s\n", yytext);
     exit(1);
 }
 
@@ -336,21 +337,21 @@ int main(int argc, char **argv) {
     FILE *inputFile = fopen(argv[1], "r");
     if (inputFile == NULL) {
         printf("Error: Cannot open input file %s\n", argv[1]);
-        return 1;
-    }
-
-    tokfile = fopen(argv[2], "w");
-    if (tokfile == NULL) {
-        printf("Error: Cannot open token file %s\n", argv[2]);
         fclose(inputFile);
         return 1;
     }
 
-    parsefile = fopen(argv[3], "w");
-    if (parsefile == NULL) {
+    outputFile = fopen(argv[3], "w");
+    if (outputFile == NULL) {
         printf("Error: Cannot open parse file %s\n", argv[3]);
-        fclose(inputFile);
-        fclose(tokfile);
+        fclose(outputFile);
+        return 1;
+    }
+
+    tokenFile = fopen(argv[2], "w");
+    if (tokenFile == NULL) {
+        printf("Error: Cannot open token file %s\n", argv[2]);
+        fclose(tokenFile);
         return 1;
     }
 
@@ -364,8 +365,8 @@ int main(int argc, char **argv) {
     }
 
     fclose(inputFile);
-    fclose(tokfile);
-    fclose(parsefile);
+    fclose(outputFile);
+    fclose(tokenFile);
 
     return 0;
 }

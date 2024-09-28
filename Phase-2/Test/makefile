@@ -26,5 +26,3 @@ $(LEX_OUTPUT): $(LEX_SOURCE)
 # Clean rule to remove generated files
 clean:
 	rm -f $(TARGET) $(LEX_OUTPUT) lex.yy.c
-
-.PHONY: all clean
