@@ -84,12 +84,15 @@ basic_expression
     | TRUE
     | FALSE
     // | expression
+    | LEFT_PAREN expression RIGHT_PAREN 
     ;
 
 postfix_expression
     : basic_expression
     | postfix_expression LEFT_PAREN RIGHT_PAREN
-	| postfix_expression LEFT_PAREN declaration_arg_list RIGHT_PAREN
+    | postfix_expression LEFT_PAREN declaration_arg_list RIGHT_PAREN
+    | default_function_list LEFT_PAREN RIGHT_PAREN
+    | default_function_list LEFT_PAREN declaration_arg_list RIGHT_PAREN 
     | postfix_expression INCREMENT
     | postfix_expression DECREMENT
     | postfix_expression MEMBER_ACCESS member_variable
@@ -123,6 +126,7 @@ evalute_expression
     | evalute_expression MULTIPLY evalute_expression
     | evalute_expression DIVIDE evalute_expression
     | evalute_expression MODULUS evalute_expression
+    | evalute_expression EXPONENT evalute_expression
     | evalute_expression PLUS evalute_expression
     | evalute_expression MINUS evalute_expression
     | evalute_expression EQUAL evalute_expression
@@ -133,7 +137,7 @@ evalute_expression
     | evalute_expression LESS_THAN evalute_expression
     | evalute_expression LOGICAL_AND evalute_expression
     | evalute_expression LOGICAL_OR evalute_expression
-    | LEFT_PAREN evalute_expression RIGHT_PAREN
+   // | LEFT_PAREN evalute_expression RIGHT_PAREN
     ;
 
 declaration_type
