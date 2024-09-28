@@ -2,7 +2,7 @@
 $include "geo.core";
 $include "geo.utils";
 
-
+<void> main(){
 num score = 5;
 num first=1;
     if(first){
@@ -14,3 +14,4 @@ num first=1;
     el{
             write ~ "Done Successfully";
     }
+}
