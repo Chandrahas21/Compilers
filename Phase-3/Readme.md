@@ -1,5 +1,6 @@
 Download the directory.
 
-Open your terminal and run make.
+Open your terminal and execute the following commands.
 
-run ./parser input.txt output.txt token.txt.
+make
+./parser ./Test/Input/<input_file>.txt ./Test/Output/<output_file>.txt
