@@ -1,0 +1,16 @@
+## Include necessary geometric utilities
+$include "geo.core";
+$include "geo.utils";
+
+
+num score = 5;
+num first=1;
+    if(first){
+        if(score > 10){
+            write ~ "score is high" ~\n;
+            stop;
+        }
+    } 
+    el{
+            write ~ "Done Successfully";
+    }
