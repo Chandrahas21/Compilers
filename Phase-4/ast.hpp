@@ -1,434 +1,361 @@
-#ifndef AST_HPP
-#define AST_HPP
-
+#include "symbolTable.hpp"
 #include <iostream>
-#include <string>
-#include <vector>
 #include <map>
+#include <string>
 #include <unordered_map>
-#include <optional>
+#include <vector>
 using namespace std;
 
-class Start;
-
-class Node;
-
-enum InbuiltFunctions
-{
-    func_show_bar,
-    func_show_line,
-    func_show_scatter,
-    func_show_box,
-    func_row,
-    func_col,
-    func_filter,
-    func_sum,
-    func_max,
-    func_min,
-    func_mean,
-    func_join,
-    func_read,
-    func_write,
-    func_unique,
-    func_show,
-    func_split,
-    func_sort,
-    func_shuffle,
-    func_add,
-    func_shape,
-    func_drop,
-    none
+enum UnaryOperator {
+    not_op,
+    plus_op,
+    minus_op,
+    inc_op,
+    dec_op
 };
 
-enum AssignmentOperator
-{
-    assign,
-    add_assign,
-    sub_assign,
-    mul_assign,
-    div_assign,
-    mod_assign
-};
-
-enum BinaryOperator
-{
+enum BinaryOperator {
     add_op,
     sub_op,
     mul_op,
     div_op,
     mod_op,
+    exp_op,
     and_op,
     or_op,
-    eq_op,
-    neq_op,
-    lt_op,
-    gt_op,
-    lte_op,
-    gte_op,
-    ne_op
+    equal_op,
+    not_equal_op,
+    less_op,
+    less_equal_op,
+    greater_op,
+    x3,
+    greater_equal_op
 };
 
-enum UnaryOperator
-{
-    not_op,
-    plus_op,
-    minus_op
+enum MemberVariable {
+    x,
+    y,
+    slope,
+    equation,
+    center,
+    focus,
+    vertex,
+    radius,
+    a,
+    b,
+    c,
+    f,
+    g,
+    h,
+    delta,
+    eccentricity,
+    latus_rectum
 };
 
+enum DefaultFunctionList {
+    toString,
+    distance,
+    solve,
+    sqrt,
+    ispoint,
+    intersection,
+    tangent,
+    slopeLine,
+    angle,
+    type
+};
 
-class TypeSpecifier;
+class Node;
 
-class ConstantValue;
+class Start;
 
-class Expression;
-
-class BinaryExpression;
-
-class UnaryExpression;
-
-class Parameter;
-
-class FunctionDeclaration;
-
-class AssignmentStatement;
-
-class ConditionalStatement;
-
-class LoopStatement;
-
-class ReturnStatement;
-
-class BreakStatement;
-
-class ContinueStatement;
+class Header;
+class Program;
 
 class Statement;
-// RHS in initialization statements.
-class Initializer;
-// LHS in initialization statements.
-class Declarator;
-// in int a=2,b=3; a=2 is an InitDeclaration node. In declaration statement there would be InitDeclaration nodes ( vector<InitDeclaration*>).
-class InitDeclaration;
 
-class DeclarationStatement;
+class InOut;
+class Scan;
+class Print;
 
+class Expression;
+class ConstantValue;
 class FunctionCall;
+class BasicExpression;
+class PostfixExpression;
+class UnaryExpression;
+class AssignmentExpression;
+class BinaryExpression;
 
-class SingleChainExpression;
+class Declaration;
+class DeclarationIndex;
 
-class Argument;
+class FunctionDeclaration;
+class FunctionArgumentList;
 
-class Node
-{
+class CompoundStatement;
+class ConditionalStatement;
+class ElseIf;
+class IterativeStatement;
+class JumpStatement;
+
+class Node {
 public:
     string scope;
-    int row;
-    int column;
+    int row, column;
     Node();
-    virtual void buildScope(string scope);
-    virtual string get_scope();
     virtual ~Node() = default;
 };
 
-class TypeSpecifier : public Node
-{
+class Start : public Node {
 public:
-    vector<int> *type;
-    TypeSpecifier(vector<int> *type, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~TypeSpecifier() = default;
-};
-
-class Start : public Node
-{
-public:
-    vector<class FunctionDeclaration *> *FunctionList;
-    vector<class Statement *> *StatementList;
-
-    Start(vector<class Statement *> *StatementList, int row, int column);
-    Start(vector<class FunctionDeclaration *> *FunctionList, int row, int column);
-    Start(vector<class FunctionDeclaration *> *FunctionList, vector<class Statement *> *StatementList, int row, int column);
-    void buildScope(string scope);
+    vector<Header *> *headerList;
+    vector<Program *> *programList;
+    unordered_map<string, GlobalSymTabEntry> *globalSymbolTable;
+    Start(vector<Header *> *headerList, vector<Program *> *programList, int row, int column);
     virtual ~Start() = default;
 };
 
-class ConstantValue : public Node
-{
+class Header : public Node {
 public:
-    TypeSpecifier *type;
-    int ival;
-    float fval;
-    bool bval;
-    char cval;
-    char* sval;
-    ConstantValue(TypeSpecifier *type, int ival, int row, int column);
-    ConstantValue(TypeSpecifier *type, float fval, int row, int column);
-    ConstantValue(TypeSpecifier *type, bool bval, int row, int column);
-    ConstantValue(TypeSpecifier *type, char cval, int row, int column);
-    ConstantValue(TypeSpecifier *type, char* sval, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~ConstantValue() = default;
+    int isHeader; // 1: header, 0: macro
+    char *header;
+    char *macroIdentifier;
+    float constantValue;
+    Header(int isHeader, char *header, int row, int column);
+    Header(int isHeader, char *macroIdentifier, float constantValue, int row, int column);
+    virtual ~Header() = default;
 };
 
-class DeclarationStatement : public Node
-{
+class Program : public Node {
 public:
-    TypeSpecifier *type;
-    vector<class InitDeclaration *> *initDeclarations;
-    DeclarationStatement(TypeSpecifier *type, int row, int column);
-    DeclarationStatement(TypeSpecifier *type, vector<class InitDeclaration *> *initDeclarations, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~DeclarationStatement() = default;
+    int isFunction; // 0: declaration, 1: functionDeclaration
+    Declaration *declaration;
+    FunctionDeclaration *functionDeclaration;
+    Program(int isFunction, Declaration *declaration, int row, int column);
+    Program(int isFunction, FunctionDeclaration *functionDeclaration, int row, int column);
+    virtual ~Program() = default;
 };
 
-class Expression : public Node
-{
+class Statement : public Node {
 public:
-    // TypeSpecifier type;
-    int castType;
+    int flagStatement; // 0: assignmentExpression, 1: declaration, 2: inOut, 3: conditionalStatement, 4: jumpStatement, 5: compoundStatement, 6: iterativeStatement
+    AssignmentExpression *assignmentExpression;
+    Declaration *declaration;
+    InOut *inOut;
+    ConditionalStatement *conditionalStatement;
+    JumpStatement *jumpStatement;
+    CompoundStatement *compoundStatement;
+    IterativeStatement *iterativeStatement;
+    Statement(int flagStatement, AssignmentExpression *assignmentExpression, int row, int column);
+    Statement(int flagStatement, Declaration *declaration, int row, int column);
+    Statement(int flagStatement, InOut *inOut, int row, int column);
+    Statement(int flagStatement, ConditionalStatement *conditionalStatement, int row, int column);
+    Statement(int flagStatement, JumpStatement *jumpStatement, int row, int column);
+    Statement(int flagStatement, CompoundStatement *compoundStatement, int row, int column);
+    Statement(int flagStatement, IterativeStatement *iterativeStatement, int row, int column);
+    virtual ~Statement() = default;
+};
+
+class InOut : public Node {
+public:
+    int isWrite; // 0: input, 1: output
+    vector<Scan *> *scanList;
+    vector<Print *> *printList;
+    InOut();
+    InOut(int isWrite, vector<Print *> *printList, int row, int column);
+    InOut(int isWrite, vector<Scan *> *scanList, int row, int column);
+    virtual ~InOut() = default;
+};
+
+class Scan : public InOut {
+public:
+    char *scanIdentifier;
+    Scan(char *scanIdentifier, int row, int column);
+    virtual ~Scan() = default;
+};
+
+class Print : public InOut {
+public:
+    int flagPrint; // 0: printIdentifier, 1: expression
+    char *printIdentifier;
+    Expression *expression;
+    Print(int flagPrint, char *printIdentifier, int row, int column);
+    Print(int flagPrint, Expression *expression, int row, int column);
+    virtual ~Print() = default;
+};
+
+class Expression : public Node {
+public:
+    int flagExpression; // 0: binary, 1: unary, 2: postfix
     Expression();
-    void buildScope(string scope);
     virtual ~Expression() = default;
 };
 
-class BinaryExpression : public Expression
-{
+class ConstantValue : public Node {
+public:
+    int flagConstant; // 0: float, 1: boolean, 3: string
+    float fval;
+    bool bval;
+    char *sval;
+    ConstantValue(int flagConstant, float fval, int row, int column);
+    ConstantValue(int flagConstant, bool bval, int row, int column);
+    ConstantValue(int flagConstant, char *sval, int row, int column);
+    virtual ~ConstantValue() = default;
+};
+
+class FunctionCall : public Expression {
+public:
+    int flagFunctionCall; // 0: functionCall, 1: defaultFunction
+    char *functionCallIdentifier;
+    vector<Expression *> *argumentList;
+    FunctionCall(int flagFunctionCall, char *functionCallIdentifier, int row, int column);
+    FunctionCall(int flagFunctionCall, char *functionCallIdentifier, vector<Expression *> *argumentList, int row, int column);
+    virtual ~FunctionCall() = default;
+};
+
+class BasicExpression : public Expression {
+public:
+    int flagBasic; // 0: constantValue, 1: identifier 2 expression
+    char *basicIdentifier;
+    ConstantValue *constantValue;
+    Expression *expression;
+    BasicExpression(int flagBasic, char *basicIdentifier, int row, int column);
+    BasicExpression(int flagBasic, ConstantValue *constantValue, int row, int column);
+    BasicExpression(int flagBasic, Expression *expression, int row, int column);
+    virtual ~BasicExpression() = default;
+};
+
+class PostfixExpression : public Expression {
+public:
+    int flagPostfix; // 0: basic, 1: functionCall, 2: postfix 3: memberVariable
+    BasicExpression *basicExpression;
+    FunctionCall *functionCall;
+    char *postfixIdentifier;
+    MemberVariable memberVariable1;
+    MemberVariable memberVariable2;
+    vector<UnaryOperator> *opList;
+    PostfixExpression(int flagPostfix, BasicExpression *basicExpression, int row, int column);
+    PostfixExpression(int flagPostfix, FunctionCall *functionCall, int row, int column);
+    PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, int row, int column);
+    PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, MemberVariable memberVariable2, int row, int column);
+    virtual ~PostfixExpression() = default;
+};
+
+class UnaryExpression : public Expression {
+public:
+    PostfixExpression *postfixExpression;
+    vector<UnaryOperator> *opList;
+    UnaryExpression(PostfixExpression *postfixExpression, int row, int column);
+    virtual ~UnaryExpression() = default;
+};
+
+class AssignmentExpression : public Expression {
+public:
+    int isAssignment; // 0: postfixExpression, 1: expression
+    PostfixExpression *postfixExpression;
+    Expression *expression;
+    AssignmentExpression(int isAssignment, PostfixExpression *postfixExpression, Expression *expression, int row, int column);
+    AssignmentExpression(int isAssignment, Expression *expression, int row, int column);
+    virtual ~AssignmentExpression() = default;
+};
+
+class BinaryExpression : public Expression {
 public:
     Expression *lhs;
     Expression *rhs;
     BinaryOperator op;
     BinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op, int row, int column);
-    void buildScope(string scope);
-
     virtual ~BinaryExpression() = default;
 };
 
-class UnaryExpression : public Expression
-{
+class Declaration : public Node {
 public:
-    Expression *expr;
-    char* identifier;
-    vector<UnaryOperator> *op ;
-    ConstantValue *constantValue;
-    InbuiltFunctions inbuiltFunction;
-    // SingleChainExpression *singleChainExpression;
-    // MultiChainExpression *multiChainExpression;
-    // UnaryExpression(SingleChainExpression *singleChainExpression);
-    // UnaryExpression(MultiChainExpression *multiChainExpression);
-    UnaryExpression(Expression *expr, vector<UnaryOperator> *op, ConstantValue *constantValue, InbuiltFunctions inbuiltFunction, int row, int column);
-    UnaryExpression(Expression *expr, int row, int column);
-    UnaryExpression(ConstantValue *constantValue, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~UnaryExpression() = default;
+    char *declarationType;
+    char *isInFunction;
+    vector<DeclarationIndex *> *declarationList;
+    Declaration(char *declarationType, char *isInFunction, vector<DeclarationIndex *> *declarationList, int row, int column);
+    virtual ~Declaration() = default;
 };
 
-class Initializer : public Node
-{
+class DeclarationIndex : public Node {
 public:
-    AssignmentStatement *assignmentExpression;
-    vector<class Initializer *> *initializerList;
-    Initializer(AssignmentStatement *assignmentExpression, int row, int column);
-    Initializer(vector<class Initializer *> *initializerList, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~Initializer() = default;
-};
-
-class Declarator : public Node
-{
-public:
-    char* identifier;
-    Declarator(char* identifier, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~Declarator() = default;
-};
-
-class InitDeclaration : public Node
-{
-public:
-    Declarator *declarator;
-    Initializer *initializer;
-
-    InitDeclaration(Declarator *declarator, int row, int column);
-    InitDeclaration(Declarator *declarator, Initializer *initializer, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~InitDeclaration() = default;
-};
-
-class AssignmentStatement : public Node
-{
-public:
-    SingleChainExpression *declarator;
+    int flagDeclarationIndex; // 0: declarationIdentifier, 1: expression, 2: expressionList
+    char *declarationIdentifier;
     Expression *expression;
-    AssignmentOperator op;
-
-    AssignmentStatement(SingleChainExpression *declarator, Expression *expression, AssignmentOperator op, int row, int column);
-    AssignmentStatement(Expression *expression, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~AssignmentStatement() = default;
+    vector<Expression *> *expressionList;
+    DeclarationIndex(int flagDeclarationIndex, char *declarationIdentifier, int row, int column, string scope);
+    DeclarationIndex(int flagDeclarationIndex, char *declarationIdentifier, Expression *expression, int row, int column, string scope);
+    DeclarationIndex(int flagDeclarationIndex, char *declarationIdentifier, vector<Expression *> *expressionList, int row, int column, string scope);
+    virtual ~DeclarationIndex() = default;
 };
 
-class ConditionalStatement : public Node
-{
+class FunctionDeclaration : public Node {
 public:
-    vector<pair<class Expression *, vector<class Statement *>*>> *ConditionStatements;
-
-    ConditionalStatement(vector<pair<class Expression *, vector<class Statement *>*>> *ConditionStatements, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~ConditionalStatement() = default;
-};
-
-class LoopStatement : public Node
-{
-public:
-    Declarator* variable;
-    vector<tuple<class Expression *, class Expression *, class Expression *>> *fromToPairs;
-    vector<class Statement *> *statements;
-
-    LoopStatement(Declarator* variable, vector<tuple<class Expression *, class Expression *, class Expression *>> *fromToPairs, vector<class Statement *> *statements, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~LoopStatement() = default;
-};
-
-class ReturnStatement : public Node
-{
-public:
-    Expression *expression;
-    ReturnStatement();
-    ReturnStatement(Expression *expression, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~ReturnStatement() = default;
-};
-
-class BreakStatement : public Node
-{
-public:
-    BreakStatement();
-
-    virtual ~BreakStatement() = default;
-};
-
-class ContinueStatement : public Node
-{
-public:
-    ContinueStatement();
-
-    virtual ~ContinueStatement() = default;
-};
-
-class Statement : public Node
-{
-public:
-    int statementType;
-    DeclarationStatement *declarationStatement;
-    AssignmentStatement *assignmentStatement;
-    ConditionalStatement *conditionalStatement;
-    LoopStatement *loopStatement;
-    ReturnStatement *returnStatement;
-    BreakStatement *breakStatement;
-    ContinueStatement *continueStatement;
-    vector<Statement*> * compoundStatement;
-    Statement(DeclarationStatement *declarationStatement, int row, int column);
-    Statement(AssignmentStatement *assignmentStatement, int row, int column);
-    Statement(ConditionalStatement *conditionalStatement, int row, int column);
-    Statement(LoopStatement *loopStatement, int row, int column);
-    Statement(ReturnStatement *returnStatement, int row, int column);
-    Statement(BreakStatement *breakStatement, int row, int column);
-    Statement(ContinueStatement *continueStatement, int row, int column);
-    Statement(vector<Statement*> *compoundStatement, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~Statement() = default;
-};
-
-class Parameter : public Node
-{
-public:
-    TypeSpecifier* type;
-    Declarator* identifier;
-    Parameter(TypeSpecifier* type, Declarator* identifier, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~Parameter() = default;
-};
-
-class FunctionDeclaration : public Node
-{
-public:
-    char* identifier;
-    vector<Parameter *> *inpParameter;
-    vector<Parameter *> *otherParameter;
-    vector<Parameter *> *outParameter;
-    vector<class Statement *> *statements;
-    FunctionDeclaration(char* identifier, vector<Parameter *> *inpParameter, vector<Parameter *> *otherParameter, vector<Parameter *> *outParameter, vector<class Statement *> *statements, int row, int column);
-    void buildScope(string scope);
-
+    int isDefaultFunction; // 0: functionDeclaration, 1: defaultFunction
+    char *returnType;
+    char *functonIdentifier;
+    vector<FunctionArgumentList *> *argumentList;
+    CompoundStatement *compoundStatement;
+    FunctionDeclaration(int isDefaultFunction, char *returnType, char *functonIdentifier, CompoundStatement *compoundStatement, int row, int column);
+    FunctionDeclaration(int isDefaultFunction, char *returnType, char *functonIdentifier, vector<FunctionArgumentList *> *argumentList, CompoundStatement *compoundStatement, int row, int column);
     virtual ~FunctionDeclaration() = default;
 };
 
-class Argument : public Node
-{
+class FunctionArgumentList : public Node {
+public:
+    char *ArgType;
+    char *ArgIdentifier;
+    FunctionArgumentList(char *ArgType, char *ArgIdentifier, int row, int column);
+    virtual ~FunctionArgumentList() = default;
+};
+
+class CompoundStatement : public Node {
+public:
+    vector<Statement *> *statementList;
+    CompoundStatement(vector<Statement *> *statementList, int row, int column);
+    virtual ~CompoundStatement() = default;
+};
+
+class ConditionalStatement : public Node {
+public:
+    int flagSelective; // 0: if, 1: else-if, 2: else
+    Expression *expression;
+    CompoundStatement *compoundStatement1;
+    vector<ElseIf *> *elseIfList;
+    CompoundStatement *compoundStatement2;
+    ConditionalStatement(int flagSelective, Expression *expression, CompoundStatement *compoundStatement1, vector<ElseIf *> *elseIfList, int row, int column);
+    ConditionalStatement(int flagSelective, Expression *expression, CompoundStatement *compoundStatement1, vector<ElseIf *> *elseIfList, CompoundStatement *compoundStatement2, int row, int column);
+    virtual ~ConditionalStatement() = default;
+};
+
+class ElseIf : public Node {
 public:
     Expression *expression;
-    vector<tuple<Expression *, Expression *, Expression *>> *fromToAlsoExpression;
-    vector<Statement *> *statements;
-    Argument(Expression *expression, int row, int column);
-    Argument(vector<tuple<Expression *, Expression *, Expression *>> *fromToAlsoExpression, int row, int column);
-    Argument(vector<Statement *> *statements, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~Argument() = default;
+    CompoundStatement *compoundStatement;
+    ElseIf(Expression *expression, CompoundStatement *compoundStatement, int row, int column);
+    virtual ~ElseIf() = default;
 };
-class FunctionCall : public Node
-{
+
+class IterativeStatement : public Node {
 public:
-    char* identifier;
-    InbuiltFunctions inbuiltFunc;
-    vector<Argument *> *argumentList;
-    FunctionCall(char* identifier, vector<Argument *> *argumentList, int row, int column);
-    FunctionCall(InbuiltFunctions inbuiltFunc, vector<Argument *> *argumentList, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~FunctionCall() = default;
+    int isWhile; // 0: while, 1: for decl 2: for expr
+    Expression *expression1;
+    Declaration *declaration;
+    Expression *expression2;
+    Expression *expression3;
+    CompoundStatement *compoundStatement;
+    IterativeStatement(int isWhile, Expression *expression1, CompoundStatement *compoundStatement, int row, int column);
+    IterativeStatement(int isWhile, Expression *expression1, Expression *expression2, Expression *expression3, CompoundStatement *compoundStatement, int row, int column);
+    IterativeStatement(int isWhile, Declaration *declaration, Expression *expression2, Expression *expression3, CompoundStatement *compoundStatement, int row, int column);
+    virtual ~IterativeStatement() = default;
 };
 
-class SingleChainExpression : public Expression
-{
+class JumpStatement : public Node {
 public:
-    char* identifier;
-    vector<Expression*> *access;
-    vector<pair<FunctionCall *, vector<Expression*>*>> *functionCallList;
-    SingleChainExpression(char* identifier, vector<Expression*> *access, vector<pair<FunctionCall *, vector<Expression*>*>> *functionCallList, int row, int column);
-    void buildScope(string scope);
-
-    virtual ~SingleChainExpression() = default;
+    int flagJump; // 0: break, 1: continue, 2: return
+    Expression *expression;
+    JumpStatement(int flagJump, int row, int column);
+    JumpStatement(int flagJump, Expression *expression, int row, int column);
+    virtual ~JumpStatement() = default;
 };
-
-class MultiChainExpression : public Expression
-{
-public:
-    FunctionCall* functionCall;
-    InbuiltFunctions inbuiltFunc;
-    vector<Expression*> *access;
-    vector<Expression*> *inputExprList;
-
-
-    vector<pair<FunctionCall *, vector<Expression*>*>> *functionCallList;
-    MultiChainExpression(FunctionCall* functionCall, vector<Expression*> *access, vector<pair<FunctionCall *, vector<Expression*>*>> *functionCallList, int row, int column);
-    MultiChainExpression(InbuiltFunctions inbuiltFunc, vector<Expression*> *access, vector<pair<FunctionCall *, vector<Expression*>*>> *functionCallList, int row, int column);;
-    MultiChainExpression(vector<Expression*> *inputExprList, vector<Expression*> *access,  vector<pair<FunctionCall *, vector<Expression*>*>> *functionCallList, int row, int column);
-    void buildScope(string scope);
-    virtual ~MultiChainExpression() = default;
-};
-
-#endif
