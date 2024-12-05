@@ -433,34 +433,34 @@ ElseIf::ElseIf(Expression *expression, CompoundStatement *compoundStatement, int
     this->column = column;
 }
 
-IterativeStatement::IterativeStatement(int isWhile, Expression *expression1, CompoundStatement *compoundStatement, int row, int column) {
+IterativeStatement::IterativeStatement(int isWhile, Expression *expression2, CompoundStatement *compoundStatement, int row, int column) {
     this->isWhile = isWhile;
-    this->expression1 = expression1;
-    this->declaration = nullptr;
-    this->expression2 = nullptr;
-    this->expression3 = nullptr;
-    this->compoundStatement = compoundStatement;
-    this->row = row;
-    this->column = column;
-}
-
-IterativeStatement::IterativeStatement(int isWhile, Expression *expression1, Expression *expression2, Expression *expression3, CompoundStatement *compoundStatement, int row, int column) {
-    this->isWhile = isWhile;
-    this->expression1 = expression1;
+    this->assignmentexpression1 = nullptr;
     this->declaration = nullptr;
     this->expression2 = expression2;
-    this->expression3 = expression3;
+    this->assignmentexpression3 = nullptr;
     this->compoundStatement = compoundStatement;
     this->row = row;
     this->column = column;
 }
 
-IterativeStatement::IterativeStatement(int isWhile, Declaration *declaration, Expression *expression2, Expression *expression3, CompoundStatement *compoundStatement, int row, int column) {
+IterativeStatement::IterativeStatement(int isWhile, AssignmentExpression *expression1, Expression *expression2, AssignmentExpression *expression3, CompoundStatement *compoundStatement, int row, int column) {
     this->isWhile = isWhile;
-    this->expression1 = nullptr;
+    this->assignmentexpression1 = expression1;
+    this->declaration = nullptr;
+    this->expression2 = expression2;
+    this->assignmentexpression3 = expression3;
+    this->compoundStatement = compoundStatement;
+    this->row = row;
+    this->column = column;
+}
+
+IterativeStatement::IterativeStatement(int isWhile, Declaration *declaration, Expression *expression2, AssignmentExpression *expression3, CompoundStatement *compoundStatement, int row, int column) {
+    this->isWhile = isWhile;
+    this->assignmentexpression1 = nullptr;
     this->declaration = declaration;
     this->expression2 = expression2;
-    this->expression3 = expression3;
+    this->assignmentexpression3 = expression3;
     this->compoundStatement = compoundStatement;
     this->row = row;
     this->column = column;

@@ -531,7 +531,7 @@ void checkConditionalStatement(ConditionalStatement *conditionalStatement, Globa
     vector<ElseIf *> *elseIfList = conditionalStatement->elseIfList;
     CompoundStatement *compoundStatement2 = conditionalStatement->compoundStatement2;
 
-    string expressionType = checkExpression(expression, functionEntry);
+    string expressionType = checkConditionalExpression(expression, functionEntry);
     if (expressionType != "boolean") {
         string error = "Type mismatch in conditional statement";
         cout << error << endl;
@@ -542,7 +542,7 @@ void checkConditionalStatement(ConditionalStatement *conditionalStatement, Globa
     for (auto elseIfItem : *elseIfList) {
         Expression *expression = elseIfItem->expression;
         CompoundStatement *compoundStatement = elseIfItem->compoundStatement;
-        string expressionType = checkExpression(expression, functionEntry);
+        string expressionType = checkConditionalExpression(expression, functionEntry);
         if (expressionType != "boolean") {
             string error = "Type mismatch in conditional statement";
             cout << error << endl;
@@ -559,30 +559,60 @@ void checkConditionalStatement(ConditionalStatement *conditionalStatement, Globa
 void checkIterativeStatement(IterativeStatement *iterativeStatement, GlobalSymTabEntry *functionEntry) {
     puts("Iterative Statement");
     if (iterativeStatement->isWhile == 0) {
-        Expression *expression1 = iterativeStatement->expression1;
+        Expression *expression2 = iterativeStatement->expression2;
         CompoundStatement *compoundStatement = iterativeStatement->compoundStatement;
 
-        checkExpression(expression1, functionEntry);
+        string expressionType = checkConditionalExpression(expression2, functionEntry);
+        if (expressionType != "boolean") {
+            string error = "Type mismatch in while statement";
+            cout << error << endl;
+            // exit(0);
+        }
         checkCompoundStatement(compoundStatement, functionEntry);
     } else if (iterativeStatement->isWhile == 1) {
         Declaration *declaration = iterativeStatement->declaration;
         Expression *expression2 = iterativeStatement->expression2;
-        Expression *expression3 = iterativeStatement->expression3;
+        AssignmentExpression *expression3 = iterativeStatement->assignmentexpression3;
         CompoundStatement *compoundStatement = iterativeStatement->compoundStatement;
 
         checkDeclaration(declaration, functionEntry);
-        checkExpression(expression2, functionEntry);
-        checkExpression(expression3, functionEntry);
+        string expressionType = checkConditionalExpression(expression2, functionEntry);
+        if (expressionType != "boolean") {
+            string error = "Type mismatch in for statement";
+            cout << error << endl;
+            // exit(0);
+        }
+        string assignmentType = checkIterativeAssignmentExpression(expression3, functionEntry);
+        if (assignmentType != "Initialisation") {
+            string error = "Type mismatch in for statement";
+            cout << error << endl;
+            // exit(0);
+        }
         checkCompoundStatement(compoundStatement, functionEntry);
     } else if (iterativeStatement->isWhile == 2) {
-        Expression *expression1 = iterativeStatement->expression1;
+        AssignmentExpression *expression1 = iterativeStatement->assignmentexpression1;
         Expression *expression2 = iterativeStatement->expression2;
-        Expression *expression3 = iterativeStatement->expression3;
+        AssignmentExpression *expression3 = iterativeStatement->assignmentexpression3;
         CompoundStatement *compoundStatement = iterativeStatement->compoundStatement;
 
-        checkExpression(expression1, functionEntry);
-        checkExpression(expression2, functionEntry);
-        checkExpression(expression3, functionEntry);
+        string assignmentType1 = checkIterativeAssignmentExpression(expression1, functionEntry);
+        if (assignmentType1 != "Initialisation") {
+            string error = "Type mismatch in for statement";
+            cout << error << endl;
+            // exit(0);
+        }
+        string expressionType = checkConditionalExpression(expression2, functionEntry);
+        if (expressionType != "boolean") {
+            string error = "Type mismatch in for statement";
+            cout << error << endl;
+            // exit(0);
+        }
+        string assignmentType2 = checkIterativeAssignmentExpression(expression3, functionEntry);
+        if (assignmentType2 != "Initialisation") {
+            string error = "Type mismatch in for statement";
+            cout << error << endl;
+            // exit(0);
+        }
         checkCompoundStatement(compoundStatement, functionEntry);
     }
 }
@@ -596,6 +626,52 @@ void checkJumpStatement(JumpStatement *jumpStatement, GlobalSymTabEntry *functio
             string error = "Type mismatch in return statement";
             cout << error << endl;
             // exit(0);
+        }
+    }
+}
+
+string checkConditionalExpression(Expression *expression, GlobalSymTabEntry *functionEntry) {
+    puts("Conditional Expression");
+    if (expression->flagExpression == 1) {
+        BinaryExpression *binaryExpression = static_cast<BinaryExpression *>(expression);
+        return checkConditionalBinaryExpression(binaryExpression->lhs, binaryExpression->rhs, binaryExpression->op, functionEntry);
+    }
+}
+
+string checkConditionalBinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op, GlobalSymTabEntry *functionEntry) {
+    puts("Conditional Binary Expression");
+    string lhsType = checkExpression(lhs, functionEntry);
+    string rhsType = checkExpression(rhs, functionEntry);
+    if (lhsType != rhsType) {
+        string error = "Type mismatch in conditional binary expression";
+        cout << error << endl;
+        // exit(0);
+    } else {
+        if(op == BinaryOperator::equal_op or op == BinaryOperator::not_equal_op or op == BinaryOperator::less_equal_op or op == BinaryOperator::less_op or op == BinaryOperator::greater_equal_op or op == BinaryOperator::greater_op) {
+            return "boolean";
+        } else {
+            string error = "Invalid operator in conditional binary expression";
+            cout << error << endl;
+            // exit(0);
+        }
+    }
+    return "";
+}
+
+string checkIterativeAssignmentExpression(AssignmentExpression *assignmentExpression, GlobalSymTabEntry *functionEntry) {
+    puts("Iterative Assignment Expression");
+    PostfixExpression *postfixExpression = assignmentExpression->postfixExpression;
+    Expression *expression = assignmentExpression->expression;
+    if (postfixExpression != NULL) {
+        string lhsType = checkPostfixExpression(postfixExpression, functionEntry);
+        string rhsType = checkExpression(expression, functionEntry);
+        if (lhsType != rhsType) {
+            string error = "Type mismatch in assignment expression in " + functionEntry->name;
+            cout << error << endl;
+            // exit(0);
+        }
+        else {
+            return "Initialisation";
         }
     }
 }

@@ -344,14 +344,14 @@ public:
 class IterativeStatement : public Node {
 public:
     int isWhile; // 0: while, 1: for decl 2: for expr
-    Expression *expression1;
+    AssignmentExpression *assignmentexpression1;
     Declaration *declaration;
     Expression *expression2;
-    Expression *expression3;
+    AssignmentExpression *assignmentexpression3;
     CompoundStatement *compoundStatement;
-    IterativeStatement(int isWhile, Expression *expression1, CompoundStatement *compoundStatement, int row, int column);
-    IterativeStatement(int isWhile, Expression *expression1, Expression *expression2, Expression *expression3, CompoundStatement *compoundStatement, int row, int column);
-    IterativeStatement(int isWhile, Declaration *declaration, Expression *expression2, Expression *expression3, CompoundStatement *compoundStatement, int row, int column);
+    IterativeStatement(int isWhile, Expression *expression2, CompoundStatement *compoundStatement, int row, int column);
+    IterativeStatement(int isWhile, AssignmentExpression *assignmentexpression1, Expression *expression2, AssignmentExpression *assignmentexpression3, CompoundStatement *compoundStatement, int row, int column);
+    IterativeStatement(int isWhile, Declaration *declaration, Expression *expression2, AssignmentExpression *assignmentexpression3, CompoundStatement *compoundStatement, int row, int column);
     virtual ~IterativeStatement() = default;
 };
 
