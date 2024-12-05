@@ -274,7 +274,7 @@ public:
     char *declarationType;
     char *isInFunction;
     vector<DeclarationIndex *> *declarationList;
-    Declaration(char *declarationType, char *isInFunction, vector<DeclarationIndex *> *declarationList, int row, int column);
+    Declaration(char *declarationType, vector<DeclarationIndex *> *declarationList, char *isInFunction, int row, int column);
     virtual ~Declaration() = default;
 };
 

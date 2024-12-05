@@ -331,7 +331,7 @@ BinaryExpression::BinaryExpression(Expression *lhs, Expression *rhs, BinaryOpera
     this->column = column;
 }
 
-Declaration::Declaration(char *declarationType, char *isInFunction, vector<DeclarationIndex *> *declarationList, int row, int column) {
+Declaration::Declaration(char *declarationType, vector<DeclarationIndex *> *declarationList, char *isInFunction, int row, int column) {
     this->declarationType = declarationType;
     this->isInFunction = isInFunction;
     this->declarationList = declarationList ? declarationList : new vector<DeclarationIndex *>();
