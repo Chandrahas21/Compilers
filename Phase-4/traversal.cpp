@@ -41,3 +41,60 @@ void checkHeader(vector<Header *> *headerList) {
         }
     }
 }
+
+void checkProgram(vector<Program *> *programList) {
+    for (auto programItem : *programList) {
+        if (programItem->isFunction == 0) {
+            puts("Global Variable Declaration");
+            checkDeclaration(programItem->declaration, nullptr);
+        } else {
+            puts("Function Declaration");
+            checkFunctionDeclaration(programItem->functionDeclaration);
+        }
+    }
+}
+
+bool checkDeclarationInArguments(string declarationIdentifier, string dataType, vector<pair<string, string>> *argumentList) {
+    for (auto argumentItem : *argumentList) {
+        string argumentIdentifier = string(argumentItem.second);
+        if (argumentIdentifier == declarationIdentifier) {
+            string error = "Variable already declared as argument: " + declarationIdentifier;
+            cout << error << endl;
+            exit(0);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool checkDeclarationInParentScope(string declarationIdentifier, string declarationScope, int checkFlag, GlobalSymTabEntry *functionEntry) {
+    while (!declarationScope.empty()) {
+        string declarationKey = declarationIdentifier + " <=> " + declarationScope;
+        SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, declarationKey);
+        if (entry != NULL) {
+            string error = "Variable already declared: " + declarationIdentifier;
+            cout << error << endl;
+            exit(0);
+            return true;
+        }
+
+        size_t lastDot = declarationScope.find_last_of(".");
+        if (lastDot != string::npos) {
+            declarationScope = declarationScope.substr(0, lastDot);
+        } else {
+            break;
+        }
+    }
+
+    if (checkFlag == 1) {
+        string globalDeclarationKey = declarationIdentifier;
+        GlobalSymTabEntry *globalEntry = searchGlobalSymTab(root->globalSymbolTable, globalDeclarationKey);
+        if (globalEntry != NULL) {
+            string error = "Variable already declared in Global scope: " + declarationIdentifier;
+            cout << error << endl;
+            exit(0);
+            return true;
+        }
+    }
+    return false;
+}
