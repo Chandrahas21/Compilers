@@ -87,6 +87,16 @@ string checkDeclarationInParentScope(string declarationIdentifier, string declar
         }
     }
 
+    if (functionEntry != nullptr) {
+        for (auto argument : *functionEntry->arguments) {
+            if (argument.second == declarationIdentifier) {
+                string error = "Variable " + declarationIdentifier + " found in function arguments";
+                cout << error << endl;
+                return argument.first;
+            }
+        }
+    }
+
     if (checkFlag == 1) {
         string globalDeclarationKey = declarationIdentifier;
         GlobalSymTabEntry *globalEntry = searchGlobalSymTab(root->globalSymbolTable, globalDeclarationKey);
