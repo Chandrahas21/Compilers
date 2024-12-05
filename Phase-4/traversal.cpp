@@ -99,7 +99,6 @@ bool checkDeclarationInParentScope(string declarationIdentifier, string declarat
     return false;
 }
 
-
 void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry) {
     string dataType = string(declaration->declarationType);
     vector<DeclarationIndex *> *declarationList = declaration->declarationList;
@@ -322,7 +321,6 @@ void inOutStatement(InOut *inOut, GlobalSymTabEntry *functionEntry) {
     }
 }
 
-
 string checkAssignmentExpression(AssignmentExpression *assignmentExpression, GlobalSymTabEntry *functionEntry) {
     PostfixExpression *postfixExpression = assignmentExpression->postfixExpression;
     Expression *expression = assignmentExpression->expression;
@@ -372,7 +370,6 @@ string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry 
     } else {
     }
 }
-
 
 string checkConstantValue(ConstantValue *constantValue) {
     if (constantValue->flagConstant == 0) {
