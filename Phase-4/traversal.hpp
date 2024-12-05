@@ -1,9 +1,11 @@
+#ifndef TRAVERSAL_HPP
+#define TRAVERSAL_HPP
+
 #pragma once
-// #include "symbolTable.hpp"
 #include "ast.hpp"
-#include <algorithm>
-#include <fstream>
 #include <iostream>
+#include <fstream>
+#include <algorithm>
 using namespace std;
 
 void traversal(Start *start);
@@ -27,3 +29,4 @@ void checkConditionalStatement(ConditionalStatement *conditionalStatement, Globa
 void checkIterativeStatement(IterativeStatement *iterativeStatement, GlobalSymTabEntry *functionEntry);
 void checkJumpStatement(JumpStatement *jumpStatement, GlobalSymTabEntry *functionEntry);
 
+#endif

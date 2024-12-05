@@ -153,11 +153,12 @@ InOut::InOut(int isWrite, vector<Scan *> *scanList, int row, int column) {
     this->column = column;
 }
 
-Scan::Scan(char *scanIdentifier, int row, int column) {
+Scan::Scan(char *scanIdentifier, string scope, int row, int column) {
     this->isWrite = 0;
     this->scanIdentifier = scanIdentifier;
     this->scanList = new vector<Scan *>();
     this->printList = new vector<Print *>();
+    this->scope = scope;
     this->row = row;
     this->column = column;
 }
@@ -214,27 +215,30 @@ ConstantValue::ConstantValue(int flagConstant, char *sval, int row, int column) 
     this->column = column;
 }
 
-FunctionCall::FunctionCall(int flagFunctionCall, char *functionCallIdentifier, int row, int column) {
+FunctionCall::FunctionCall(int flagFunctionCall, char *functionCallIdentifier, string scope, int row, int column) {
     this->flagFunctionCall = flagFunctionCall;
     this->functionCallIdentifier = functionCallIdentifier;
     this->argumentList = new vector<Expression *>();
+    this->scope = scope;
     this->row = row;
     this->column = column;
 }
 
-FunctionCall::FunctionCall(int flagFunctionCall, char *functionCallIdentifier, vector<Expression *> *argumentList, int row, int column) {
+FunctionCall::FunctionCall(int flagFunctionCall, char *functionCallIdentifier, vector<Expression *> *argumentList, string scope, int row, int column) {
     this->flagFunctionCall = flagFunctionCall;
     this->functionCallIdentifier = functionCallIdentifier;
     this->argumentList = argumentList ? argumentList : new vector<Expression *>();
+    this->scope = scope;
     this->row = row;
     this->column = column;
 }
 
-BasicExpression::BasicExpression(int flagBasic, char *basicIdentifier, int row, int column) {
+BasicExpression::BasicExpression(int flagBasic, char *basicIdentifier, string scope, int row, int column) {
     this->flagBasic = flagBasic;
     this->basicIdentifier = basicIdentifier;
     this->constantValue = nullptr;
     this->expression = nullptr;
+    this->scope = scope;
     this->row = row;
     this->column = column;
 }

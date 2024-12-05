@@ -1,7 +1,6 @@
-%code requires{
-    // #include "ast.hpp"
+/* %code requires{
     #include "traversal.hpp"
-}
+} */
 
 %{
     #include <iostream>
@@ -33,8 +32,7 @@
     vector<string> allscopes = {};
     string scope = "";
 
-    // #include "ast.hpp"
-    // #include "traversal.hpp"
+    #include "traversal.hpp"
     class Start* start;
 %}
 
@@ -204,8 +202,8 @@ inOut
     ;
 
 scan
-    : IDENTIFIER            { $$ = new vector<Scan *>(); $$->push_back(new Scan($1, yylineno, yycolumnno)); }
-    | IDENTIFIER TILDE scan { $3->push_back(new Scan($1, yylineno, yycolumnno)); $$ = $3; }
+    : IDENTIFIER            { $$ = new vector<Scan *>(); $$->push_back(new Scan($1, scope, yylineno, yycolumnno)); }
+    | IDENTIFIER TILDE scan { $3->push_back(new Scan($1, scope, yylineno, yycolumnno)); $$ = $3; }
     ;
 
 print
@@ -240,7 +238,7 @@ memberVariable
     ;
 
 basicExpression
-    : IDENTIFIER                        { $$ = new BasicExpression(1, $1, yylineno, yycolumnno); }
+    : IDENTIFIER                        { $$ = new BasicExpression(1, $1, scope, yylineno, yycolumnno); }
     | CONSTANT                          { $$ = new BasicExpression(0, new ConstantValue(0, $1, yylineno, yycolumnno), yylineno, yycolumnno); }
     | TRUE                              { $$ = new BasicExpression(0, new ConstantValue(1, true, yylineno, yycolumnno), yylineno, yycolumnno); }
     | FALSE                             { $$ = new BasicExpression(0, new ConstantValue(1, false, yylineno, yycolumnno), yylineno, yycolumnno); }
@@ -249,10 +247,10 @@ basicExpression
     ;
 
 functionCall
-    : IDENTIFIER LEFT_PAREN RIGHT_PAREN                             { $$ = new FunctionCall(0, $1, yylineno, yycolumnno); }
-	| IDENTIFIER LEFT_PAREN declarationArgList RIGHT_PAREN          { $$ = new FunctionCall(1, $1, $3, yylineno, yycolumnno); }
-    | defaultFunction LEFT_PAREN RIGHT_PAREN                        { $$ = new FunctionCall(2, $1, yylineno, yycolumnno); }
-    | defaultFunction LEFT_PAREN declarationArgList RIGHT_PAREN     { $$ = new FunctionCall(3, $1, $3, yylineno, yycolumnno); }
+    : IDENTIFIER LEFT_PAREN RIGHT_PAREN                             { $$ = new FunctionCall(0, $1, scope, yylineno, yycolumnno); }
+	| IDENTIFIER LEFT_PAREN declarationArgList RIGHT_PAREN          { $$ = new FunctionCall(1, $1, $3, scope, yylineno, yycolumnno); }
+    | defaultFunction LEFT_PAREN RIGHT_PAREN                        { $$ = new FunctionCall(2, $1, scope, yylineno, yycolumnno); }
+    | defaultFunction LEFT_PAREN declarationArgList RIGHT_PAREN     { $$ = new FunctionCall(3, $1, $3, scope, yylineno, yycolumnno); }
     ;
 
 postfixExpression

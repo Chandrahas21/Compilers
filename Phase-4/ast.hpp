@@ -1,3 +1,7 @@
+#ifndef AST_HPP
+#define AST_HPP
+
+#pragma once
 #include "symbolTable.hpp"
 #include <iostream>
 #include <map>
@@ -171,7 +175,7 @@ public:
 class Scan : public InOut {
 public:
     char *scanIdentifier;
-    Scan(char *scanIdentifier, int row, int column);
+    Scan(char *scanIdentifier, string scope, int row, int column);
     virtual ~Scan() = default;
 };
 
@@ -209,8 +213,8 @@ public:
     int flagFunctionCall; // 0: functionCall, 1: defaultFunction
     char *functionCallIdentifier;
     vector<Expression *> *argumentList;
-    FunctionCall(int flagFunctionCall, char *functionCallIdentifier, int row, int column);
-    FunctionCall(int flagFunctionCall, char *functionCallIdentifier, vector<Expression *> *argumentList, int row, int column);
+    FunctionCall(int flagFunctionCall, char *functionCallIdentifier, string scope, int row, int column);
+    FunctionCall(int flagFunctionCall, char *functionCallIdentifier, vector<Expression *> *argumentList, string scope, int row, int column);
     virtual ~FunctionCall() = default;
 };
 
@@ -220,7 +224,7 @@ public:
     char *basicIdentifier;
     ConstantValue *constantValue;
     Expression *expression;
-    BasicExpression(int flagBasic, char *basicIdentifier, int row, int column);
+    BasicExpression(int flagBasic, char *basicIdentifier, string scope, int row, int column);
     BasicExpression(int flagBasic, ConstantValue *constantValue, int row, int column);
     BasicExpression(int flagBasic, Expression *expression, int row, int column);
     virtual ~BasicExpression() = default;
@@ -359,3 +363,5 @@ public:
     JumpStatement(int flagJump, Expression *expression, int row, int column);
     virtual ~JumpStatement() = default;
 };
+
+#endif
