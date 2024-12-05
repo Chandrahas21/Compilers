@@ -367,7 +367,6 @@ string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry 
         }
     } else if (basicExpression->flagBasic == 2) {
         return checkExpression(basicExpression->expression, functionEntry);
-    } else {
     }
 }
 
