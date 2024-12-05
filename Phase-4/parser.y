@@ -1,6 +1,6 @@
-/* %code requires{
+%code requires{
     #include "traversal.hpp"
-} */
+}
 
 %{
     #include <iostream>
@@ -32,7 +32,7 @@
     vector<string> allscopes = {};
     string scope = "";
 
-    #include "traversal.hpp"
+    // #include "traversal.hpp"
     class Start* start;
 %}
 
