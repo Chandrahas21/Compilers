@@ -98,3 +98,226 @@ bool checkDeclarationInParentScope(string declarationIdentifier, string declarat
     }
     return false;
 }
+
+
+void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry) {
+    string dataType = string(declaration->declarationType);
+    vector<DeclarationIndex *> *declarationList = declaration->declarationList;
+    string isInFunction = string(declaration->isInFunction);
+
+    if (isInFunction == "Global") {
+        for (auto declarationItem : *declarationList) {
+            string declarationIdentifier = string(declarationItem->declarationIdentifier);
+            string declarationKey = declarationIdentifier;
+            if (declarationItem->flagDeclarationIndex == 0) {
+                GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                if (entry == NULL) {
+                    puts("Inserting undeclared variables into function local symbol table");
+                    insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
+                } else {
+                    string error = "Variable already declared in Global scope: " + declarationIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                }
+            } else if (declarationItem->flagDeclarationIndex == 1) {
+                GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                if (entry == NULL) {
+                    Expression *expression = declarationItem->expression;
+                    string expressionType = checkExpression(expression, functionEntry);
+                    if (expressionType != dataType) {
+                        string error = "Type mismatch in declaration";
+                        cout << error << endl;
+                        exit(0);
+                    }
+                    puts("Inserting undeclared variables into function local symbol table");
+                    insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
+                } else {
+                    string error = "Variable already declared in Global scope: " + declarationIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                }
+            } else {
+                GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                if (entry == NULL) {
+                    vector<Expression *> *expressionList = declarationItem->expressionList;
+                    for (auto expressionItem : *expressionList) {
+                        string expressionType = checkExpression(expressionItem, functionEntry);
+                        if (dataType == "point") {
+                            if (expressionType != "num") {
+                                string error = "Type mismatch in declaration";
+                                cout << error << endl;
+                                exit(0);
+                            }
+                        } else if (dataType == "line") {
+
+                        } else if (dataType == "circle") {
+
+                        } else if (dataType == "ellipse") {
+                        } else {
+                            string error = "Invalid data type in declaration";
+                            cout << error << endl;
+                            exit(0);
+                        }
+                    }
+                    puts("Inserting undeclared variables into function local symbol table");
+                    insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
+                } else {
+                    string error = "Variable already declared in Global scope: " + declarationIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                }
+            }
+        }
+    } else {
+        for (auto declarationItem : *declarationList) {
+            string declarationIdentifier = string(declarationItem->declarationIdentifier);
+            string declarationscope = string(declarationItem->scope);
+            if (declarationItem->flagDeclarationIndex == 0) {
+                bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                if (!matchFound) {
+                    bool matchFoundInParentScope = checkDeclarationInParentScope(declarationIdentifier, declarationscope, 0, functionEntry);
+                    if (!matchFoundInParentScope) {
+                        puts("Inserting undeclared variables into function local symbol table");
+                        insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                    } else {
+                        string error = "Variable already declared in parent scope: " + declarationIdentifier;
+                        cout << error << endl;
+                        exit(0);
+                    }
+                } else {
+                    string error = "Variable already declared as argument: " + declarationIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                }
+            } else if (declarationItem->flagDeclarationIndex == 1) {
+                bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                if (!matchFound) {
+                    bool matchFoundInParentScope = checkDeclarationInParentScope(declarationIdentifier, declarationscope, 0, functionEntry);
+                    if (!matchFoundInParentScope) {
+                        Expression *expression = declarationItem->expression;
+                        string expressionType = checkExpression(expression, functionEntry);
+                        if (expressionType != dataType) {
+                            string error = "Type mismatch in declaration";
+                            cout << error << endl;
+                            exit(0);
+                        }
+                        puts("Inserting undeclared variables into function local symbol table");
+                        insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                    } else {
+                        string error = "Variable already declared in parent scope: " + declarationIdentifier;
+                        cout << error << endl;
+                        exit(0);
+                    }
+                } else {
+                    string error = "Variable already declared as argument: " + declarationIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                }
+            } else {
+                bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                if (!matchFound) {
+                    bool matchFoundInParentScope = checkDeclarationInParentScope(declarationIdentifier, declarationscope, 0, functionEntry);
+                    if (!matchFoundInParentScope) {
+                        vector<Expression *> *expressionList = declarationItem->expressionList;
+                        for (auto expressionItem : *expressionList) {
+                            string expressionType = checkExpression(expressionItem, functionEntry);
+                            if (dataType == "point") {
+                                if (expressionType != "num") {
+                                    string error = "Type mismatch in declaration";
+                                    cout << error << endl;
+                                    exit(0);
+                                }
+                            } else if (dataType == "line") {
+
+                            } else if (dataType == "circle") {
+
+                            } else if (dataType == "ellipse") {
+                            } else {
+                                string error = "Invalid data type in declaration";
+                                cout << error << endl;
+                                exit(0);
+                            }
+                        }
+                        puts("Inserting undeclared variables into function local symbol table");
+                        insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                    } else {
+                        string error = "Variable already declared in parent scope: " + declarationIdentifier;
+                        cout << error << endl;
+                        exit(0);
+                    }
+                } else {
+                    string error = "Variable already declared as argument: " + declarationIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                }
+            }
+        }
+    }
+}
+
+void checkFunctionDeclaration(FunctionDeclaration *functionDeclaration) {
+    string returnType = string(functionDeclaration->returnType);
+    string functionIdentifier = string(functionDeclaration->functonIdentifier);
+    vector<FunctionArgumentList *> *argumentList = functionDeclaration->argumentList;
+    CompoundStatement *compoundStatement = functionDeclaration->compoundStatement;
+
+    vector<pair<string, string>> *arguments = new vector<pair<string, string>>;
+    for (auto argumentItem : *argumentList) {
+        string argumentType = string(argumentItem->ArgType);
+        string argumentIdentifier = string(argumentItem->ArgIdentifier);
+        arguments->push_back(make_pair(argumentType, argumentIdentifier));
+    }
+
+    string functionKey = functionIdentifier;
+    cout << "Searching functionKey in Global symbol table: " << functionKey << endl;
+
+    GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, functionKey);
+    if (entry == NULL) {
+        puts("Inserting function into Global symbol table");
+        insertGlobalSymTab(root->globalSymbolTable, functionIdentifier, returnType, "Function", "", arguments, functionDeclaration->row, functionDeclaration->column);
+    } else {
+        string error = "Function already declared: " + functionIdentifier;
+        cout << error << endl;
+        exit(0);
+    }
+
+    GlobalSymTabEntry *functionEntry = searchGlobalSymTab(root->globalSymbolTable, functionKey);
+    checkCompoundStatement(compoundStatement, functionEntry);
+}
+
+void inOutStatement(InOut *inOut, GlobalSymTabEntry *functionEntry) {
+    if (inOut->isWrite == 0) {
+        vector<Scan *> *scanList = inOut->scanList;
+        for (auto scanItem : *scanList) {
+            string scanIdentifier = string(scanItem->scanIdentifier);
+            string scanScope = scanItem->scope;
+            bool matchFound = checkDeclarationInParentScope(scanIdentifier, scanScope, 1, functionEntry);
+            if (!matchFound) {
+                string error = "Variable not declared: " + scanIdentifier;
+                cout << error << endl;
+                exit(0);
+            } else {
+                puts("Variable Scanned");
+            }
+        }
+    } else {
+        vector<Print *> *printList = inOut->printList;
+        for (auto printItem : *printList) {
+            if (printItem->flagPrint == 0) {
+                string printIdentifier = string(printItem->printIdentifier);
+                string printScope = printItem->scope;
+                bool matchFound = checkDeclarationInParentScope(printIdentifier, printScope, 1, functionEntry);
+                if (!matchFound) {
+                    string error = "Variable not declared: " + printIdentifier;
+                    cout << error << endl;
+                    exit(0);
+                } else {
+                    puts("Variable Printed");
+                }
+            } else {
+                Expression *expression = printItem->expression;
+                checkExpression(expression, functionEntry);
+            }
+        }
+    }
+}
