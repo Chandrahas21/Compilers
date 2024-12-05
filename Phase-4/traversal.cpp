@@ -373,3 +373,195 @@ string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry 
     }
 }
 
+
+string checkConstantValue(ConstantValue *constantValue) {
+    if (constantValue->flagConstant == 0) {
+        return "num";
+    } else if (constantValue->flagConstant == 1) {
+        return "boolean";
+    } else if (constantValue->flagConstant == 2) {
+        return "string";
+    } else {
+        return "null";
+    }
+}
+
+string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *functionEntry) {
+    string functionCallIdentifier = string(functionCall->functionCallIdentifier);
+    vector<Expression *> *argumentList = functionCall->argumentList;
+    string functionCallKey = functionCallIdentifier;
+    GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, functionCallKey);
+    if (entry == NULL) {
+        string error = "Function not declared: " + functionCallIdentifier;
+        cout << error << endl;
+        exit(0);
+    } else {
+        puts("Function declared");
+        vector<pair<string, string>> *arguments = entry->arguments;
+        if (arguments->size() != argumentList->size()) {
+            string error = "Argument size mismatch in function call: " + functionCallIdentifier;
+            cout << error << endl;
+            exit(0);
+        } else {
+            for (int i = 0; i < arguments->size(); i++) {
+                string argumentDefaultType = arguments->at(i).first;
+                string argumentCallType = checkExpression(argumentList->at(i), functionEntry);
+                if (argumentDefaultType != argumentCallType) {
+                    string error = "Argument type mismatch in function call: " + functionCallIdentifier + " at position " + to_string(i + 1);
+                    cout << error << endl;
+                    exit(0);
+                    break;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+string checkExpression(Expression *expression, GlobalSymTabEntry *functionEntry) {
+    if (expression->flagExpression == 0) {
+        UnaryExpression *unaryExpression = static_cast<UnaryExpression *>(expression);
+        return checkUnaryExpression(unaryExpression, functionEntry);
+    } else if (expression->flagExpression == 1) {
+        BinaryExpression *binaryExpression = static_cast<BinaryExpression *>(expression);
+        return checkBinaryExpression(binaryExpression->lhs, binaryExpression->rhs, binaryExpression->op, functionEntry);
+    }
+}
+
+string checkUnaryExpression(UnaryExpression *unaryExpression, GlobalSymTabEntry *functionEntry) {
+    PostfixExpression *postfixExpression = unaryExpression->postfixExpression;
+    vector<UnaryOperator> *opList = unaryExpression->opList;
+    string postfixType = checkPostfixExpression(postfixExpression, functionEntry);
+    for (auto op : *opList) {
+        if (op == UnaryOperator::inc_op or op == UnaryOperator::dec_op) {
+            if (postfixType != "num") {
+                string error = "Type mismatch in unary expression";
+                cout << error << endl;
+                exit(0);
+            }
+        } else if (op == UnaryOperator::not_op) {
+            if (postfixType != "boolean") {
+                string error = "Type mismatch in unary expression";
+                cout << error << endl;
+                exit(0);
+            }
+        } else {
+            string error = "Invalid unary operator";
+            cout << error << endl;
+            exit(0);
+        }
+    }
+    return postfixType;
+}
+
+string checkBinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op, GlobalSymTabEntry *functionEntry) {
+    string lhsType = checkExpression(lhs, functionEntry);
+    string rhsType = checkExpression(rhs, functionEntry);
+    if (lhsType != rhsType) {
+        string error = "Type mismatch in binary expression";
+        cout << error << endl;
+        exit(0);
+    }
+    return lhsType;
+}
+
+void checkCompoundStatement(CompoundStatement *compoundStatement, GlobalSymTabEntry *functionEntry) {
+    vector<Statement *> *statementList = compoundStatement->statementList;
+    for (auto statementItem : *statementList) {
+        if (statementItem->flagStatement == 1) {
+            cout << "Declaration inside function " << functionEntry->name << endl;
+            checkDeclaration(statementItem->declaration, functionEntry);
+        } else if (statementItem->flagStatement == 2) {
+            cout << "InOut inside function " << functionEntry->name << endl;
+            inOutStatement(statementItem->inOut, functionEntry);
+        } else if (statementItem->flagStatement == 3) {
+            cout << "ConditionalStatement inside function " << functionEntry->name << endl;
+            checkConditionalStatement(statementItem->conditionalStatement, functionEntry);
+        } else if (statementItem->flagStatement == 4) {
+            cout << "JumpStatement inside function " << functionEntry->name << endl;
+            checkJumpStatement(statementItem->jumpStatement, functionEntry);
+        } else if (statementItem->flagStatement == 5) {
+            cout << "CompoundStatement inside function " << functionEntry->name << endl;
+            checkCompoundStatement(statementItem->compoundStatement, functionEntry);
+        } else if (statementItem->flagStatement == 6) {
+            cout << "IterativeStatement inside function " << functionEntry->name << endl;
+            checkIterativeStatement(statementItem->iterativeStatement, functionEntry);
+        } else {
+            cout << "AssignmentExpression inside function " << functionEntry->name << endl;
+            checkAssignmentExpression(statementItem->assignmentExpression, functionEntry);
+        }
+    }
+}
+
+void checkConditionalStatement(ConditionalStatement *conditionalStatement, GlobalSymTabEntry *functionEntry) {
+    Expression *expression = conditionalStatement->expression;
+    CompoundStatement *compoundStatement1 = conditionalStatement->compoundStatement1;
+    vector<ElseIf *> *elseIfList = conditionalStatement->elseIfList;
+    CompoundStatement *compoundStatement2 = conditionalStatement->compoundStatement2;
+
+    string expressionType = checkExpression(expression, functionEntry);
+    if (expressionType != "boolean") {
+        string error = "Type mismatch in conditional statement";
+        cout << error << endl;
+        exit(0);
+    }
+    checkCompoundStatement(compoundStatement1, functionEntry);
+
+    for (auto elseIfItem : *elseIfList) {
+        Expression *expression = elseIfItem->expression;
+        CompoundStatement *compoundStatement = elseIfItem->compoundStatement;
+        string expressionType = checkExpression(expression, functionEntry);
+        if (expressionType != "boolean") {
+            string error = "Type mismatch in conditional statement";
+            cout << error << endl;
+            exit(0);
+        }
+        checkCompoundStatement(compoundStatement, functionEntry);
+    }
+
+    if (compoundStatement2 != NULL) {
+        checkCompoundStatement(compoundStatement2, functionEntry);
+    }
+}
+
+void checkIterativeStatement(IterativeStatement *iterativeStatement, GlobalSymTabEntry *functionEntry) {
+    if (iterativeStatement->isWhile == 0) {
+        Expression *expression1 = iterativeStatement->expression1;
+        CompoundStatement *compoundStatement = iterativeStatement->compoundStatement;
+
+        checkExpression(expression1, functionEntry);
+        checkCompoundStatement(compoundStatement, functionEntry);
+    } else if (iterativeStatement->isWhile == 1) {
+        Declaration *declaration = iterativeStatement->declaration;
+        Expression *expression2 = iterativeStatement->expression2;
+        Expression *expression3 = iterativeStatement->expression3;
+        CompoundStatement *compoundStatement = iterativeStatement->compoundStatement;
+
+        checkDeclaration(declaration, functionEntry);
+        checkExpression(expression2, functionEntry);
+        checkExpression(expression3, functionEntry);
+        checkCompoundStatement(compoundStatement, functionEntry);
+    } else if (iterativeStatement->isWhile == 2) {
+        Expression *expression1 = iterativeStatement->expression1;
+        Expression *expression2 = iterativeStatement->expression2;
+        Expression *expression3 = iterativeStatement->expression3;
+        CompoundStatement *compoundStatement = iterativeStatement->compoundStatement;
+
+        checkExpression(expression1, functionEntry);
+        checkExpression(expression2, functionEntry);
+        checkExpression(expression3, functionEntry);
+        checkCompoundStatement(compoundStatement, functionEntry);
+    }
+}
+
+void checkJumpStatement(JumpStatement *jumpStatement, GlobalSymTabEntry *functionEntry) {
+    if (jumpStatement->flagJump == 2) {
+        Expression *expression = jumpStatement->expression;
+        string expressionType = checkExpression(expression, functionEntry);
+        if (expressionType != functionEntry->dataType) {
+            string error = "Type mismatch in return statement";
+            cout << error << endl;
+            exit(0);
+        }
+    }
+}
