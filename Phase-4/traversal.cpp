@@ -321,3 +321,55 @@ void inOutStatement(InOut *inOut, GlobalSymTabEntry *functionEntry) {
         }
     }
 }
+
+
+string checkAssignmentExpression(AssignmentExpression *assignmentExpression, GlobalSymTabEntry *functionEntry) {
+    PostfixExpression *postfixExpression = assignmentExpression->postfixExpression;
+    Expression *expression = assignmentExpression->expression;
+    if (postfixExpression != NULL) {
+        string lhsType = checkPostfixExpression(postfixExpression, functionEntry);
+        string rhsType = checkExpression(expression, functionEntry);
+        if (lhsType != rhsType) {
+            string error = "Type mismatch in assignment expression";
+            cout << error << endl;
+            exit(0);
+        }
+    } else {
+        return checkExpression(expression, functionEntry);
+    }
+    return 0;
+}
+
+string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTabEntry *functionEntry) {
+    if (postfixExpression->flagExpression == 0) {
+        return checkBasicExpression(postfixExpression->basicExpression, functionEntry);
+    } else if (postfixExpression->flagExpression == 1) {
+        return checkFunctionCall(postfixExpression->functionCall, functionEntry);
+    } else if (postfixExpression->flagExpression == 2) {
+
+    } else if (postfixExpression->flagExpression == 3) {
+
+    } else {
+    }
+}
+
+string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry *functionEntry) {
+    if (basicExpression->flagBasic == 0) {
+        return checkConstantValue(basicExpression->constantValue);
+    } else if (basicExpression->flagBasic == 1) {
+        string basicIdentifier = string(basicExpression->basicIdentifier);
+        string scope = basicExpression->scope;
+        bool matchFound = checkDeclarationInParentScope(basicIdentifier, scope, 1, functionEntry);
+        if (!matchFound) {
+            string error = "Variable not declared: " + basicIdentifier;
+            cout << error << endl;
+            exit(0);
+        } else {
+            puts("Variable found");
+        }
+    } else if (basicExpression->flagBasic == 2) {
+        return checkExpression(basicExpression->expression, functionEntry);
+    } else {
+    }
+}
+
