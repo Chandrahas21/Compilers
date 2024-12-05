@@ -158,7 +158,7 @@ start
 
 headerList
     : header            { $$ = new vector<Header *>();  $$->push_back($1); }
-    | header headerList { $2->push_back($1); $$ = $2; }
+    | headerList header { $1->push_back($2); $$ = $1; }
     ;
 
 header
@@ -193,17 +193,17 @@ statement
 
 statementList
     : statement                 { $$ = new vector<Statement *>(); $$->push_back($1); }
-    | statement statementList   { $2->push_back($1); $$ = $2; }
+    | statementList statement   { $1->push_back($2); $$ = $1; }
     ;
 
 inOut
-    : WRITE TILDE printList SEMICOLON   { $$ = new InOut(1, $3, yylineno, yycolumnno); }
-    | READ TILDE scan SEMICOLON         { $$ = new InOut(0, $3, yylineno, yycolumnno); }
+    : READ TILDE scan SEMICOLON         { $$ = new InOut(0, $3, yylineno, yycolumnno); }
+    | WRITE TILDE printList SEMICOLON   { $$ = new InOut(1, $3, yylineno, yycolumnno); }
     ;
 
 scan
     : IDENTIFIER            { $$ = new vector<Scan *>(); $$->push_back(new Scan($1, scope, yylineno, yycolumnno)); }
-    | IDENTIFIER TILDE scan { $3->push_back(new Scan($1, scope, yylineno, yycolumnno)); $$ = $3; }
+    | scan TILDE IDENTIFIER { $1->push_back(new Scan($3, scope, yylineno, yycolumnno)); $$ = $1; }
     ;
 
 print
@@ -214,7 +214,7 @@ print
 
 printList
     : print                 { $$ = new vector<Print *>(); $$->push_back($1); }
-    | print TILDE printList { $3->push_back($1); $$ = $3; }
+    | printList TILDE print { $1->push_back($3); $$ = $1; }
     ;
 
 memberVariable
@@ -281,41 +281,41 @@ assignmentExpression
     ;
 
 expression
-    : unaryExpression                       { $$ = $1; $$->flagExpression = 1; }
-    | expression MULTIPLY expression        { $$ = new BinaryExpression($1, $3, BinaryOperator::mul_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression DIVIDE expression          { $$ = new BinaryExpression($1, $3, BinaryOperator::div_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression MODULUS expression         { $$ = new BinaryExpression($1, $3, BinaryOperator::mod_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression EXPONENT expression        { $$ = new BinaryExpression($1, $3, BinaryOperator::exp_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression PLUS expression            { $$ = new BinaryExpression($1, $3, BinaryOperator::add_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression MINUS expression           { $$ = new BinaryExpression($1, $3, BinaryOperator::sub_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression EQUAL expression           { $$ = new BinaryExpression($1, $3, BinaryOperator::equal_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression NOT_EQUAL expression       { $$ = new BinaryExpression($1, $3, BinaryOperator::not_equal_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression GREATER_EQUAL expression   { $$ = new BinaryExpression($1, $3, BinaryOperator::greater_equal_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression LESS_EQUAL expression      { $$ = new BinaryExpression($1, $3, BinaryOperator::less_equal_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression GREATER_THAN expression    { $$ = new BinaryExpression($1, $3, BinaryOperator::less_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression LESS_THAN expression       { $$ = new BinaryExpression($1, $3, BinaryOperator::greater_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression LOGICAL_AND expression     { $$ = new BinaryExpression($1, $3, BinaryOperator::and_op , yylineno, yycolumnno); $$->flagExpression = 2; }
-    | expression LOGICAL_OR expression      { $$ = new BinaryExpression($1, $3, BinaryOperator::or_op , yylineno, yycolumnno); $$->flagExpression = 2; }
+    : unaryExpression                       { $$ = $1; $$->flagExpression = 0; }
+    | expression MULTIPLY expression        { $$ = new BinaryExpression($1, $3, BinaryOperator::mul_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression DIVIDE expression          { $$ = new BinaryExpression($1, $3, BinaryOperator::div_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression MODULUS expression         { $$ = new BinaryExpression($1, $3, BinaryOperator::mod_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression EXPONENT expression        { $$ = new BinaryExpression($1, $3, BinaryOperator::exp_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression PLUS expression            { $$ = new BinaryExpression($1, $3, BinaryOperator::add_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression MINUS expression           { $$ = new BinaryExpression($1, $3, BinaryOperator::sub_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression EQUAL expression           { $$ = new BinaryExpression($1, $3, BinaryOperator::equal_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression NOT_EQUAL expression       { $$ = new BinaryExpression($1, $3, BinaryOperator::not_equal_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression GREATER_EQUAL expression   { $$ = new BinaryExpression($1, $3, BinaryOperator::greater_equal_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression LESS_EQUAL expression      { $$ = new BinaryExpression($1, $3, BinaryOperator::less_equal_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression GREATER_THAN expression    { $$ = new BinaryExpression($1, $3, BinaryOperator::less_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression LESS_THAN expression       { $$ = new BinaryExpression($1, $3, BinaryOperator::greater_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression LOGICAL_AND expression     { $$ = new BinaryExpression($1, $3, BinaryOperator::and_op , yylineno, yycolumnno); $$->flagExpression = 1; }
+    | expression LOGICAL_OR expression      { $$ = new BinaryExpression($1, $3, BinaryOperator::or_op , yylineno, yycolumnno); $$->flagExpression = 1; }
     ;
 
 declarationType
-    : VOID      { dataType = "Void"; $$ = strdup("Void"); }
-    | STRING    { dataType = "String"; $$ = strdup("String"); }
-    | BOOL      { dataType = "Bool"; $$ = strdup("Bool"); }
-    | NUM       { dataType = "Num"; $$ = strdup("Num"); }
-    | POINT     { dataType = "Point"; $$ = strdup("Point"); }
-    | EQUATION  { dataType = "Equation"; $$ = strdup("Equation"); }
-    | LINE      { dataType = "Line"; $$ = strdup("Line"); }
-    | CIRCLE    { dataType = "Circle"; $$ = strdup("Circle"); }
-    | PARABOLA  { dataType = "Parabola"; $$ = strdup("Parabola"); }
-    | HYPERBOLA { dataType = "Hyperbola"; $$ = strdup("Hyperbola"); }
-    | ELLIPSE   { dataType = "Ellipse"; $$ = strdup("Ellipse"); }
-    | CURVE     { dataType = "Curve"; $$ = strdup("Curve"); }
+    : VOID      { dataType = "void"; $$ = strdup("void"); }
+    | STRING    { dataType = "string"; $$ = strdup("string"); }
+    | BOOL      { dataType = "bool"; $$ = strdup("bool"); }
+    | NUM       { dataType = "num"; $$ = strdup("num"); }
+    | POINT     { dataType = "point"; $$ = strdup("point"); }
+    | EQUATION  { dataType = "equation"; $$ = strdup("equation"); }
+    | LINE      { dataType = "line"; $$ = strdup("line"); }
+    | CIRCLE    { dataType = "circle"; $$ = strdup("circle"); }
+    | PARABOLA  { dataType = "parabola"; $$ = strdup("parabola"); }
+    | HYPERBOLA { dataType = "hyperbola"; $$ = strdup("hyperbola"); }
+    | ELLIPSE   { dataType = "ellipse"; $$ = strdup("ellipse"); }
+    | CURVE     { dataType = "curve"; $$ = strdup("curve"); }
     ;
 
 declarationArgList
     : expression                            { $$ = new vector<Expression *>(); $$->push_back($1); }
-    | expression COMMA declarationArgList   { $3->push_back($1); $$ = $3; }
+    | declarationArgList COMMA expression   { $1->push_back($3); $$ = $1; }
     ;
 
 declarationIndex
@@ -326,7 +326,7 @@ declarationIndex
 
 declarationList
     : declarationIndex                         { $$ = new vector<DeclarationIndex *>(); $$->push_back($1); }
-    | declarationIndex COMMA declarationList   { $3->push_back($1); $$ = $3; }
+    | declarationList COMMA declarationIndex   { $1->push_back($3); $$ = $1; }
     ;
 
 declaration
@@ -334,32 +334,32 @@ declaration
     ;
 
 defaultFunction
-    : TO_STRING     { $$ = strdup("ToString"); }
-    | DISTANCE      { $$ = strdup("Distance"); }
-    | SOLVE         { $$ = strdup("Solve"); }
-    | SQRT          { $$ = strdup("Sqrt"); }
-    | ISPOINT       { $$ = strdup("IsPoint"); }
-    | INTERSECTION  { $$ = strdup("Intersection"); }
-    | TANGENT       { $$ = strdup("Tangent"); }
-    | SLOPE_LINE    { $$ = strdup("SlopeLine"); }
-    | ANGLE         { $$ = strdup("Angle"); }
-    | TYPE          { $$ = strdup("Type"); }
-    | MAIN          { $$ = strdup("Main"); }
+    : TO_STRING     { $$ = strdup("toString"); }
+    | DISTANCE      { $$ = strdup("distance"); }
+    | SOLVE         { $$ = strdup("solve"); }
+    | SQRT          { $$ = strdup("sqrt"); }
+    | ISPOINT       { $$ = strdup("isPoint"); }
+    | INTERSECTION  { $$ = strdup("intersection"); }
+    | TANGENT       { $$ = strdup("tangent"); }
+    | SLOPE_LINE    { $$ = strdup("slopeLine"); }
+    | ANGLE         { $$ = strdup("angle"); }
+    | TYPE          { $$ = strdup("type"); }
+    | MAIN          { $$ = strdup("main"); }
     ;
 
 functionIdentifier
-    : IDENTIFIER { $$ = strdup($1); }
-    | MAIN { $$ = strdup("Main"); }
+    : IDENTIFIER    { $$ = strdup($1); }
+    | MAIN          { $$ = strdup("main"); }
     ;
 
 functionArgList
     : declarationType IDENTIFIER                        { auto temp = new FunctionArgumentList($1, $2, yylineno, yycolumnno); $$ = new vector<FunctionArgumentList *>(); $$->push_back(temp); }
-    | declarationType IDENTIFIER COMMA functionArgList  { auto temp = new FunctionArgumentList($1, $2, yylineno, yycolumnno); $4->push_back(temp); $$ = $4; }
+    | functionArgList COMMA declarationType IDENTIFIER  { auto temp = new FunctionArgumentList($3, $4, yylineno, yycolumnno); $1->push_back(temp); $$ = $1; }
     ;
 
 functionDeclaration
-    : LESS_THAN declarationType GREATER_THAN functionIdentifier LEFT_PAREN RIGHT_PAREN IMPLIES compoundStatement                        { $$ = new FunctionDeclaration(2, $2, $4, $8, yylineno, yycolumnno); }
-    | LESS_THAN declarationType GREATER_THAN functionIdentifier LEFT_PAREN functionArgList RIGHT_PAREN IMPLIES compoundStatement        { $$ = new FunctionDeclaration(3, $2, $4, $6, $9, yylineno, yycolumnno); }
+    : LESS_THAN declarationType GREATER_THAN functionIdentifier LEFT_PAREN RIGHT_PAREN IMPLIES compoundStatement                        { $$ = new FunctionDeclaration(0, $2, $4, $8, yylineno, yycolumnno); }
+    | LESS_THAN declarationType GREATER_THAN functionIdentifier LEFT_PAREN functionArgList RIGHT_PAREN IMPLIES compoundStatement        { $$ = new FunctionDeclaration(1, $2, $4, $6, $9, yylineno, yycolumnno); }
     ;
 
 statements
@@ -392,7 +392,11 @@ closebraceStatement
         if(!allscopes.empty())
         {
             allscopes.pop_back();
-            scope = allscopes.back();   
+            if(!allscopes.empty()) {
+                scope = allscopes.back();   
+            } else {
+                scope = "";   
+            }
         }
     }
     ;
@@ -409,7 +413,7 @@ conditionalStatement
 
 elseIfList
     :                   { $$ = new vector<ElseIf *>(); }
-    | elseIf elseIfList { $2->push_back($1); $$ = $2; }
+    | elseIfList elseIf { $1->push_back($2); $$ = $1; }
     ;  
 
 elseIf:

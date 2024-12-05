@@ -143,7 +143,7 @@ public:
 
 class Statement : public Node {
 public:
-    int flagStatement; // 0: assignmentExpression, 1: declaration, 2: inOut, 3: conditionalStatement, 4: jumpStatement, 5: compoundStatement, 6: iterativeStatement
+    int flagStatement; // 0: assignmentExpression, 1: declaration, 2: inOut, 3: conditionalStatement, 4: conditionalStatement 5: iterativeStatement, 6: jumpStatement
     AssignmentExpression *assignmentExpression;
     Declaration *declaration;
     InOut *inOut;

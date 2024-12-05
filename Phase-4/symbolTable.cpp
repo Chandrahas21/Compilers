@@ -3,7 +3,7 @@
 using namespace std;
 
 void insertGlobalSymTab(unordered_map<string, GlobalSymTabEntry> *globalSymbolTable, string id, string dataType, string isGlobal, string scope, vector<pair<string, string>> *arguments, int yylineno, int yycolumnno) {
-    string key = id + " <=> " + scope;
+    string key = id;
     GlobalSymTabEntry *entry = searchGlobalSymTab(globalSymbolTable, key);
     if (entry == NULL) {
         auto &ref = (*globalSymbolTable);
