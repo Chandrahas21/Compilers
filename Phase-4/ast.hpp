@@ -40,6 +40,8 @@ enum MemberVariable {
     x,
     y,
     slope,
+    curve,
+    type,
     equation,
     center,
     focus,

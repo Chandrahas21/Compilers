@@ -110,6 +110,222 @@ string checkDeclarationInParentScope(string declarationIdentifier, string declar
     return "";
 }
 
+bool checkTypeInDeclaration(string dataType, vector<Expression *> *expressionList, GlobalSymTabEntry *functionEntry) {
+    if (dataType == "point") {
+        if (expressionList->size() != 2) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            Expression *expressionItem1 = expressionList->at(0);
+            Expression *expressionItem2 = expressionList->at(1);
+            string expressionType1 = checkExpression(expressionItem1, functionEntry);
+            string expressionType2 = checkExpression(expressionItem2, functionEntry);
+            if (expressionType1 == "num" && expressionType2 == "num") {
+                return true;
+            } else {
+                string error = "Type mismatch in declaration";
+                cout << error << endl;
+                return false;
+                // exit(0);
+            }
+        }
+    } else if (dataType == "line") {
+        if (expressionList->size() != 2 || expressionList->size() != 1) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            if (expressionList->size() == 2) {
+                Expression *expressionItem1 = expressionList->at(0);
+                Expression *expressionItem2 = expressionList->at(1);
+                string expressionType1 = checkExpression(expressionItem1, functionEntry);
+                string expressionType2 = checkExpression(expressionItem2, functionEntry);
+                if ((expressionType1 == "point" && expressionType2 == "point") || (expressionType1 == "num" && expressionType2 == "num")) {
+                    return true;
+                } else {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                }
+            } else {
+                Expression *expressionItem = expressionList->at(0);
+                string expressionType = checkExpression(expressionItem, functionEntry);
+                if (expressionType != "curve") {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                } else {
+                    return true;
+                }
+            }
+        }
+    } else if (dataType == "curve") {
+        if (expressionList->size() != 6) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            for (auto expressionItem : *expressionList) {
+                string expressionType = checkExpression(expressionItem, functionEntry);
+                if (expressionType != "num") {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                }
+            }
+            return true;
+        }
+    } else if (dataType == "circle") {
+        if (expressionList->size() != 2 || expressionList->size() != 1) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            if (expressionList->size() == 1) {
+                Expression *expressionItem = expressionList->at(0);
+                string expressionType = checkExpression(expressionItem, functionEntry);
+                if (expressionType != "curve") {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                } else {
+                    return true;
+                }
+            } else {
+                Expression *expressionItem1 = expressionList->at(0);
+                Expression *expressionItem2 = expressionList->at(1);
+                string expressionType1 = checkExpression(expressionItem1, functionEntry);
+                string expressionType2 = checkExpression(expressionItem2, functionEntry);
+                if (expressionType1 == "point" && expressionType2 == "num") {
+                    return true;
+                } else {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                }
+            }
+        }
+    } else if (dataType == "parabola") {
+        if (expressionList->size() != 2 || expressionList->size() != 1) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            if (expressionList->size() == 1) {
+                Expression *expressionItem = expressionList->at(0);
+                string expressionType = checkExpression(expressionItem, functionEntry);
+                if (expressionType != "curve") {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                } else {
+                    return true;
+                }
+            } else {
+                Expression *expressionItem1 = expressionList->at(0);
+                Expression *expressionItem2 = expressionList->at(1);
+                string expressionType1 = checkExpression(expressionItem1, functionEntry);
+                string expressionType2 = checkExpression(expressionItem2, functionEntry);
+                if (expressionType1 == "point" && expressionType2 == "point") {
+                    return true;
+                } else {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                }
+            }
+        }
+    } else if (dataType == "ellipse") {
+        if (expressionList->size() != 3 || expressionList->size() != 1) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            if (expressionList->size() == 1) {
+                Expression *expressionItem = expressionList->at(0);
+                string expressionType = checkExpression(expressionItem, functionEntry);
+                if (expressionType != "curve") {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                } else {
+                    return true;
+                }
+            } else {
+                Expression *expressionItem1 = expressionList->at(0);
+                Expression *expressionItem2 = expressionList->at(1);
+                Expression *expressionItem3 = expressionList->at(2);
+                string expressionType1 = checkExpression(expressionItem1, functionEntry);
+                string expressionType2 = checkExpression(expressionItem2, functionEntry);
+                string expressionType3 = checkExpression(expressionItem3, functionEntry);
+                if (expressionType1 == "point" && expressionType2 == "num" && expressionType3 == "num") {
+                    return true;
+                } else {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                }
+            }
+        }
+    } else if (dataType == "hyperbola") {
+        if (expressionList->size() != 3 || expressionList->size() != 1) {
+            string error = "Invalid number of arguments in declaration";
+            cout << error << endl;
+            return false;
+            // exit(0);
+        } else {
+            if (expressionList->size() == 1) {
+                Expression *expressionItem = expressionList->at(0);
+                string expressionType = checkExpression(expressionItem, functionEntry);
+                if (expressionType != "curve") {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                } else {
+                    return true;
+                }
+            } else {
+                Expression *expressionItem1 = expressionList->at(0);
+                Expression *expressionItem2 = expressionList->at(1);
+                Expression *expressionItem3 = expressionList->at(2);
+                string expressionType1 = checkExpression(expressionItem1, functionEntry);
+                string expressionType2 = checkExpression(expressionItem2, functionEntry);
+                string expressionType3 = checkExpression(expressionItem3, functionEntry);
+                if (expressionType1 == "point" && expressionType2 == "num" && expressionType3 == "num") {
+                    return true;
+                } else {
+                    string error = "Type mismatch in declaration";
+                    cout << error << endl;
+                    return false;
+                    // exit(0);
+                }
+            }
+        }
+    } else {
+        string error = "Invalid data type in declaration";
+        cout << error << endl;
+        return false;
+        // exit(0);
+    }
+}
+
 void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry) {
     if (functionEntry == nullptr) {
         puts("Check Declaration in Global Scope");
@@ -156,47 +372,8 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                 GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
                 if (entry == NULL) {
                     vector<Expression *> *expressionList = declarationItem->expressionList;
-                    bool checkError = false;
-
-                    if (dataType == "point") {
-                        if (expressionList->size() != 2) {
-                            string error = "Invalid number of arguments in declaration";
-                            cout << error << endl;
-                            // exit(0);
-                        } else {
-                            for (auto expressionItem : *expressionList) {
-                                string expressionType = checkExpression(expressionItem, functionEntry);
-                                if (expressionType != "num") {
-                                    string error = "Type mismatch in declaration";
-                                    cout << error << endl;
-                                    // exit(0);
-                                }
-                            }
-                        }
-                    } else if (dataType == "line") {
-                        if (expressionList->size() != 4) {
-                            string error = "Invalid number of arguments in declaration";
-                            cout << error << endl;
-                            // exit(0);
-                        }
-                    } else if (dataType == "circle") {
-                        if (expressionList->size() != 3) {
-                            string error = "Invalid number of arguments in declaration";
-                            cout << error << endl;
-                            // exit(0);
-                        }
-                    } else if (dataType == "ellipse") {
-                        if (expressionList->size() != 4) {
-                            string error = "Invalid number of arguments in declaration";
-                            cout << error << endl;
-                            // exit(0);
-                        }
-                    } else {
-                        string error = "Invalid data type in declaration";
-                        cout << error << endl;
-                        // exit(0);
-                    }
-                    if (!checkError) {
+                    bool typeCheck = checkTypeInDeclaration(dataType, expressionList, functionEntry);
+                    if (typeCheck) {
                         cout << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
                         insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
                     }
@@ -262,46 +439,8 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                     SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
                     if (entry == nullptr) {
                         vector<Expression *> *expressionList = declarationItem->expressionList;
-                        bool checkError = false;
-                        if (dataType == "point") {
-                            if (expressionList->size() != 2) {
-                                string error = "Invalid number of arguments in declaration";
-                                cout << error << endl;
-                                // exit(0);
-                            } else {
-                                for (auto expressionItem : *expressionList) {
-                                    string expressionType = checkExpression(expressionItem, functionEntry);
-                                    if (expressionType != "num") {
-                                        string error = "Type mismatch in declaration";
-                                        cout << error << endl;
-                                        // exit(0);
-                                    }
-                                }
-                            }
-                        } else if (dataType == "line") {
-                            if (expressionList->size() != 4) {
-                                string error = "Invalid number of arguments in declaration";
-                                cout << error << endl;
-                                // exit(0);
-                            }
-                        } else if (dataType == "circle") {
-                            if (expressionList->size() != 3) {
-                                string error = "Invalid number of arguments in declaration";
-                                cout << error << endl;
-                                // exit(0);
-                            }
-                        } else if (dataType == "ellipse") {
-                            if (expressionList->size() != 4) {
-                                string error = "Invalid number of arguments in declaration";
-                                cout << error << endl;
-                                // exit(0);
-                            }
-                        } else {
-                            string error = "Invalid data type in declaration";
-                            cout << error << endl;
-                            // exit(0);
-                        }
-                        if (!checkError) {
+                        bool typeCheck = checkTypeInDeclaration(dataType, expressionList, functionEntry);
+                        if (typeCheck) {
                             cout << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
                             insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
                         }
@@ -433,13 +572,78 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                     return "";
                 }
             } else if (matchFound == "line") {
-
+                if (postfixExpression->memberVariable1 == MemberVariable::slope || postfixExpression->memberVariable1 == MemberVariable::c) {
+                    return "num";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return "curve";
+                } else {
+                    string error = "Invalid member variable in line";
+                    cout << error << endl;
+                    return "";
+                }
             } else if (matchFound == "circle") {
-                return "num";
+                if (postfixExpression->memberVariable1 == MemberVariable::radius || postfixExpression->memberVariable1 == MemberVariable::eccentricity) {
+                    return "num";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
+                    return "point";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return "curve";
+                } else {
+                    string error = "Invalid member variable in circle";
+                    cout << error << endl;
+                    return "";
+                }
             } else if (matchFound == "ellipse") {
-                return "num";
+                if (postfixExpression->memberVariable1 == MemberVariable::a || postfixExpression->memberVariable1 == MemberVariable::b || postfixExpression->memberVariable1 == MemberVariable::eccentricity) {
+                    return "num";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
+                    return "point";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return "curve";
+                } else {
+                    string error = "Invalid member variable in ellipse";
+                    cout << error << endl;
+                    return "";
+                }
+            } else if (matchFound == "parabola") {
+                if (postfixExpression->memberVariable1 == MemberVariable::vertex || postfixExpression->memberVariable1 == MemberVariable::focus) {
+                    return "point";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::latus_rectum || postfixExpression->memberVariable1 == MemberVariable::eccentricity) {
+                    return "num";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return "curve";
+                } else {
+                    string error = "Invalid member variable in parabola";
+                    cout << error << endl;
+                    return "";
+                }
+            } else if (matchFound == "hyperbola") {
+                if (postfixExpression->memberVariable1 == MemberVariable::a || postfixExpression->memberVariable1 == MemberVariable::b || postfixExpression->memberVariable1 == MemberVariable::eccentricity) {
+                    return "num";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
+                    return "point";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return "curve";
+                } else {
+                    string error = "Invalid member variable in hyperbola";
+                    cout << error << endl;
+                    return "";
+                }
+            } else if (matchFound == "curve") {
+                if (postfixExpression->memberVariable1 == MemberVariable::a || postfixExpression->memberVariable1 == MemberVariable::b || postfixExpression->memberVariable1 == MemberVariable::c || postfixExpression->memberVariable1 == MemberVariable::f || postfixExpression->memberVariable1 == MemberVariable::g || postfixExpression->memberVariable1 == MemberVariable::h || postfixExpression->memberVariable1 == MemberVariable::delta) {
+                    return "num";
+                } else if (postfixExpression->memberVariable1 == MemberVariable::equation || postfixExpression->memberVariable1 == MemberVariable::type) {
+                    return "string";
+                } else {
+                    string error = "Invalid member variable in curve";
+                    cout << error << endl;
+                    return "";
+                }
+            } else {
+                string error = "Invalid data type in postfix expression";
+                cout << error << endl;
+                return "";
             }
-            return matchFound;
         }
     } else if (postfixExpression->flagExpression == 3) {
         string postfixIdentifier = string(postfixExpression->postfixIdentifier);
@@ -452,10 +656,18 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
             // exit(0);
         } else {
             if (matchFound == "line") {
-
+                if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                } else {
+                    string error = "Invalid member variable in line";
+                    cout << error << endl;
+                    return "";
+                }
             } else if (matchFound == "circle") {
-                if(postfixExpression->memberVariable1 == MemberVariable::center) {
-                    if(postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
+                if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
+                    if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
                         return "num";
                     } else {
                         string error = "Invalid member variable in circle";
@@ -468,10 +680,71 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                     return "";
                 }
             } else if (matchFound == "ellipse") {
-                return "num";
+                if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
+                    if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
+                        return "num";
+                    } else {
+                        string error = "Invalid member variable in ellipse";
+                        cout << error << endl;
+                        return "";
+                    }
+                } else {
+                    string error = "Invalid member variable in ellipse";
+                    cout << error << endl;
+                    return "";
+                }
+            } else if (matchFound == "parabola") {
+                if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                } else if (postfixExpression->memberVariable1 == MemberVariable::vertex || postfixExpression->memberVariable1 == MemberVariable::focus) {
+                    if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
+                        return "num";
+                    } else {
+                        string error = "Invalid member variable in parabola";
+                        cout << error << endl;
+                        return "";
+                    }
+                } else {
+                    string error = "Invalid member variable in parabola";
+                    cout << error << endl;
+                    return "";
+                }
+            } else if (matchFound == "hyperbola") {
+                if (postfixExpression->memberVariable1 == MemberVariable::curve) {
+                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
+                    if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
+                        return "num";
+                    } else {
+                        string error = "Invalid member variable in hyperbola";
+                        cout << error << endl;
+                        return "";
+                    }
+                } else {
+                    string error = "Invalid member variable in hyperbola";
+                    cout << error << endl;
+                    return "";
+                }
+            } else {
+                string error = "Invalid data type in postfix expression";
+                cout << error << endl;
+                return "";
             }
-            return matchFound;
         }
+    }
+}
+
+string curveMemberAccess(MemberVariable memberVariable, GlobalSymTabEntry *functionEntry) {
+    if (memberVariable == MemberVariable::a || memberVariable == MemberVariable::b || memberVariable == MemberVariable::c || memberVariable == MemberVariable::f || memberVariable == MemberVariable::g || memberVariable == MemberVariable::h || memberVariable == MemberVariable::delta) {
+        return "num";
+    } else if (memberVariable == MemberVariable::equation || memberVariable == MemberVariable::type) {
+        return "string";
+    } else {
+        string error = "Invalid member variable in curve";
+        cout << error << endl;
+        return "";
     }
 }
 

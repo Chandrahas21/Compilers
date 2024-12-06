@@ -222,7 +222,8 @@ memberVariable
     : X             { $$ = MemberVariable::x; }
     | Y             { $$ = MemberVariable::y; }
     | SLOPE         { $$ = MemberVariable::slope; }
-    | EQUATION_MV   { $$ = MemberVariable::equation; }
+    | TYPE          { $$ = MemberVariable::type; }
+    | EQUATION      { $$ = MemberVariable::equation; }
     | CENTER        { $$ = MemberVariable::center; }
     | FOCUS         { $$ = MemberVariable::focus; }
     | VERTEX        { $$ = MemberVariable::vertex; }
@@ -305,7 +306,6 @@ declarationType
     | BOOL      { dataType = "bool"; $$ = strdup("bool"); }
     | NUM       { dataType = "num"; $$ = strdup("num"); }
     | POINT     { dataType = "point"; $$ = strdup("point"); }
-    | EQUATION  { dataType = "equation"; $$ = strdup("equation"); }
     | LINE      { dataType = "line"; $$ = strdup("line"); }
     | CIRCLE    { dataType = "circle"; $$ = strdup("circle"); }
     | PARABOLA  { dataType = "parabola"; $$ = strdup("parabola"); }
@@ -342,9 +342,7 @@ defaultFunction
     | ISPOINT       { $$ = strdup("isPoint"); }
     | INTERSECTION  { $$ = strdup("intersection"); }
     | TANGENT       { $$ = strdup("tangent"); }
-    | SLOPE_LINE    { $$ = strdup("slopeLine"); }
     | ANGLE         { $$ = strdup("angle"); }
-    | TYPE          { $$ = strdup("type"); }
     | MAIN          { $$ = strdup("main"); }
     ;
 
