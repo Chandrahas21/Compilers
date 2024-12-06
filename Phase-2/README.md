@@ -8,7 +8,7 @@
 
 ---> Open your terminal and execute the following commands.
 
----> To compile to code run the following command.
+---> To compile to code go to Test folder and run the following command.
 
 ```bash
 make
