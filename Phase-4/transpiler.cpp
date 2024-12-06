@@ -1,6 +1,6 @@
 #include "transpiler.hpp"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -139,7 +139,7 @@ string cgAssignmentExpression(AssignmentExpression *assignmentExpression) {
     string strAssignmentExpression = "";
     if (assignmentExpression->flagExpression == 0) {
         strAssignmentExpression += cgPostFixExpression(assignmentExpression->postfixExpression) + " = " + cgExpression(assignmentExpression->expression);
-    } else {
+    } else if (assignmentExpression->flagExpression == 1) {
         strAssignmentExpression += cgExpression(assignmentExpression->expression);
     }
     return strAssignmentExpression;
@@ -149,8 +149,59 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
     string strPostfixExpression = "";
     if (postfixExpression->flagPostfix == 0) {
         strPostfixExpression += cgBasicExpression(postfixExpression->basicExpression);
-    } else {
+    } else if (postfixExpression->flagPostfix == 1) {
         strPostfixExpression += cgFunctionCall(postfixExpression->functionCall);
+    } else if (postfixExpression->flagPostfix == 2) {
+        strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
+        if (postfixExpression->memberVariable1 == MemberVariable::a) {
+            strPostfixExpression += "a";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::b) {
+            strPostfixExpression += "b";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::c) {
+            strPostfixExpression += "c";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::f) {
+            strPostfixExpression += "f";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::g) {
+            strPostfixExpression += "g";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::h) {
+            strPostfixExpression += "h";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::delta) {
+            strPostfixExpression += "delta";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::equation) {
+            strPostfixExpression += "equation";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::type) {
+            strPostfixExpression += "type";
+        } 
+    } else {
+        strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
+        if(postfixExpression->memberVariable1 == MemberVariable::curve){
+            if (postfixExpression->memberVariable2 == MemberVariable::a) {
+                strPostfixExpression += "a";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::b) {
+                strPostfixExpression += "b";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::c) {
+                strPostfixExpression += "c";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::f) {
+                strPostfixExpression += "f";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::g) {
+                strPostfixExpression += "g";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::h) {
+                strPostfixExpression += "h";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::delta) {
+                strPostfixExpression += "delta";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::equation) {
+                strPostfixExpression += "equation";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::type) {
+                strPostfixExpression += "type";
+            }
+            strPostfixExpression += ".";
+        } else if(postfixExpression->memberVariable1 == MemberVariable::center || postfixExpression->memberVariable1 == MemberVariable::focus || postfixExpression->memberVariable1 == MemberVariable::vertex){
+            if (postfixExpression->memberVariable2 == MemberVariable::x) {
+                strPostfixExpression += "x";
+            } else if (postfixExpression->memberVariable2 == MemberVariable::y) {
+                strPostfixExpression += "y";
+            }
+        }
     }
     return strPostfixExpression;
 }
