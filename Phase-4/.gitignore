@@ -6,3 +6,4 @@ scopeDepth
 symbolTable
 ast
 traversal
+transpiler

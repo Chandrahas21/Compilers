@@ -1,0 +1,65 @@
+1 : Punctuator : $
+1 : Keyword : include
+1 : String Literal : "ast.hpp"
+1 : Punctuator : ;
+2 : Punctuator : $
+2 : Keyword : define
+2 : Identifier : IN
+2 : Integer : 12
+2 : Punctuator : ;
+4 : Non-Primitive Data Type : num
+4 : Identifier : a
+4 : Punctuator : ;
+6 : Punctuator : <
+6 : Primitive Data Type : void
+6 : Punctuator : >
+6 : Identifier : check
+6 : Punctuator : (
+6 : Non-Primitive Data Type : num
+6 : Identifier : l
+6 : Punctuator : ,
+6 : Non-Primitive Data Type : num
+6 : Identifier : k
+6 : Punctuator : )
+6 : Punctuator : <=>
+6 : Punctuator : {
+7 : Non-Primitive Data Type : num
+7 : Identifier : a
+7 : Punctuator : ;
+8 : Keyword : if
+8 : Punctuator : (
+8 : Identifier : a
+8 : Punctuator : >
+8 : Integer : 10
+8 : Punctuator : )
+8 : Punctuator : {
+9 : Non-Primitive Data Type : num
+9 : Identifier : b
+9 : Punctuator : ;
+10 : Identifier : b
+10 : Operator : =
+10 : Integer : 10
+10 : Operator : +
+10 : Integer : 1
+10 : Punctuator : ;
+11 : Punctuator : }
+12 : Non-Primitive Data Type : num
+12 : Identifier : c
+12 : Operator : =
+12 : Integer : 10
+12 : Punctuator : ;
+13 : Keyword : loop
+13 : Punctuator : (
+13 : Identifier : l
+13 : Punctuator : <
+13 : Integer : 0
+13 : Punctuator : )
+13 : Punctuator : {
+14 : Single Line Comment : ## write ~ 10 ~ a;
+15 : Non-Primitive Data Type : num
+15 : Identifier : b
+15 : Operator : =
+15 : Integer : 0
+15 : Punctuator : ;
+16 : Punctuator : }
+17 : Punctuator : }

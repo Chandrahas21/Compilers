@@ -96,7 +96,7 @@ string cgCompoundStatement(CompoundStatement *compoundStatement) {
     vector<Statement *> *statementList = compoundStatement->statementList;
     for (auto statement : *statementList) {
         if (statement->flagStatement == 0) {
-            strCompoundStatement += cgAssignmentExpression(statement->assignmentExpression);
+            strCompoundStatement += cgAssignmentExpression(statement->assignmentExpression) + ";\n";
         } else if (statement->flagStatement == 1) {
             strCompoundStatement += cgDeclaration(statement->declaration);
         } else if (statement->flagStatement == 2) {
@@ -138,9 +138,9 @@ string cgInOut(InOut *inOut) {
 string cgAssignmentExpression(AssignmentExpression *assignmentExpression) {
     string strAssignmentExpression = "";
     if (assignmentExpression->flagExpression == 0) {
-        strAssignmentExpression += cgPostFixExpression(assignmentExpression->postfixExpression) + " = " + cgExpression(assignmentExpression->expression) + ";\n";
+        strAssignmentExpression += cgPostFixExpression(assignmentExpression->postfixExpression) + " = " + cgExpression(assignmentExpression->expression);
     } else {
-        strAssignmentExpression += cgExpression(assignmentExpression->expression) + ";\n";
+        strAssignmentExpression += cgExpression(assignmentExpression->expression);
     }
     return strAssignmentExpression;
 }
@@ -283,9 +283,9 @@ string cgIterativeStatement(IterativeStatement *iterativeStatement) {
         strIterativeStatement += "}\n";
     } else {
         if (iterativeStatement->declaration == NULL) {
-            strIterativeStatement += "for (" + cgDeclaration(iterativeStatement->declaration) + "; " + cgExpression(iterativeStatement->expression2) + "; " + cgAssignmentExpression(iterativeStatement->assignmentexpression3) + ") {\n";
-        } else {
             strIterativeStatement += "for (" + cgAssignmentExpression(iterativeStatement->assignmentexpression1) + "; " + cgExpression(iterativeStatement->expression2) + "; " + cgAssignmentExpression(iterativeStatement->assignmentexpression3) + ") {\n";
+        } else {
+            strIterativeStatement += "for (" + cgDeclaration(iterativeStatement->declaration) + cgExpression(iterativeStatement->expression2) + "; " + cgAssignmentExpression(iterativeStatement->assignmentexpression3) + ") {\n";
         }
         strIterativeStatement += cgCompoundStatement(iterativeStatement->compoundStatement);
         strIterativeStatement += "}\n";

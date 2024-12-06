@@ -485,9 +485,14 @@ int main(int argc, char *argv[]) {
     outputFile.close();
     tokenFile.close();
     cout << "\033[1;34m" << "Parser Finished." << "\033[0m" << endl;
-    
+
+    cout << "\033[1;34m" << "Starting Semantic checks." << "\033[0m" << endl;
     traversal(start);
+    cout << "\033[1;34m" << "Semantic checks finished." << "\033[0m" << endl;
+
+    cout << "\033[1;34m" << "Starting Transpiler." << "\033[0m" << endl;
     transpiler(start);
+    cout << "\033[1;34m" << "Transpiler finished." << "\033[0m" << endl;
 
     if(argc == 5 and !strcmp(argv[4], "-v")) {
         printGlobalSymTab(globalSymbolTable);
