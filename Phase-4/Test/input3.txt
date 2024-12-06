@@ -1,0 +1,14 @@
+$include "ast.hpp";
+$define IN 12;
+
+<num> slope(point p1, point p2) <=> {
+    num x1 = p1._x, x2 = p2._x ;
+    num y1 = p1._y, y2 = p2._y ;
+    return (y2-y1)/(x2-x1) ;
+}
+
+<string> fn(line l, point p) <=> {
+    num r = distance(l,p);
+    circle c(p,r);
+    return c._curve._equation ;
+}

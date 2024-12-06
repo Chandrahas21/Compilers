@@ -104,7 +104,6 @@ string cgCompoundStatement(CompoundStatement *compoundStatement) {
         } else if (statement->flagStatement == 3) {
             strCompoundStatement += cgCompoundStatement(statement->compoundStatement);
         } else if (statement->flagStatement == 4) {
-            cout << "Conditional --- Statement\n";
             strCompoundStatement += cgConditionalStatement(statement->conditionalStatement);
         } else if (statement->flagStatement == 5) {
             strCompoundStatement += cgIterativeStatement(statement->iterativeStatement);
@@ -175,6 +174,22 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
                 strPostfixExpression += "x";
         } else if (postfixExpression->memberVariable2 == MemberVariable::y) {
                 strPostfixExpression += "y";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::slope) {
+            strPostfixExpression += "slope";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::curve) {
+            strPostfixExpression += "curve";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::center) {
+            strPostfixExpression += "center";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::focus) {
+            strPostfixExpression += "focus";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::vertex) {
+            strPostfixExpression += "vertex";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::radius) {
+            strPostfixExpression += "radius";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::eccentricity) {
+            strPostfixExpression += "eccentricity";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::latus_rectum) {
+            strPostfixExpression += "latus_rectum";
         }
     } else {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";

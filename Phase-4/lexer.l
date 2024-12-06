@@ -18,9 +18,9 @@ comment_Start "#*"
 comment_End "*#"
 
 primitive_Data_Types ("void"|"string"|"bool")
-non_Primitive_Data_Types ("num"|"point"|"equation"|"line"|"circle"|"parabola"|"hyperbola"|"ellipse"|"curve")
+non_Primitive_Data_Types ("num"|"point"|"line"|"circle"|"parabola"|"hyperbola"|"ellipse"|"curve")
 
-key_Words ("if"|"elif"|"el"|"loop"|"stop"|"skip"|"return"|"switch"|"goto"|"write"|"read"|"bool"|"struct"|"include"|"define"|"null"|"main"|"default"|"case"|"true"|"false")
+key_Words ("if"|"elif"|"el"|"loop"|"stop"|"skip"|"return"|"write"|"read"|"bool"|"include"|"define"|"null"|"main"|"true"|"false")
 
 punctuators (":"|";"|","|"\'"|"\""|"("|")"|"["|"]"|"{"|"}"|"<"|">"|"$"|"<=>")
 
@@ -28,9 +28,9 @@ special_Characters ("\\n"|"\\t")
 
 operators ("++"|"--"|"!"|"^"|"*"|"/"|"%"|"+"|"-"|"=="|"!="|">="|"<="|"<"|">"|"&&"|"||"|"="|"~"|".")
 
-in_Built ("to_string"|"distance"|"solve"|"sqrt"|"ispoint"|"intersection"|"tangent"|"slope_line"|"angle"|"type")
+in_Built ("to_string"|"distance"|"solve"|"sqrt"|"ispoint"|"intersection"|"tangent"|"angle")
 
-member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"_c"|"_f"|"_g"|"_h"|"_delta"|"_eccentricity"|"_latus_rectum"|"_vertex"|"_focus")
+member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"_c"|"_f"|"_g"|"_h"|"_delta"|"_eccentricity"|"_latus_rectum"|"_vertex"|"_focus"|"_Curve")
 
 %%
 
@@ -93,7 +93,6 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     string non_primitive_data_type(yytext);
     if(non_primitive_data_type == "num") return NUM;
     else if(non_primitive_data_type == "point") return POINT;
-    else if(non_primitive_data_type == "equation") return EQUATION;
     else if(non_primitive_data_type == "line") return LINE;
     else if(non_primitive_data_type == "circle") return CIRCLE;
     else if(non_primitive_data_type == "parabola") return PARABOLA;
@@ -116,9 +115,7 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     else if(in_built == "ispoint") return ISPOINT;
     else if(in_built == "intersection") return INTERSECTION;
     else if(in_built == "tangent") return TANGENT;
-    else if(in_built == "slope_line") return SLOPE_LINE;
     else if(in_built == "angle") return ANGLE;
-    else if(in_built == "type") return TYPE;
     else return -1;
 }
 
@@ -131,7 +128,7 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     if(member_variable == "_x") return X;
     else if(member_variable == "_y") return Y;
     else if(member_variable == "_slope") return SLOPE;
-    else if(member_variable == "_equation") return EQUATION_MV;
+    else if(member_variable == "_equation") return EQUATION;
     else if(member_variable == "_center") return CENTER;
     else if(member_variable == "_radius") return RADIUS;
     else if(member_variable == "_a") return A;
@@ -145,6 +142,7 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     else if(member_variable == "_latus_rectum") return LATUS_RECTUM;
     else if(member_variable == "_vertex") return VERTEX;
     else if(member_variable == "_focus") return FOCUS;
+    else if(member_variable == "_Curve") return CURVE;
     else return -1;
 }
 
@@ -284,5 +282,5 @@ void count()
 		else
 			yycolumnno++;
 
-	ECHO;
+	// ECHO;
 }

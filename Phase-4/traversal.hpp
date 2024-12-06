@@ -3,12 +3,12 @@
 
 #pragma once
 #include "ast.hpp"
-#include <iostream>
-#include <fstream>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
 using namespace std;
 
-void traversal(Start *start);
+bool traversal(Start *start);
 void checkHeader(vector<Header *> *headerList);
 void checkProgram(vector<Program *> *programList);
 bool checkDeclarationInArguments(string declarationIdentifier, string dataType, vector<pair<string, string>> *argumentList);
@@ -17,7 +17,7 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
 void checkFunctionDeclaration(FunctionDeclaration *functionDeclaration);
 void inOutStatement(InOut *inOut, GlobalSymTabEntry *functionEntry);
 void checkAssignmentExpression(AssignmentExpression *assignmentExpression, GlobalSymTabEntry *functionEntry);
-string curveMemberAccess(MemberVariable memberVariable);
+string curveMemberAccess(MemberVariable memberVariable, PostfixExpression *postfixExpression);
 string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTabEntry *functionEntry);
 string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry *functionEntry);
 string checkConstantValue(ConstantValue *constantValue);

@@ -95,9 +95,9 @@
 %token <str_val> IF ELIF ELSE 
 %token <str_val> LOOP STOP SKIP RETURN
 %token <str_val> WRITE READ INCLUDE DEFINE NULL_TOK MAIN DOLLAR TILDE MEMBER_ACCESS
-%token <str_val> NUM POINT EQUATION LINE CIRCLE PARABOLA HYPERBOLA ELLIPSE CURVE
-%token <str_val> TO_STRING DISTANCE SOLVE SQRT ISPOINT INTERSECTION TANGENT SLOPE_LINE ANGLE TYPE 
-%token <str_val> X Y SLOPE EQUATION_MV RADIUS A B C F G H DELTA ECCENTRICITY LATUS_RECTUM VERTEX CENTER FOCUS    
+%token <str_val> NUM POINT CURVE LINE CIRCLE PARABOLA HYPERBOLA ELLIPSE
+%token <str_val> TO_STRING DISTANCE SOLVE SQRT ISPOINT INTERSECTION TANGENT ANGLE
+%token <str_val> X Y SLOPE EQUATION RADIUS A B C F G H DELTA ECCENTRICITY LATUS_RECTUM VERTEX CENTER FOCUS TYPE   
 %token <str_val> COLON SEMICOLON COMMA SINGLE_QUOTE DOUBLE_QUOTE IMPLIES
 %token <str_val> LEFT_PAREN RIGHT_PAREN LEFT_BRACKET RIGHT_BRACKET LEFT_BRACE RIGHT_BRACE LESS_THAN GREATER_THAN 
 %token <str_val> INCREMENT DECREMENT LOGICAL_NOT 
@@ -237,6 +237,7 @@ memberVariable
     | DELTA         { $$ = MemberVariable::delta; }
     | ECCENTRICITY  { $$ = MemberVariable::eccentricity; }
     | LATUS_RECTUM  { $$ = MemberVariable::latus_rectum; }
+    | CURVE         { $$ = MemberVariable::curve; }
     ;
 
 basicExpression
@@ -436,7 +437,7 @@ jumpStatement
 int yyerror(string s) {
     outputFile << endl << "Error: " << s << " at line " << yylineno << ".\n";
     tokenFile << endl << "Error: " << s << " at line " << yylineno << ".\n";
-    cerr << "Error: " << s << " at line " << yylineno << ".\n";
+    cerr << endl << "\033[1;31m" << "Error: " << s << " at line " << yylineno << "." << "\033[0m" << endl;
     return 0;
 }
 
@@ -472,21 +473,23 @@ int main(int argc, char *argv[]) {
     }
 
     yyin = inputFile;
-    int parser_output = yyparse();
-    if (parser_output == 0) {
-        cout << "\033[1;32m" << "VERDICT: [SUCCESS]" << "\033[0m" << endl;
-    } else {
-        cerr << "\033[1;31m" << "VERDICT: [FAILED]" << "\033[0m" << endl;
-    }
-
-    fclose(inputFile);
-    outputFile.close();
-    tokenFile.close();
+    int parserOutput = yyparse();
+    if (parserOutput == 0) {
+        cout << "\033[1;32m" << "PARSER VERDICT: [SUCCESS]" << "\033[0m" << endl;
     cout << "\033[1;34m" << "Parser Finished." << "\033[0m" << endl;
 
+        cout << endl;
+
     cout << "\033[1;34m" << "Starting Semantic checks." << "\033[0m" << endl;
-    traversal(start);
+        bool semanticOutput = traversal(start);
+        if(semanticOutput) {
+            cout << "\033[1;32m" << "SEMANTIC VERDICT: [SUCCESS]" << "\033[0m" << endl;
+        } else {
+            cout << "\033[1;31m" << "SEMANTIC VERDICT: [FAILED]" << "\033[0m" << endl;
+        }
     cout << "\033[1;34m" << "Semantic checks finished." << "\033[0m" << endl;
+
+        cout << endl;
 
     cout << "\033[1;34m" << "Starting Transpiler." << "\033[0m" << endl;
     transpiler(start);
@@ -495,5 +498,12 @@ int main(int argc, char *argv[]) {
     if(argc == 5 and !strcmp(argv[4], "-v")) {
         printGlobalSymTab(globalSymbolTable);
     }
+    } else {
+        cerr << "\033[1;31m" << "PARSER VERDICT: [FAILED]" << "\033[0m" << endl;
+    }
+
+    fclose(inputFile);
+    outputFile.close();
+    tokenFile.close();
     return 0;
 }
