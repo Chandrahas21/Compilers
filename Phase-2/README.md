@@ -4,13 +4,22 @@
 
 ---> Open your terminal and execute the following commands.
 
+---> To compile to code run the following command.
+
 ```bash
 make
-./parser ./Test/<input_file>.txt ./Test/<output_file>.txt ./Test/<token_file.txt>
 ```
 
-## Example:
-```bash
-make
-./parser ./Test/input1.txt ./Test/output1.txt ./Test/token1.txt
-```
+---> To execute on input programs run the following command.
+
+### Running Input Programs
+
+1. **To Run the input2.txt:** 
+
+    ```bash
+    make run NUM=2
+    ```
+    ---> It will run the input2.txt file.
+    ---> To run on different input files change the NUM to different numbers.
+
+
