@@ -20,6 +20,7 @@ make
     make run NUM=2
     ```
     ---> It will run the input2.txt file.
+   
     ---> To run on different input files change the NUM to different numbers.
 
 
