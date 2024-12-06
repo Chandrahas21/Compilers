@@ -1,6 +1,6 @@
 # This is directory for Semantic phase.
 
-2. To comile the code, follow the following command:
+2. To compile the code, follow the following command:
     ```bash
     make
     ```
