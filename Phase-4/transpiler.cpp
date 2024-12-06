@@ -171,7 +171,11 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             strPostfixExpression += "equation";
         } else if (postfixExpression->memberVariable1 == MemberVariable::type) {
             strPostfixExpression += "type";
-        } 
+        } else if (postfixExpression->memberVariable2 == MemberVariable::x) {
+                strPostfixExpression += "x";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::y) {
+                strPostfixExpression += "y";
+        }
     } else {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
         if(postfixExpression->memberVariable1 == MemberVariable::curve){

@@ -1,0 +1,20 @@
+$include "ast.hpp";
+$define IN 12;
+
+num a;
+
+<void> check(num l, num k) <=> {
+    num a;
+    point p(1,2);
+    if(a>10){
+        num b;
+        b = 10+1;
+        b = p._x;
+    }
+    num c =10;
+    loop(l<0){
+        ## write ~ 10 ~ a;
+        num b=0;
+    }
+}
+
