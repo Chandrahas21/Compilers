@@ -5,15 +5,15 @@ num a;
 
 <void> check(num a, num b) <=> {
     num a;
-    if(a){
+    if(a>1){
         num b;
         b = 10+1;
         ## num b;
     }
     num c;
-    if(a){
+    if(a>1){
         num d;
-        if(a){
+        if(a>1){
             num e;
         }
     }
@@ -21,11 +21,11 @@ num a;
 
 <void> main() <=> {
     num a;
-    if(a){
+    if(a>1){
         num b;
-        if(a){
+        if(a>1){
             num c;
-            if(a){
+            if(a>1){
                 num d;
             }
         }
