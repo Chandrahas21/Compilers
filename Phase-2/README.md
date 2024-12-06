@@ -1,17 +1,16 @@
-# Phase-2 readme
+# Phase-3 readme
 
----> Phase 2 folder has lexerReturn.l file, main lex file which should be linked with parsing phase and Test folder is for testing the lex phase.
+---> Clone the directory.
 
----> Test folder contains lexerDetailed.l, lexerReplace.l, makefile and two directories for input and output files.
+---> Open your terminal and execute the following commands.
 
-## To test , go to Test folder and follow the following commands:
 ```bash
 make
-./lexerDetailed ./Input_Files/<inputFile_name>.txt ./Output_Files/<outputFile_name>.txt
+./parser ./Test/<input_file>.txt ./Test/<output_file>.txt ./Test/<token_file.txt>
 ```
 
 ## Example:
 ```bash
 make
-./lexerDetailed ./Input_Files/input1.txt ./Output_Files/output1.txt
+./parser ./Test/input1.txt ./Test/output1.txt ./Test/token1.txt
 ```
