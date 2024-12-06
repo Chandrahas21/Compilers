@@ -11,3 +11,4 @@ error
 Test/output.cpp
 Test/output.txt
 Test/token.txt
+Test/log.txt
