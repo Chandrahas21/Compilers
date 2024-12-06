@@ -210,7 +210,7 @@ scan
 print
     : NEW_LINE_CHARACTER    { $$ = new Print(0, strdup("\n"), yylineno, yycolumnno); }
     | TAB_CHARACTER         { $$ = new Print(0, strdup("\t"), yylineno, yycolumnno); }
-    | postfixExpression     { $$ = new Print(1, $1, yylineno, yycolumnno); }
+    | expression            { $$ = new Print(1, $1, yylineno, yycolumnno); }
     ;
 
 printList
@@ -275,7 +275,7 @@ unaryOperator
     
 unaryExpression
     : postfixExpression             { $$ = new UnaryExpression($1, yylineno, yycolumnno); }
-    | unaryOperator unaryExpression { $$->opList->push_back($1); $$ = $2; }
+    | unaryOperator unaryExpression { $$ = $2; $$->opList->push_back($1); }
     ;
 
 assignmentExpression
@@ -442,7 +442,6 @@ int yyerror(string s) {
 }
 
 int main(int argc, char *argv[]) {
-    cout << "\033[1;34m" << "Starting Parser." << "\033[0m" << endl;
     if (argc < 4) {
         printf("Usage: %s <input file> <output file> <token file> <Verbose flag>\n", argv[0]);
         return 1;
@@ -472,6 +471,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    cout << "\033[1;34m" << "Starting Parser." << "\033[0m" << endl;
     yyin = inputFile;
     int parserOutput = yyparse();
     if (parserOutput == 0) {

@@ -767,7 +767,13 @@ string checkUnaryExpression(UnaryExpression *unaryExpression, GlobalSymTabEntry 
                 printError(INVALID_UNARY_OP_ACCESS, unaryExpression->row, unaryExpression->column);
                 exit(0);
             }
-        } else {
+        } else if (op == UnaryOperator::minus_op || op == UnaryOperator::plus_op) {
+            if (postfixType != "num") {
+                printError(INVALID_UNARY_OP_ACCESS, unaryExpression->row, unaryExpression->column);
+                exit(0);
+            }
+        }
+        else {
             printError(INVALID_UNARY_OP_ACCESS, unaryExpression->row, unaryExpression->column);
             exit(0);
         }

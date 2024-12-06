@@ -141,9 +141,9 @@ string cgInOut(InOut *inOut) {
 
 string cgAssignmentExpression(AssignmentExpression *assignmentExpression) {
     string strAssignmentExpression = "";
-    if (assignmentExpression->flagExpression == 0) {
+    if (assignmentExpression->isAssignment == 0) {
         strAssignmentExpression += cgPostFixExpression(assignmentExpression->postfixExpression) + " = " + cgExpression(assignmentExpression->expression);
-    } else if (assignmentExpression->flagExpression == 1) {
+    } else if (assignmentExpression->isAssignment == 1) {
         strAssignmentExpression += cgExpression(assignmentExpression->expression);
     }
     return strAssignmentExpression;
@@ -235,6 +235,13 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             }
         }
     }
+    for(auto op : *postfixExpression->opList){
+        if(op == UnaryOperator::inc_op){
+            strPostfixExpression += "++";
+        } else if(op == UnaryOperator::dec_op){
+            strPostfixExpression += "--";
+        }
+    }
     return strPostfixExpression;
 }
 
@@ -255,7 +262,10 @@ string cgFunctionCall(FunctionCall *functionCall) {
     strFunctionCall += string(functionCall->functionCallIdentifier) + "(";
     vector<Expression *> *argumentList = functionCall->argumentList;
     for (auto argument : *argumentList) {
-        strFunctionCall += cgExpression(argument) + ", ";
+        strFunctionCall += cgExpression(argument);
+        if(argument != argumentList->back()){
+            strFunctionCall += ", ";
+        }
     }
     strFunctionCall += ")";
     return strFunctionCall;
@@ -289,7 +299,6 @@ string cgUnaryExpression(UnaryExpression *unaryExpression) {
     string strUnaryExpression = "";
     PostfixExpression *postfixExpression = unaryExpression->postfixExpression;
     vector<UnaryOperator> *opList = unaryExpression->opList;
-    strUnaryExpression += cgPostFixExpression(postfixExpression);
     for (auto op : *opList) {
         if (op == UnaryOperator::inc_op) {
             strUnaryExpression += "++";
@@ -297,8 +306,14 @@ string cgUnaryExpression(UnaryExpression *unaryExpression) {
             strUnaryExpression += "--";
         } else if (op == UnaryOperator::not_op) {
             strUnaryExpression += "!";
+        } else if(op == UnaryOperator::minus_op){
+            strUnaryExpression += "-";
+        } else if(op == UnaryOperator::plus_op){
+            strUnaryExpression += "+";
         }
+
     }
+    strUnaryExpression += cgPostFixExpression(postfixExpression);
     return strUnaryExpression;
 }
 
@@ -383,6 +398,8 @@ string cgJumpStatement(JumpStatement *jumpStatement) {
         strJumpStatement += "break;\n";
     } else if (jumpStatement->flagJump == 1) {
         strJumpStatement += "continue;\n";
+    } else if (jumpStatement->flagJump == 2) {
+        strJumpStatement += "return;\n";
     } else {
         strJumpStatement += "return " + cgExpression(jumpStatement->expression) + ";\n";
     }
