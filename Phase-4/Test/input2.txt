@@ -1,0 +1,34 @@
+$include "ast.hpp";
+$define IN 12;
+
+num a;
+
+<void> check(num a, num b) <=> {
+    num a;
+    if(a){
+        num b;
+        b = 10+1;
+        ## num b;
+    }
+    num c;
+    if(a){
+        num d;
+        if(a){
+            num e;
+        }
+    }
+}
+
+<void> main() <=> {
+    num a;
+    if(a){
+        num b;
+        if(a){
+            num c;
+            if(a){
+                num d;
+            }
+        }
+        num e;
+    }
+}
