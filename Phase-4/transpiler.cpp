@@ -200,6 +200,14 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             }
             strPostfixExpression += ".";
         } else if(postfixExpression->memberVariable1 == MemberVariable::center || postfixExpression->memberVariable1 == MemberVariable::focus || postfixExpression->memberVariable1 == MemberVariable::vertex){
+            if(postfixExpression->memberVariable1 == MemberVariable::center){
+                strPostfixExpression += "center";
+            } else if(postfixExpression->memberVariable1 == MemberVariable::focus){
+                strPostfixExpression += "focus";
+            } else if(postfixExpression->memberVariable1 == MemberVariable::vertex){
+                strPostfixExpression += "vertex";
+            }
+            strPostfixExpression += ".";
             if (postfixExpression->memberVariable2 == MemberVariable::x) {
                 strPostfixExpression += "x";
             } else if (postfixExpression->memberVariable2 == MemberVariable::y) {

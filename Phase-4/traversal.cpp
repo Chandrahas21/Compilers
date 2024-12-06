@@ -132,7 +132,7 @@ bool checkTypeInDeclaration(string dataType, vector<Expression *> *expressionLis
             }
         }
     } else if (dataType == "line") {
-        if (expressionList->size() != 2 || expressionList->size() != 1) {
+        if (expressionList->size() != 2 && expressionList->size() != 1) {
             string error = "Invalid number of arguments in declaration";
             cout << error << endl;
             return false;
@@ -183,8 +183,9 @@ bool checkTypeInDeclaration(string dataType, vector<Expression *> *expressionLis
             return true;
         }
     } else if (dataType == "circle") {
-        if (expressionList->size() != 2 || expressionList->size() != 1) {
-            string error = "Invalid number of arguments in declaration";
+        cout << expressionList->size() << endl;
+        if (expressionList->size() != 2 && expressionList->size() != 1) {
+            string error = "Invalid number of rutwik arguments in declaration";
             cout << error << endl;
             return false;
             // exit(0);
@@ -216,7 +217,7 @@ bool checkTypeInDeclaration(string dataType, vector<Expression *> *expressionLis
             }
         }
     } else if (dataType == "parabola") {
-        if (expressionList->size() != 2 || expressionList->size() != 1) {
+        if (expressionList->size() != 2 && expressionList->size() != 1) {
             string error = "Invalid number of arguments in declaration";
             cout << error << endl;
             return false;
@@ -249,7 +250,7 @@ bool checkTypeInDeclaration(string dataType, vector<Expression *> *expressionLis
             }
         }
     } else if (dataType == "ellipse") {
-        if (expressionList->size() != 3 || expressionList->size() != 1) {
+        if (expressionList->size() != 3 && expressionList->size() != 1) {
             string error = "Invalid number of arguments in declaration";
             cout << error << endl;
             return false;
@@ -284,7 +285,7 @@ bool checkTypeInDeclaration(string dataType, vector<Expression *> *expressionLis
             }
         }
     } else if (dataType == "hyperbola") {
-        if (expressionList->size() != 3 || expressionList->size() != 1) {
+        if (expressionList->size() != 3 && expressionList->size() != 1) {
             string error = "Invalid number of arguments in declaration";
             cout << error << endl;
             return false;

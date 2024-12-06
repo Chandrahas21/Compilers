@@ -241,8 +241,8 @@ public:
     vector<UnaryOperator> *opList;
     PostfixExpression(int flagPostfix, BasicExpression *basicExpression, int row, int column);
     PostfixExpression(int flagPostfix, FunctionCall *functionCall, int row, int column);
-    PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, int row, int column);
-    PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, MemberVariable memberVariable2, int row, int column);
+    PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, string scope, int row, int column);
+    PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, MemberVariable memberVariable2, string scope, int row, int column);
     virtual ~PostfixExpression() = default;
 };
 

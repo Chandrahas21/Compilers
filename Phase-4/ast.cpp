@@ -281,18 +281,19 @@ PostfixExpression::PostfixExpression(int flagPostfix, FunctionCall *functionCall
     this->column = column;
 }
 
-PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, int row, int column) {
+PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, string scope, int row, int column) {
     this->flagPostfix = flagPostfix;
     this->basicExpression = nullptr;
     this->functionCall = nullptr;
     this->postfixIdentifier = postfixIdentifier;
     this->memberVariable1 = memberVariable1;
     this->opList = new vector<UnaryOperator>();
+    this->scope = scope;
     this->row = row;
     this->column = column;
 }
 
-PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, MemberVariable memberVariable2, int row, int column) {
+PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, MemberVariable memberVariable2, string scope, int row, int column) {
     this->flagPostfix = flagPostfix;
     this->basicExpression = nullptr;
     this->functionCall = nullptr;
@@ -300,6 +301,7 @@ PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, M
     this->memberVariable1 = memberVariable1;
     this->memberVariable2 = memberVariable2;
     this->opList = new vector<UnaryOperator>();
+    this->scope = scope;
     this->row = row;
     this->column = column;
 }

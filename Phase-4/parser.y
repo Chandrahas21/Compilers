@@ -258,8 +258,8 @@ functionCall
 postfixExpression
     : basicExpression                          { $$ = new PostfixExpression(0, $1, yylineno, yycolumnno); }
     | functionCall                             { $$ = new PostfixExpression(1, $1, yylineno, yycolumnno); }
-    | IDENTIFIER MEMBER_ACCESS memberVariable  { $$ = new PostfixExpression(2, $1, $3, yylineno, yycolumnno); }
-    | IDENTIFIER MEMBER_ACCESS memberVariable MEMBER_ACCESS memberVariable { $$ = new PostfixExpression(3, $1, $3, $5, yylineno, yycolumnno); }
+    | IDENTIFIER MEMBER_ACCESS memberVariable  { $$ = new PostfixExpression(2, $1, $3, scope, yylineno, yycolumnno); }
+    | IDENTIFIER MEMBER_ACCESS memberVariable MEMBER_ACCESS memberVariable { $$ = new PostfixExpression(3, $1, $3, $5, scope, yylineno, yycolumnno); }
     | postfixExpression INCREMENT              { $$->opList->push_back(UnaryOperator::inc_op); $$ = $1; }
     | postfixExpression DECREMENT              { $$->opList->push_back(UnaryOperator::dec_op); $$ = $1; }
     ;
