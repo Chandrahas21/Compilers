@@ -24,7 +24,7 @@ Once you’ve compile the code, you can test the input programs.
     ```
 3. **Default input program:**
 
-   ---> Default input program is input.txt
+   ---> Default input program is input.txt.To run it follow the following command.
     ```bash
     Make run
     ```
@@ -33,5 +33,5 @@ Once you’ve compile the code, you can test the input programs.
     ```bash
     Make run VERBOSE=-v
     ```
-   ---> It will print symbol table forinput.txt program.
+   ---> Above command will print symbol table for input.txt program.
 
