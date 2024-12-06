@@ -11,7 +11,7 @@ num a;
     }
     num c =10;
     loop(l<0){
-        ## write ~ 10 ~ a;
+        write ~ b ~ a;
         num b=0;
     }
 }
