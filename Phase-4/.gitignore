@@ -7,3 +7,6 @@ symbolTable
 ast
 traversal
 transpiler
+Test/output.cpp
+Test/output.txt
+Test/token.txt
