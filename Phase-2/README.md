@@ -4,7 +4,7 @@
 
 ---> Test folder contains lexerDetailed.l, lexerReplace.l, makefile and two directories for input and output files.
 
-## To test follow the following commands:
+## To test , go to Test folder and follow the following commands:
 ```bash
 make
 ./lexerDetailed ./Input_Files/<inputFile_name>.txt ./Output_Files/<outputFile_name>.txt
