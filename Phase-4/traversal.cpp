@@ -197,7 +197,7 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                     string idKey = declarationIdentifier + " <=> " + declarationscope;
                     SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
                     if (entry == nullptr) {
-                        cout << "Inserting variable into function local symbol table" << declarationIdentifier << " in " << functionEntry->name << endl;
+                        cout << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
                         insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
                     } else {
                         string error = "Variable already declared in respective scope: " + declarationIdentifier;
@@ -222,7 +222,7 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                             cout << error << endl;
                             // exit(0);
                         } else {
-                            cout << "Inserting variable into function local symbol table" << declarationIdentifier << " in " << functionEntry->name << endl;
+                            cout << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
                             insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
                         }
                     } else {
@@ -263,7 +263,7 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                             }
                         }
                         if (!checkError) {
-                            cout << "Inserting variable into function local symbol table" << declarationIdentifier << " in " << functionEntry->name << endl;
+                            cout << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
                             insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
                         }
                     } else {
@@ -361,6 +361,8 @@ void checkAssignmentExpression(AssignmentExpression *assignmentExpression, Globa
             string error = "Type mismatch in assignment expression in " + functionEntry->name;
             cout << error << endl;
             // exit(0);
+        } else{
+            // cout << lhsType << " " << rhsType << endl;
         }
     } else {
         checkExpression(expression, functionEntry);
@@ -387,6 +389,8 @@ string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry 
         if (matchFound == "") {
             string error = "Variable not declared: " + basicIdentifier;
             cout << error << endl;
+            return "";
+            return "";
             // exit(0);
         } else {
             return matchFound;
@@ -418,6 +422,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
     if (entry == NULL) {
         string error = "Function not declared: " + functionCallIdentifier;
         cout << error << endl;
+        return "";
         // exit(0);
     } else {
         puts("Function declared");
@@ -425,6 +430,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
         if (arguments->size() != argumentList->size()) {
             string error = "Argument size mismatch in function call: " + functionCallIdentifier;
             cout << error << endl;
+            return "";
             // exit(0);
         } else {
             for (int i = 0; i < arguments->size(); i++) {
@@ -433,6 +439,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
                 if (argumentDefaultType != argumentCallType) {
                     string error = "Argument type mismatch in function call: " + functionCallIdentifier + " at position " + to_string(i + 1);
                     cout << error << endl;
+                    return "";
                     // exit(0);
                     break;
                 }
@@ -463,17 +470,20 @@ string checkUnaryExpression(UnaryExpression *unaryExpression, GlobalSymTabEntry 
             if (postfixType != "num") {
                 string error = "Type mismatch in unary expression";
                 cout << error << endl;
+                return "";
                 // exit(0);
             }
         } else if (op == UnaryOperator::not_op) {
             if (postfixType != "boolean") {
                 string error = "Type mismatch in unary expression";
                 cout << error << endl;
+                return "";
                 // exit(0);
             }
         } else {
             string error = "Invalid unary operator";
             cout << error << endl;
+            return "";
             // exit(0);
         }
     }
@@ -487,6 +497,7 @@ string checkBinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op
     if (lhsType != rhsType) {
         string error = "Type mismatch in binary expression";
         cout << error << endl;
+        return "";
         // exit(0);
     } else {
         return lhsType;
@@ -501,9 +512,11 @@ void checkCompoundStatement(CompoundStatement *compoundStatement, GlobalSymTabEn
         if (statementItem->flagStatement == 0) {
             cout << "AssignmentExpression inside function " << functionEntry->name << endl;
             checkAssignmentExpression(statementItem->assignmentExpression, functionEntry);
+            cout << "AssignmentExpression done" << endl;
         } else if (statementItem->flagStatement == 1) {
             cout << "Declaration inside function " << functionEntry->name << endl;
             checkDeclaration(statementItem->declaration, functionEntry);
+            cout << "Declaration done" << endl;
         } else if (statementItem->flagStatement == 2) {
             cout << "InOut inside function " << functionEntry->name << endl;
             inOutStatement(statementItem->inOut, functionEntry);
@@ -513,6 +526,7 @@ void checkCompoundStatement(CompoundStatement *compoundStatement, GlobalSymTabEn
         } else if (statementItem->flagStatement == 4) {
             cout << "ConditionalStatement inside function " << functionEntry->name << endl;
             checkConditionalStatement(statementItem->conditionalStatement, functionEntry);
+            cout << "ConditionalStatement done" << endl;
         } else if (statementItem->flagStatement == 5) {
             cout << "IterativeStatement inside function " << functionEntry->name << endl;
             checkIterativeStatement(statementItem->iterativeStatement, functionEntry);
@@ -645,6 +659,7 @@ string checkConditionalBinaryExpression(Expression *lhs, Expression *rhs, Binary
     if (lhsType != rhsType) {
         string error = "Type mismatch in conditional binary expression";
         cout << error << endl;
+        return "";
         // exit(0);
     } else {
         if(op == BinaryOperator::equal_op or op == BinaryOperator::not_equal_op or op == BinaryOperator::less_equal_op or op == BinaryOperator::less_op or op == BinaryOperator::greater_equal_op or op == BinaryOperator::greater_op) {
@@ -652,6 +667,7 @@ string checkConditionalBinaryExpression(Expression *lhs, Expression *rhs, Binary
         } else {
             string error = "Invalid operator in conditional binary expression";
             cout << error << endl;
+            return "";
             // exit(0);
         }
     }
@@ -668,6 +684,7 @@ string checkIterativeAssignmentExpression(AssignmentExpression *assignmentExpres
         if (lhsType != rhsType) {
             string error = "Type mismatch in assignment expression in " + functionEntry->name;
             cout << error << endl;
+            return "";
             // exit(0);
         }
         else {

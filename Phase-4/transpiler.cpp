@@ -1,18 +1,22 @@
-#include <bits/stdc++.h>
 #include "transpiler.hpp"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-class Start *root;
+void transpiler(Start *start) {
+    ofstream file;
+    file.open("./Test/output.cpp");
+    file << cgStart(start);
+    file.close();
+}
 
 string cgStart(Start *start) {
-    root = start;
     string strStart = "";
     strStart += cgHeaderList(start->headerList);
     strStart += cgProgramList(start->programList);
-    ofstream outFile("output.cpp");
-    outFile << strStart;
-    outFile.close();
     return strStart;
 }
 
@@ -56,7 +60,10 @@ string cgDeclaration(Declaration *declaration) {
             vector<Expression *> *expressionList = declarationItem->expressionList;
             strDeclaration += dataType + " " + declarationIdentifier + " (";
             for (auto expression : *expressionList) {
-                strDeclaration += cgExpression(expression) + ", ";
+                strDeclaration += cgExpression(expression);
+                if (expression != expressionList->back()) {
+                    strDeclaration += ", ";
+                }
             }
             strDeclaration += ");\n";
         }
@@ -73,7 +80,10 @@ string cgFunctionDeclaration(FunctionDeclaration *functionDeclaration) {
 
     strFunctionDeclaration += returnType + " " + functionIdentifier + "(";
     for (auto argumentItem : *argumentList) {
-        strFunctionDeclaration += string(argumentItem->ArgType) + " " + string(argumentItem->ArgIdentifier) + ", ";
+        strFunctionDeclaration += string(argumentItem->ArgType) + " " + string(argumentItem->ArgIdentifier);
+        if (argumentItem != argumentList->back()) {
+            strFunctionDeclaration += ", ";
+        }
     }
     strFunctionDeclaration += ") {\n";
     strFunctionDeclaration += cgCompoundStatement(compoundStatement);
@@ -94,6 +104,7 @@ string cgCompoundStatement(CompoundStatement *compoundStatement) {
         } else if (statement->flagStatement == 3) {
             strCompoundStatement += cgCompoundStatement(statement->compoundStatement);
         } else if (statement->flagStatement == 4) {
+            cout << "Conditional --- Statement\n";
             strCompoundStatement += cgConditionalStatement(statement->conditionalStatement);
         } else if (statement->flagStatement == 5) {
             strCompoundStatement += cgIterativeStatement(statement->iterativeStatement);
@@ -261,6 +272,7 @@ string cgConditionalStatement(ConditionalStatement *conditionalStatement) {
         strConditionalStatement += cgCompoundStatement(conditionalStatement->compoundStatement2);
         strConditionalStatement += "}\n";
     }
+    return strConditionalStatement;
 }
 
 string cgIterativeStatement(IterativeStatement *iterativeStatement) {

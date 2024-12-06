@@ -3,32 +3,9 @@ $define IN 12;
 
 num a;
 
-<void> check(num a, num b) <=> {
+<void> check(num l, num k) <=> {
     num a;
-    if(a){
-        num b;
+    if(a>10){
         b = 10+1;
-        ## num b;
-    }
-    num c;
-    if(a){
-        num d;
-        if(a){
-            num e;
-        }
-    }
-}
-
-<void> main() <=> {
-    num a;
-    if(a){
-        num b;
-        if(a){
-            num c;
-            if(a){
-                num d;
-            }
-        }
-        num e;
     }
 }

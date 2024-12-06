@@ -29,4 +29,8 @@ void checkConditionalStatement(ConditionalStatement *conditionalStatement, Globa
 void checkIterativeStatement(IterativeStatement *iterativeStatement, GlobalSymTabEntry *functionEntry);
 void checkJumpStatement(JumpStatement *jumpStatement, GlobalSymTabEntry *functionEntry);
 
+string checkConditionalExpression(Expression *expression, GlobalSymTabEntry *functionEntry);
+string checkConditionalBinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op, GlobalSymTabEntry *functionEntry);
+string checkIterativeAssignmentExpression(AssignmentExpression *assignmentExpression, GlobalSymTabEntry *functionEntry);
+
 #endif

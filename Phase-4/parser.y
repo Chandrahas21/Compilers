@@ -1,5 +1,6 @@
 %code requires{
     #include "traversal.hpp"
+    #include "transpiler.hpp"
 }
 
 %{
@@ -486,6 +487,7 @@ int main(int argc, char *argv[]) {
     cout << "\033[1;34m" << "Parser Finished." << "\033[0m" << endl;
     
     traversal(start);
+    transpiler(start);
 
     if(argc == 5 and !strcmp(argv[4], "-v")) {
         printGlobalSymTab(globalSymbolTable);

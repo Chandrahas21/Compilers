@@ -7,6 +7,7 @@
 
 using namespace std;
 
+void transpiler(Start *start);
 string cgStart(Start *start);
 string cgHeaderList(vector<Header *> *headerList);
 string cgProgramList(vector<Program *> *programList);
