@@ -17,6 +17,7 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
 void checkFunctionDeclaration(FunctionDeclaration *functionDeclaration);
 void inOutStatement(InOut *inOut, GlobalSymTabEntry *functionEntry);
 void checkAssignmentExpression(AssignmentExpression *assignmentExpression, GlobalSymTabEntry *functionEntry);
+string curveMemberAccess(MemberVariable memberVariable);
 string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTabEntry *functionEntry);
 string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry *functionEntry);
 string checkConstantValue(ConstantValue *constantValue);

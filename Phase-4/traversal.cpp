@@ -549,11 +549,11 @@ void checkAssignmentExpression(AssignmentExpression *assignmentExpression, Globa
 
 string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTabEntry *functionEntry) {
     puts("Postfix Expression");
-    if (postfixExpression->flagExpression == 0) {
+    if (postfixExpression->flagPostfix == 0) {
         return checkBasicExpression(postfixExpression->basicExpression, functionEntry);
-    } else if (postfixExpression->flagExpression == 1) {
+    } else if (postfixExpression->flagPostfix == 1) {
         return checkFunctionCall(postfixExpression->functionCall, functionEntry);
-    } else if (postfixExpression->flagExpression == 2) {
+    } else if (postfixExpression->flagPostfix == 2) {
         string postfixIdentifier = string(postfixExpression->postfixIdentifier);
         string scope = postfixExpression->scope;
         string matchFound = checkDeclarationInParentScope(postfixIdentifier, scope, 1, functionEntry);
@@ -645,7 +645,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 return "";
             }
         }
-    } else if (postfixExpression->flagExpression == 3) {
+    } else if (postfixExpression->flagPostfix == 3) {
         string postfixIdentifier = string(postfixExpression->postfixIdentifier);
         string scope = postfixExpression->scope;
         string matchFound = checkDeclarationInParentScope(postfixIdentifier, scope, 1, functionEntry);
@@ -657,7 +657,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
         } else {
             if (matchFound == "line") {
                 if (postfixExpression->memberVariable1 == MemberVariable::curve) {
-                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                    return curveMemberAccess(postfixExpression->memberVariable2);
                 } else {
                     string error = "Invalid member variable in line";
                     cout << error << endl;
@@ -665,7 +665,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 }
             } else if (matchFound == "circle") {
                 if (postfixExpression->memberVariable1 == MemberVariable::curve) {
-                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                    return curveMemberAccess(postfixExpression->memberVariable2);
                 } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
                     if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
                         return "num";
@@ -681,7 +681,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 }
             } else if (matchFound == "ellipse") {
                 if (postfixExpression->memberVariable1 == MemberVariable::curve) {
-                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                    return curveMemberAccess(postfixExpression->memberVariable2);
                 } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
                     if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
                         return "num";
@@ -697,7 +697,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 }
             } else if (matchFound == "parabola") {
                 if (postfixExpression->memberVariable1 == MemberVariable::curve) {
-                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                    return curveMemberAccess(postfixExpression->memberVariable2);
                 } else if (postfixExpression->memberVariable1 == MemberVariable::vertex || postfixExpression->memberVariable1 == MemberVariable::focus) {
                     if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
                         return "num";
@@ -713,7 +713,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 }
             } else if (matchFound == "hyperbola") {
                 if (postfixExpression->memberVariable1 == MemberVariable::curve) {
-                    return curveMemberAccess(postfixExpression->memberVariable2, functionEntry);
+                    return curveMemberAccess(postfixExpression->memberVariable2);
                 } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
                     if (postfixExpression->memberVariable2 == MemberVariable::x || postfixExpression->memberVariable2 == MemberVariable::y) {
                         return "num";
@@ -736,7 +736,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
     }
 }
 
-string curveMemberAccess(MemberVariable memberVariable, GlobalSymTabEntry *functionEntry) {
+string curveMemberAccess(MemberVariable memberVariable) {
     if (memberVariable == MemberVariable::a || memberVariable == MemberVariable::b || memberVariable == MemberVariable::c || memberVariable == MemberVariable::f || memberVariable == MemberVariable::g || memberVariable == MemberVariable::h || memberVariable == MemberVariable::delta) {
         return "num";
     } else if (memberVariable == MemberVariable::equation || memberVariable == MemberVariable::type) {

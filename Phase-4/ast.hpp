@@ -32,7 +32,6 @@ enum BinaryOperator {
     less_op,
     less_equal_op,
     greater_op,
-    x3,
     greater_equal_op
 };
 
@@ -68,7 +67,6 @@ enum DefaultFunctionList {
     tangent,
     slopeLine,
     angle,
-    type
 };
 
 class Node;
