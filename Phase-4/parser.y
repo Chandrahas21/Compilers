@@ -476,28 +476,28 @@ int main(int argc, char *argv[]) {
     int parserOutput = yyparse();
     if (parserOutput == 0) {
         cout << "\033[1;32m" << "PARSER VERDICT: [SUCCESS]" << "\033[0m" << endl;
-    cout << "\033[1;34m" << "Parser Finished." << "\033[0m" << endl;
-
+        cout << "\033[1;34m" << "Parser Finished." << "\033[0m" << endl;
+        
         cout << endl;
 
-    cout << "\033[1;34m" << "Starting Semantic checks." << "\033[0m" << endl;
+        cout << "\033[1;34m" << "Starting Semantic checks." << "\033[0m" << endl;
         bool semanticOutput = traversal(start);
         if(semanticOutput) {
             cout << "\033[1;32m" << "SEMANTIC VERDICT: [SUCCESS]" << "\033[0m" << endl;
         } else {
             cout << "\033[1;31m" << "SEMANTIC VERDICT: [FAILED]" << "\033[0m" << endl;
         }
-    cout << "\033[1;34m" << "Semantic checks finished." << "\033[0m" << endl;
+        cout << "\033[1;34m" << "Semantic checks finished." << "\033[0m" << endl;
 
         cout << endl;
 
-    cout << "\033[1;34m" << "Starting Transpiler." << "\033[0m" << endl;
-    transpiler(start);
-    cout << "\033[1;34m" << "Transpiler finished." << "\033[0m" << endl;
+        cout << "\033[1;34m" << "Starting Transpiler." << "\033[0m" << endl;
+        transpiler(start);
+        cout << "\033[1;34m" << "Transpiler finished." << "\033[0m" << endl;
 
-    if(argc == 5 and !strcmp(argv[4], "-v")) {
-        printGlobalSymTab(globalSymbolTable);
-    }
+        if(argc == 5 and !strcmp(argv[4], "-v")) {
+            printGlobalSymTab(globalSymbolTable);
+        }
     } else {
         cerr << "\033[1;31m" << "PARSER VERDICT: [FAILED]" << "\033[0m" << endl;
     }

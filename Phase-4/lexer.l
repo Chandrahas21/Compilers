@@ -30,7 +30,7 @@ operators ("++"|"--"|"!"|"^"|"*"|"/"|"%"|"+"|"-"|"=="|"!="|">="|"<="|"<"|">"|"&&
 
 in_Built ("to_string"|"distance"|"solve"|"sqrt"|"ispoint"|"intersection"|"tangent"|"angle")
 
-member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"_c"|"_f"|"_g"|"_h"|"_delta"|"_eccentricity"|"_latus_rectum"|"_vertex"|"_focus"|"_Curve")
+member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"_c"|"_f"|"_g"|"_h"|"_delta"|"_eccentricity"|"_latus_rectum"|"_vertex"|"_focus"|"_curve")
 
 %%
 
@@ -142,7 +142,7 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     else if(member_variable == "_latus_rectum") return LATUS_RECTUM;
     else if(member_variable == "_vertex") return VERTEX;
     else if(member_variable == "_focus") return FOCUS;
-    else if(member_variable == "_Curve") return CURVE;
+    else if(member_variable == "_curve") return CURVE;
     else return -1;
 }
 

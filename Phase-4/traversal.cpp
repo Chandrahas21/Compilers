@@ -654,6 +654,9 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 exit(0);
             }
         }
+    } else {
+        cerr << "\033[1;31m" << "Invalid Postfix Expression" << "\033[0m" << endl;
+        exit(0);
     }
 }
 
@@ -684,6 +687,9 @@ string checkBasicExpression(BasicExpression *basicExpression, GlobalSymTabEntry 
         }
     } else if (basicExpression->flagBasic == 2) {
         return checkExpression(basicExpression->expression, functionEntry);
+    } else {
+        cerr << "\033[1;31m" << "Invalid Basic Expression" << "\033[0m" << endl;
+        exit(0);
     }
 }
 
@@ -695,6 +701,9 @@ string checkConstantValue(ConstantValue *constantValue) {
         return "boolean";
     } else if (constantValue->flagConstant == 2) {
         return "string";
+    } else {
+        cerr << "\033[1;31m" << "Invalid Constant Value" << "\033[0m" << endl;
+        exit(0);
     }
 }
 
@@ -723,8 +732,9 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
                 }
             }
         }
+        return entry->dataType;
     }
-    return 0;
+    return "";
 }
 
 string checkExpression(Expression *expression, GlobalSymTabEntry *functionEntry) {
@@ -735,6 +745,9 @@ string checkExpression(Expression *expression, GlobalSymTabEntry *functionEntry)
     } else if (expression->flagExpression == 1) {
         BinaryExpression *binaryExpression = static_cast<BinaryExpression *>(expression);
         return checkBinaryExpression(binaryExpression->lhs, binaryExpression->rhs, binaryExpression->op, functionEntry);
+    } else {
+        cerr << "\033[1;31m" << "Invalid Expression" << "\033[0m" << endl;
+        exit(0);
     }
 }
 
@@ -943,5 +956,8 @@ string checkIterativeAssignmentExpression(AssignmentExpression *assignmentExpres
         } else {
             return "Initialisation";
         }
+    } else {
+        cerr << "\033[1;31m" << "Invalid Iterative Assignment Expression" << "\033[0m" << endl;
+        exit(0);
     }
 }

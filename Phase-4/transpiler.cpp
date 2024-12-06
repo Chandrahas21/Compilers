@@ -29,6 +29,7 @@ string cgHeaderList(vector<Header *> *headerList) {
             strHeaderList += "#define " + string(header->macroIdentifier) + " " + to_string(header->constantValue) + "\n";
         }
     }
+    strHeaderList += "\n";
     return strHeaderList;
 }
 
@@ -36,9 +37,9 @@ string cgProgramList(vector<Program *> *programList) {
     string strProgramList = "";
     for (auto program : *programList) {
         if (program->isFunction == 0) {
-            strProgramList += cgDeclaration(program->declaration);
+            strProgramList += cgDeclaration(program->declaration) + ";\n";
         } else {
-            strProgramList += cgFunctionDeclaration(program->functionDeclaration);
+            strProgramList += cgFunctionDeclaration(program->functionDeclaration) + "\n";
         }
     }
     return strProgramList;
@@ -47,25 +48,29 @@ string cgProgramList(vector<Program *> *programList) {
 string cgDeclaration(Declaration *declaration) {
     string strDeclaration = "";
     string dataType = string(declaration->declarationType);
+    strDeclaration += dataType + " ";
     vector<DeclarationIndex *> *declarationList = declaration->declarationList;
     for (auto declarationItem : *declarationList) {
         string declarationIdentifier = string(declarationItem->declarationIdentifier);
         string declarationscope = string(declarationItem->scope);
         if (declarationItem->flagDeclarationIndex == 0) {
-            strDeclaration += dataType + " " + declarationIdentifier + ";\n";
+            strDeclaration += declarationIdentifier;
         } else if (declarationItem->flagDeclarationIndex == 1) {
             Expression *expression = declarationItem->expression;
-            strDeclaration += dataType + " " + declarationIdentifier + " = " + cgExpression(expression) + ";\n";
+            strDeclaration += declarationIdentifier + " = " + cgExpression(expression);
         } else {
             vector<Expression *> *expressionList = declarationItem->expressionList;
-            strDeclaration += dataType + " " + declarationIdentifier + " (";
+            strDeclaration += declarationIdentifier + " (";
             for (auto expression : *expressionList) {
                 strDeclaration += cgExpression(expression);
                 if (expression != expressionList->back()) {
                     strDeclaration += ", ";
                 }
             }
-            strDeclaration += ");\n";
+            strDeclaration += ")";
+        }
+        if (declarationItem != declarationList->back()) {
+            strDeclaration += ", ";
         }
     }
     return strDeclaration;
@@ -98,7 +103,7 @@ string cgCompoundStatement(CompoundStatement *compoundStatement) {
         if (statement->flagStatement == 0) {
             strCompoundStatement += cgAssignmentExpression(statement->assignmentExpression) + ";\n";
         } else if (statement->flagStatement == 1) {
-            strCompoundStatement += cgDeclaration(statement->declaration);
+            strCompoundStatement += cgDeclaration(statement->declaration) + ";\n";
         } else if (statement->flagStatement == 2) {
             strCompoundStatement += cgInOut(statement->inOut);
         } else if (statement->flagStatement == 3) {
@@ -152,7 +157,27 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
         strPostfixExpression += cgFunctionCall(postfixExpression->functionCall);
     } else if (postfixExpression->flagPostfix == 2) {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
-        if (postfixExpression->memberVariable1 == MemberVariable::a) {
+        if (postfixExpression->memberVariable2 == MemberVariable::x) {
+            strPostfixExpression += "x";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::y) {
+            strPostfixExpression += "y";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::slope) {
+            strPostfixExpression += "slope";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::curve) {
+            strPostfixExpression += "curve";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::center) {
+            strPostfixExpression += "center";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::equation) {
+            strPostfixExpression += "equation";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::type) {
+            strPostfixExpression += "type";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::focus) {
+            strPostfixExpression += "focus";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::vertex) {
+            strPostfixExpression += "vertex";
+        } else if (postfixExpression->memberVariable2 == MemberVariable::radius) {
+            strPostfixExpression += "radius";
+        } else if (postfixExpression->memberVariable1 == MemberVariable::a) {
             strPostfixExpression += "a";
         } else if (postfixExpression->memberVariable1 == MemberVariable::b) {
             strPostfixExpression += "b";
@@ -166,26 +191,6 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             strPostfixExpression += "h";
         } else if (postfixExpression->memberVariable1 == MemberVariable::delta) {
             strPostfixExpression += "delta";
-        } else if (postfixExpression->memberVariable1 == MemberVariable::equation) {
-            strPostfixExpression += "equation";
-        } else if (postfixExpression->memberVariable1 == MemberVariable::type) {
-            strPostfixExpression += "type";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::x) {
-                strPostfixExpression += "x";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::y) {
-                strPostfixExpression += "y";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::slope) {
-            strPostfixExpression += "slope";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::curve) {
-            strPostfixExpression += "curve";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::center) {
-            strPostfixExpression += "center";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::focus) {
-            strPostfixExpression += "focus";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::vertex) {
-            strPostfixExpression += "vertex";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::radius) {
-            strPostfixExpression += "radius";
         } else if (postfixExpression->memberVariable2 == MemberVariable::eccentricity) {
             strPostfixExpression += "eccentricity";
         } else if (postfixExpression->memberVariable2 == MemberVariable::latus_rectum) {
@@ -194,6 +199,7 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
     } else {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
         if(postfixExpression->memberVariable1 == MemberVariable::curve){
+            strPostfixExpression += "Curve.";
             if (postfixExpression->memberVariable2 == MemberVariable::a) {
                 strPostfixExpression += "a";
             } else if (postfixExpression->memberVariable2 == MemberVariable::b) {
@@ -213,7 +219,6 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             } else if (postfixExpression->memberVariable2 == MemberVariable::type) {
                 strPostfixExpression += "type";
             }
-            strPostfixExpression += ".";
         } else if(postfixExpression->memberVariable1 == MemberVariable::center || postfixExpression->memberVariable1 == MemberVariable::focus || postfixExpression->memberVariable1 == MemberVariable::vertex){
             if(postfixExpression->memberVariable1 == MemberVariable::center){
                 strPostfixExpression += "center";
@@ -298,7 +303,7 @@ string cgUnaryExpression(UnaryExpression *unaryExpression) {
 }
 
 string cgBinaryExpression(BinaryExpression *binaryExpression) {
-    string strBinaryExpression = "";
+    string strBinaryExpression = "(";
     strBinaryExpression += cgExpression(binaryExpression->lhs);
     if (binaryExpression->op == BinaryOperator::add_op) {
         strBinaryExpression += " + ";
@@ -328,6 +333,7 @@ string cgBinaryExpression(BinaryExpression *binaryExpression) {
         strBinaryExpression += " >= ";
     }
     strBinaryExpression += cgExpression(binaryExpression->rhs);
+    strBinaryExpression += ")";
     return strBinaryExpression;
 }
 
@@ -363,7 +369,7 @@ string cgIterativeStatement(IterativeStatement *iterativeStatement) {
         if (iterativeStatement->declaration == NULL) {
             strIterativeStatement += "for (" + cgAssignmentExpression(iterativeStatement->assignmentexpression1) + "; " + cgExpression(iterativeStatement->expression2) + "; " + cgAssignmentExpression(iterativeStatement->assignmentexpression3) + ") {\n";
         } else {
-            strIterativeStatement += "for (" + cgDeclaration(iterativeStatement->declaration) + cgExpression(iterativeStatement->expression2) + "; " + cgAssignmentExpression(iterativeStatement->assignmentexpression3) + ") {\n";
+            strIterativeStatement += "for (" + cgDeclaration(iterativeStatement->declaration) + "; " + cgExpression(iterativeStatement->expression2) + "; " + cgAssignmentExpression(iterativeStatement->assignmentexpression3) + ") {\n";
         }
         strIterativeStatement += cgCompoundStatement(iterativeStatement->compoundStatement);
         strIterativeStatement += "}\n";

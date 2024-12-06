@@ -7,6 +7,7 @@ symbolTable
 ast
 traversal
 transpiler
+error
 Test/output.cpp
 Test/output.txt
 Test/token.txt
