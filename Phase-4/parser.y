@@ -112,8 +112,8 @@
 %left LOGICAL_AND LOGICAL_OR
 %left EQUAL NOT_EQUAL GREATER_EQUAL LESS_EQUAL GREATER_THAN LESS_THAN
 %left PLUS MINUS
-%left EXPONENT
 %left MULTIPLY DIVIDE MODULUS
+%left EXPONENT
 
 %type <TreeStart> start
 %type <TreeHeader> header
@@ -486,17 +486,22 @@ int main(int argc, char *argv[]) {
         bool semanticOutput = traversal(start);
         if(semanticOutput) {
             cout << "\033[1;32m" << "SEMANTIC VERDICT: [SUCCESS]" << "\033[0m" << endl;
+            cout << "\033[1;34m" << "Semantic checks finished." << "\033[0m" << endl;
+
+            cout << endl;
+
+            cout << "\033[1;34m" << "Starting Transpiler." << "\033[0m" << endl;
+            bool transpileOutput = transpiler(start);
+            if (transpileOutput) {
+                cout << "\033[1;32m" << "TRANSPILE VERDICT: [SUCCESS]" << "\033[0m" << endl;
+                cout << "\033[1;34m" << "Transpiler finished." << "\033[0m" << endl;
+            } else {
+                cout << "\033[1;31m" << "TRANSPILE VERDICT: [FAILED]" << "\033[0m" << endl;
+            }
         } else {
             cout << "\033[1;31m" << "SEMANTIC VERDICT: [FAILED]" << "\033[0m" << endl;
         }
-        cout << "\033[1;34m" << "Semantic checks finished." << "\033[0m" << endl;
-
-        cout << endl;
-
-        cout << "\033[1;34m" << "Starting Transpiler." << "\033[0m" << endl;
-        transpiler(start);
-        cout << "\033[1;34m" << "Transpiler finished." << "\033[0m" << endl;
-
+        
         if(argc == 5 and !strcmp(argv[4], "-v")) {
             printGlobalSymTab(globalSymbolTable);
         }

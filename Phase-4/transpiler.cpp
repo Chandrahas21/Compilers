@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void transpiler(Start *start) {
+bool transpiler(Start *start) {
     ofstream file;
     file.open("./Test/output.cpp");
     ifstream inputFile("./library.cpp");
@@ -21,6 +21,7 @@ void transpiler(Start *start) {
     }
     file << cgStart(start);
     file.close();
+    return 1;
 }
 
 string cgStart(Start *start) {

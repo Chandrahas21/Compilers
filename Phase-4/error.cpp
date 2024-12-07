@@ -50,4 +50,5 @@ void printError(int errorType, int yylineno, int yycolno) {
     }
 
     cerr << "\033[1;31m" << error << "\033[0m" << endl;
+    cerr << "\033[1;31m" << "SEMANTIC VERDICT: [FAILED]" << "\033[0m" << endl;
 }
