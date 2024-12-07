@@ -9,6 +9,16 @@ using namespace std;
 void transpiler(Start *start) {
     ofstream file;
     file.open("./Test/output.cpp");
+    ifstream inputFile("./library.cpp");
+    if (inputFile.is_open()) {
+        string line;
+        while (getline(inputFile, line)) {
+            file << line << "\n";
+        }
+        inputFile.close();
+    } else {
+        cerr << "Unable to open file";
+    }
     file << cgStart(start);
     file.close();
 }
@@ -24,12 +34,12 @@ string cgHeaderList(vector<Header *> *headerList) {
     string strHeaderList = "";
     for (auto header : *headerList) {
         if (header->isHeader == 1) {
-            strHeaderList += "#include " + string(header->header) + ";\n";
+            // strHeaderList += "#include " + string(header->header) + ";\n";
         } else {
-            strHeaderList += "#define " + string(header->macroIdentifier) + " " + to_string(header->constantValue) + "\n";
+            // strHeaderList += "#define " + string(header->macroIdentifier) + " " + to_string(header->constantValue) + "\n";
         }
     }
-    strHeaderList += "\n";
+    // strHeaderList += "\n";
     return strHeaderList;
 }
 

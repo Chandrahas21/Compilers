@@ -2,7 +2,7 @@
 $include "geo.core";
 $include "geo.utils";
 
-<void> main() <=> {
+<num> main() <=> {
   point p(1, 2);
   num slope = 3;
   line l(slope, p); ## not possible
