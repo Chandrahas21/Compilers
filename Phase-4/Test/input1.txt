@@ -1,4 +1,6 @@
-$include "geox.hpp";
+$include "geo.core";
+$include "geo.utils";
+
 $define IN 12;
 
 <void> check(num l, num k) <=> {
@@ -12,4 +14,3 @@ $define IN 12;
     manoo[0] = 1;
     pru[6.788] = 9898;
 }
-

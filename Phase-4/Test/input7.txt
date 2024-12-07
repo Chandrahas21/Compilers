@@ -3,12 +3,12 @@ $include "geo.core";
 $include "geo.utils";
 
 <void> main() <=> {
-  point ver(0,0);
-  point p1(4,0);
-  point p2(1,4);
-  point ty(0,2);
-  line l(ty,p2);
-  parabola p(p1,ver);
+  point ver(0, 0);
+  point p1(4, 0);
+  point p2(1, 4);
+  point ty(0, 2);
+  line l(ty, p2);
+  parabola p(p1, ver);
   if(l == tangent(p, p1)) {
     write ~"line l " ~ l._curve._equation ~ "is tangent to parabola p " ~ p._curve._equation ~ "at point p1" ~ p1 ~ "\n"; 
   }

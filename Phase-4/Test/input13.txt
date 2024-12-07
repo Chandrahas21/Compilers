@@ -1,6 +1,7 @@
-## given lengths of sides, Check if there exists a triangle with given sides
+## Given lengths of sides, Check if there exists a triangle with given sides
 
-$include "geox.hpp";
+$include "geo.core";
+$include "geo.utils";
 
 <num> maxnum(num n1, num n2, num n3) <=> {
     num maxi = 0;
@@ -13,25 +14,22 @@ $include "geox.hpp";
     if(n3 > maxi){
         maxi = n3;
     }
-
     return maxi;
 }
 
 <void> main()  <=> {
-    num sideA, sideB , sideC;
+    num sideA, sideB, sideC;
     sideA = 5;
     sideB = 8;
     sideC = 12;
 
     num sum = sideA + sideB + sideC;
-    num longestSide = maxnum( sideA, sideB, sideC);
-    if(sum > 2* longestSide){
+    num longestSide = maxnum(sideA, sideB, sideC);
+    if (sum > 2 * longestSide) {
       write ~ "A Triangle can exist with given sides" ~ "\n"; 
     }
-    el{
+    el {
       write ~ "No Triangle exists with given sides" ~ "\n";
     }
-
     return;
-
 }

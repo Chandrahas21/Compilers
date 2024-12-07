@@ -1,63 +1,63 @@
 ## Given n Circles , output no of Disjoint shapes(connected componenets) in __cpp_threadsafe_static_init
 ## Here let N be 4
 
-$include "geox.hpp";
+$include "geo.core";
+$include "geo.utils";
 
 <num> sq_distance(point p1, point p2) <=> {
-    num x1 = p1._x, x2 = p2._x ;
-    num y1 = p1._y, y2 = p2._y ;
+    num x1 = p1._x, x2 = p2._x;
+    num y1 = p1._y, y2 = p2._y;
 
-    num ans = (x1 -x2)* (x1-x2) + (y1-y2)* (y1-y2);
+    num ans = (x1 - x2) * (x1-x2) + (y1 - y2) * (y1 - y2);
     return ans;
 }
 
 <void> main() <=> {
     num n = 4;
 
-    point a(3,4), b(0,0), c(4,-3) , d(-3,4);
-    num r1 = 1 , r2 = 2, r3 = 3, r4 = 4;
-    circle c1(a,r1), c2(b,r2), c3(c,r3), c4(d,r4) ;
+    point a(3, 4), b(0, 0), c(4, -3) , d(-3, 4);
+    num r1 = 1, r2 = 2, r3 = 3, r4 = 4;
+    circle c1(a, r1), c2(b, r2), c3(c, r3), c4(d, r4) ;
     
     num connectedComp = n;
-    loop(num i = 0; i < n; i=i+1){
-        loop(num j = i+1; j<n; j=j+1){
-            circle cir1(a,r1), cir2(a,r1);
-            if(i == 0){
+    loop (num i = 0; i < n; i = i + 1) {
+        loop (num j = i + 1; j < n; j = j + 1) {
+            circle cir1(a, r1), cir2(a, r1);
+            if (i == 0) {
                 cir1 = c1;
             }
-            elif(i == 1){
+            elif (i == 1) {
                 cir1 = c2;
             }
-            elif(i == 2){
+            elif (i == 2) {
                 cir1 = c3;
             }
-            el{
+            el {
                 cir1 = c4;
             }
 
-            if(j == 0){
+            if (j == 0) {
                 cir2 = c1;
             }
-            elif(j == 1){
+            elif (j == 1) {
                 cir2 = c2;
             }
-            elif(j == 2){
+            elif (j == 2) {
                 cir2 = c3;
             }
-            el{
+            el {
                 cir2 = c4;
             }
             point center1 = cir1._center, center2 = cir2._center;
             num dist1 = sq_distance(center1, center2);
             num dist2  = cir1._radius + cir2._radius;
             dist2 = dist2 * dist2;
-            if(dist1 <= dist2){
+            if (dist1 <= dist2) {
                 connectedComp--;
             }
 
         }
     }
-
     write ~ "Connected Components are " ~ connectedComp ~ "\n" ;
     return;
 }

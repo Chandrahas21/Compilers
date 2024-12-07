@@ -5,9 +5,9 @@ $include "geo.utils";
 <void> main() <=> {
    num n1 = 0;
    num n2 = 1;
-   point p(n1,n2);
-   line l(n1,n2);
-   if(ispoint(l,p) == false){
+   point p(n1, n2);
+   line l(n1, n2);
+   if(ispoint(l, p) == false) {
     write ~ "point p " ~ p ~ "lies on line l" ~ l ~ "\n"; 
    }
    el {

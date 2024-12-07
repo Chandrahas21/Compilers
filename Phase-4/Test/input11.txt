@@ -1,31 +1,33 @@
 ## If given 3 points,Check weather it is a right angled triangle
 
-$include "geox.hpp";
+$include "geo.core";
+$include "geo.utils";
+
 $define IN 12;
 
 <num> slope(point p1, point p2) <=> {
-    num x1 = p1._x, x2 = p2._x ;
-    num y1 = p1._y, y2 = p2._y ;
-    return (y2-y1)/(x2-x1) ;
+    num x1 = p1._x, x2 = p2._x;
+    num y1 = p1._y, y2 = p2._y;
+    return (y2 - y1) / (x2 - x1);
 }
 
 <void> main() <=> {
-    point a(3,4), b(0,0);
-    point c(4,-3);
+    point a(3, 4), b(0, 0);
+    point c(4, -3);
 
-    num slopeAB = slope(a,b);
-    num slopeBC = slope(b,c), slopeCA = slope(c,a);
+    num slopeAB = slope(a, b);
+    num slopeBC = slope(b, c), slopeCA = slope(c, a);
 
-    if(slopeAB * slopeBC == -1){
+    if (slopeAB * slopeBC == -1) {
         write ~ "Triangle is Right Angled at point B" ~ "\n" ;
     }
-    elif(slopeBC * slopeCA == -1){
+    elif (slopeBC * slopeCA == -1) {
         write ~ "Triangle is Right Angled at point C" ~ "\n";
     }
-    elif(slopeCA* slopeAB == -1){
+    elif (slopeCA* slopeAB == -1) {
         write ~ "Triangle is Right Angled at point A" ~ "\n" ;
     }
-    el{
+    el {
         write ~ "Given triange is not a Right angled Triangle" ~ "\n";
     }
     return;

@@ -1,12 +1,12 @@
 ## Include necessary geometric utilities
-$include "geo.hpp";
-$include "geo.hpp";
+$include "geo.core";
+$include "geo.utils";
 
 <void> main() <=> {
-    point p(1,2);
-    num n(1,5);
-    line l(n,p+p);
-    curve c(0,0);
+    point p(1, 2);
+    num n(1, 5);
+    line l(n, p+p);
+    curve c(0, 0);
     ellipse e(c._equation);
     h(c._equation);
 }
