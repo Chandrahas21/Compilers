@@ -9,10 +9,10 @@ $include "geo.utils";
   point ty(0,2);
   line l(ty,p2);
   parabola p(p1,ver);
-  if(l == tangent(p,p1)){
+  if(l == tangent(p, p1)) {
     write ~"line l " ~ l._curve._equation ~ "is tangent to parabola p " ~ p._curve._equation ~ "at point p1" ~ p1 ~ "\n"; 
   }
-  el{
+  el {
    write ~"line l " ~ l._curve._equation ~ "is not tangent to parabola p" ~ p._curve._equation ~ "at point p1" ~ p1 ~ "\n"; 
   }  
 }

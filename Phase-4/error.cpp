@@ -27,6 +27,8 @@ void printError(int errorType, int yylineno, int yycolno) {
         error = "Type mismatch in declaration at line " + to_string(yylineno) + " column " + to_string(yycolno);
     } else if (errorType == TYPE_MISMATCH_FUNCTION) {
         error = "Type mismatch in return type of function call at line " + to_string(yylineno) + " column " + to_string(yycolno);
+    } else if (errorType == TYPE_MISMATCH_FUNCTION_ARGS) {
+        error = "Type mismatch in function arguments at line " + to_string(yylineno) + " column " + to_string(yycolno);
     } else if (errorType == TYPE_MISMATCH_ASSIGNEXP) {
         error = "Type mismatch in assignment expression at line " + to_string(yylineno) + " column " + to_string(yycolno);
     } else if (errorType == INVALID_MEMBER_ACCESS) {

@@ -772,25 +772,58 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
     unordered_set<string> inBuiltFunctions = {"toString", "distance", "solve", "sqrt", "isPoint", "intersection", "tangent", "angle"};
 
     if (inBuiltFunctions.find(functionCallIdentifier) != inBuiltFunctions.end()) {
-        for (auto argument : *argumentList) {
-            checkExpression(argument, functionEntry);
-        }
-        if (functionCallIdentifier == "toString") {
-            return "string";
-        } else if (functionCallIdentifier == "distance") {
-            return "num";
+        if (functionCallIdentifier == "distance") {
+            if(argumentList->size() != 2) {
+                printError(INVALID_NO_OF_ARGS_FUNCTION, functionCall->row, functionCall->column);
+                exit(0);
+            } else {
+                string argumentType1 = checkExpression(argumentList->at(0), functionEntry);
+                string argumentType2 = checkExpression(argumentList->at(1), functionEntry);
+                if (!((argumentType1 == "point" && argumentType2 == "point") || (argumentType1 == "line" && argumentType2 == "line") || (argumentType1 == "line" && argumentType2 == "point"))) {
+                    printError(TYPE_MISMATCH_FUNCTION_ARGS, functionCall->row, functionCall->column);
+                    exit(0);
+                } else {
+                    return "num";
+                }
+            }
         } else if (functionCallIdentifier == "solve") {
             return "point";
         } else if (functionCallIdentifier == "sqrt") {
             return "num";
         } else if (functionCallIdentifier == "isPoint") {
-            return "boolean";
+            if(argumentList->size() != 2) {
+                printError(INVALID_NO_OF_ARGS_FUNCTION, functionCall->row, functionCall->column);
+                exit(0);
+            } else {
+                string argumentType1 = checkExpression(argumentList->at(0), functionEntry);
+                string argumentType2 = checkExpression(argumentList->at(1), functionEntry);
+                if (!(argumentType1 == "curve" && argumentType2 == "point")) {
+                    printError(TYPE_MISMATCH_FUNCTION_ARGS, functionCall->row, functionCall->column);
+                    exit(0);
+                } else {
+                    return "boolean";
+                }
+            }
         } else if (functionCallIdentifier == "intersection") {
             return "point";
         } else if (functionCallIdentifier == "tangent") {
-            return "line";
+            if(argumentList->size() != 2) {
+                printError(INVALID_NO_OF_ARGS_FUNCTION, functionCall->row, functionCall->column);
+                exit(0);
+            } else {
+                string argumentType1 = checkExpression(argumentList->at(0), functionEntry);
+                string argumentType2 = checkExpression(argumentList->at(1), functionEntry);
+                if (!(argumentType1 == "curve" && argumentType2 == "point")) {
+                    printError(TYPE_MISMATCH_FUNCTION_ARGS, functionCall->row, functionCall->column);
+                    exit(0);
+                } else {
+                    return "line";
+                }
+            }
         } else if (functionCallIdentifier == "angle") {
             return "num";
+        } else {
+            printError(FUNCTION_NOT_DECLARED, functionCall->row, functionCall->column);
         }
     }
 
@@ -809,7 +842,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
                 string argumentDefaultType = arguments->at(i).first;
                 string argumentCallType = checkExpression(argumentList->at(i), functionEntry);
                 if (argumentDefaultType != argumentCallType) {
-                    printError(TYPE_MISMATCH_FUNCTION, functionCall->row, functionCall->column);
+                    printError(TYPE_MISMATCH_FUNCTION_ARGS, functionCall->row, functionCall->column);
                     exit(0);
                     break;
                 }
