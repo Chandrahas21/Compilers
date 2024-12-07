@@ -12,7 +12,7 @@ $include "geo.utils";
     num k = 1;
   }
   el {
-    k = 10;
+    l = 10;
     write ~ "l not is horizontal " ~ "\n";
   }
 }

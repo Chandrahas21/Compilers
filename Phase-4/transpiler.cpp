@@ -161,25 +161,25 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
         strPostfixExpression += cgFunctionCall(postfixExpression->functionCall);
     } else if (postfixExpression->flagPostfix == 2) {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
-        if (postfixExpression->memberVariable2 == MemberVariable::x) {
+        if (postfixExpression->memberVariable1 == MemberVariable::x) {
             strPostfixExpression += "x";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::y) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::y) {
             strPostfixExpression += "y";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::slope) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::slope) {
             strPostfixExpression += "slope";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::curve) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::curve) {
             strPostfixExpression += "curve";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::center) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::center) {
             strPostfixExpression += "center";
         } else if (postfixExpression->memberVariable1 == MemberVariable::equation) {
             strPostfixExpression += "equation";
         } else if (postfixExpression->memberVariable1 == MemberVariable::type) {
             strPostfixExpression += "type";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::focus) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::focus) {
             strPostfixExpression += "focus";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::vertex) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::vertex) {
             strPostfixExpression += "vertex";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::radius) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::radius) {
             strPostfixExpression += "radius";
         } else if (postfixExpression->memberVariable1 == MemberVariable::a) {
             strPostfixExpression += "a";
@@ -195,9 +195,9 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             strPostfixExpression += "h";
         } else if (postfixExpression->memberVariable1 == MemberVariable::delta) {
             strPostfixExpression += "delta";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::eccentricity) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::eccentricity) {
             strPostfixExpression += "eccentricity";
-        } else if (postfixExpression->memberVariable2 == MemberVariable::latus_rectum) {
+        } else if (postfixExpression->memberVariable1 == MemberVariable::latus_rectum) {
             strPostfixExpression += "latus_rectum";
         }
     } else if (postfixExpression->flagPostfix == 3) {
