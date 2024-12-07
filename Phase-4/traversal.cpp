@@ -1,6 +1,6 @@
 #include "traversal.hpp"
-#include "symbolTable.hpp"
 #include "error.hpp"
+#include "symbolTable.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -296,115 +296,156 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
     vector<DeclarationIndex *> *declarationList = declaration->declarationList;
     string isInFunction = string(declaration->isInFunction);
 
-    if (isInFunction == "Global") {
-        for (auto declarationItem : *declarationList) {
-            string declarationIdentifier = string(declarationItem->declarationIdentifier);
-            string declarationKey = declarationIdentifier;
-            if (declarationItem->flagDeclarationIndex == 0) {
-                GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
-                if (entry == NULL) {
-                    out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
-                    insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
-                } else {
-                    printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
-                    exit(0);
-                }
-            } else if (declarationItem->flagDeclarationIndex == 1) {
-                GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
-                if (entry == NULL) {
-                    Expression *expression = declarationItem->expression;
-                    string expressionType = checkExpression(expression, functionEntry);
-                    if (expressionType != dataType) {
-                        printError(TYPE_MISMATCH_DECLARATION, declarationItem->row, declarationItem->column);
-                        exit(0);
-                    } else {
+    if (declaration->isVector == 0) {
+        if (isInFunction == "Global") {
+            for (auto declarationItem : *declarationList) {
+                string declarationIdentifier = string(declarationItem->declarationIdentifier);
+                string declarationKey = declarationIdentifier;
+                if (declarationItem->flagDeclarationIndex == 0) {
+                    GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                    if (entry == NULL) {
                         out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
                         insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
-                    }
-                } else {
-                    printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
-                    exit(0);
-                }
-            } else {
-                GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
-                if (entry == NULL) {
-                    vector<Expression *> *expressionList = declarationItem->expressionList;
-                    bool typeCheck = checkTypeInDeclaration(dataType, expressionList, functionEntry);
-                    if (typeCheck) {
-                        out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
-                        insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
-                    } else {
-                        // Already printed in function if it returns false
-                        exit(0);
-                    }
-                } else {
-                    printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
-                    exit(0);
-                }
-            }
-        }
-    } else {
-        for (auto declarationItem : *declarationList) {
-            string declarationIdentifier = string(declarationItem->declarationIdentifier);
-            string declarationscope = string(declarationItem->scope);
-            if (declarationItem->flagDeclarationIndex == 0) {
-                bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
-                if (!matchFound) {
-                    string idKey = declarationIdentifier + " <=> " + declarationscope;
-                    SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
-                    if (entry == nullptr) {
-                        out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
-                        insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
                     } else {
                         printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
                         exit(0);
                     }
-                } else {
-                    printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
-                    exit(0);
-                }
-            } else if (declarationItem->flagDeclarationIndex == 1) {
-                bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
-                if (!matchFound) {
-                    string idKey = declarationIdentifier + " <=> " + declarationscope;
-                    SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
-                    if (entry == nullptr) {
+                } else if (declarationItem->flagDeclarationIndex == 1) {
+                    GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                    if (entry == NULL) {
                         Expression *expression = declarationItem->expression;
                         string expressionType = checkExpression(expression, functionEntry);
                         if (expressionType != dataType) {
                             printError(TYPE_MISMATCH_DECLARATION, declarationItem->row, declarationItem->column);
                             exit(0);
                         } else {
-                            out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
-                            insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                            out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
+                            insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
                         }
                     } else {
                         printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
                         exit(0);
                     }
                 } else {
-                    printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
-                    exit(0);
-                }
-            } else {
-                bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
-                if (!matchFound) {
-                    string idKey = declarationIdentifier + " <=> " + declarationscope;
-                    SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
-                    if (entry == nullptr) {
+                    GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                    if (entry == NULL) {
                         vector<Expression *> *expressionList = declarationItem->expressionList;
                         bool typeCheck = checkTypeInDeclaration(dataType, expressionList, functionEntry);
                         if (typeCheck) {
-                            out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
-                            insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                            out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
+                            insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
+                        } else {
+                            // Already printed in function if it returns false
+                            exit(0);
                         }
                     } else {
                         printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
                         exit(0);
                     }
+                }
+            }
+        } else {
+            for (auto declarationItem : *declarationList) {
+                string declarationIdentifier = string(declarationItem->declarationIdentifier);
+                string declarationscope = string(declarationItem->scope);
+                if (declarationItem->flagDeclarationIndex == 0) {
+                    bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                    if (!matchFound) {
+                        string idKey = declarationIdentifier + " <=> " + declarationscope;
+                        SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
+                        if (entry == nullptr) {
+                            out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
+                            insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                        } else {
+                            printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
+                            exit(0);
+                        }
+                    } else {
+                        printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
+                        exit(0);
+                    }
+                } else if (declarationItem->flagDeclarationIndex == 1) {
+                    bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                    if (!matchFound) {
+                        string idKey = declarationIdentifier + " <=> " + declarationscope;
+                        SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
+                        if (entry == nullptr) {
+                            Expression *expression = declarationItem->expression;
+                            string expressionType = checkExpression(expression, functionEntry);
+                            if (expressionType != dataType) {
+                                printError(TYPE_MISMATCH_DECLARATION, declarationItem->row, declarationItem->column);
+                                exit(0);
+                            } else {
+                                out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
+                                insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                            }
+                        } else {
+                            printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
+                            exit(0);
+                        }
+                    } else {
+                        printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
+                        exit(0);
+                    }
                 } else {
-                    printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
-                    exit(0);
+                    bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                    if (!matchFound) {
+                        string idKey = declarationIdentifier + " <=> " + declarationscope;
+                        SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
+                        if (entry == nullptr) {
+                            vector<Expression *> *expressionList = declarationItem->expressionList;
+                            bool typeCheck = checkTypeInDeclaration(dataType, expressionList, functionEntry);
+                            if (typeCheck) {
+                                out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
+                                insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                            }
+                        } else {
+                            printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
+                            exit(0);
+                        }
+                    } else {
+                        printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
+                        exit(0);
+                    }
+                }
+            }
+        }
+    } else if (declaration->isVector == 1) {
+        if (declaration->isInFunction == "Global") {
+            for (auto declarationItem : *declarationList) {
+                string declarationIdentifier = string(declarationItem->declarationIdentifier);
+                string declarationKey = declarationIdentifier;
+                if (declarationItem->flagDeclarationIndex == 0) {
+                    GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
+                    if (entry == NULL) {
+                        out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
+                        insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
+                    } else {
+                        printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
+                        exit(0);
+                    }
+                }
+            }
+        } else {
+            for (auto declarationItem : *declarationList) {
+                string declarationIdentifier = string(declarationItem->declarationIdentifier);
+                string declarationscope = string(declarationItem->scope);
+                if (declarationItem->flagDeclarationIndex == 0) {
+                    bool matchFound = checkDeclarationInArguments(declarationIdentifier, dataType, functionEntry->arguments);
+                    if (!matchFound) {
+                        string idKey = declarationIdentifier + " <=> " + declarationscope;
+                        SymTabEntry *entry = searchLocalSymTab(functionEntry->symbolTable, idKey);
+                        if (entry == nullptr) {
+                            out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
+                            insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                        } else {
+                            printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
+                            exit(0);
+                        }
+                    } else {
+                        printError(VARIABLE_REDECLARATION_FUNC_ARGUMENT, declarationItem->row, declarationItem->column);
+                        exit(0);
+                    }
                 }
             }
         }
@@ -772,8 +813,7 @@ string checkUnaryExpression(UnaryExpression *unaryExpression, GlobalSymTabEntry 
                 printError(INVALID_UNARY_OP_ACCESS, unaryExpression->row, unaryExpression->column);
                 exit(0);
             }
-        }
-        else {
+        } else {
             printError(INVALID_UNARY_OP_ACCESS, unaryExpression->row, unaryExpression->column);
             exit(0);
         }

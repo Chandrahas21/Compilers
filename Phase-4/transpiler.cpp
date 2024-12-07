@@ -48,7 +48,11 @@ string cgProgramList(vector<Program *> *programList) {
 string cgDeclaration(Declaration *declaration) {
     string strDeclaration = "";
     string dataType = string(declaration->declarationType);
-    strDeclaration += dataType + " ";
+    if (declaration->isVector == 0) {
+        strDeclaration += dataType + " ";
+    } else {
+        strDeclaration += "vector<" + dataType + "> ";
+    }
     vector<DeclarationIndex *> *declarationList = declaration->declarationList;
     for (auto declarationItem : *declarationList) {
         string declarationIdentifier = string(declarationItem->declarationIdentifier);
@@ -198,7 +202,7 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
         }
     } else {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
-        if(postfixExpression->memberVariable1 == MemberVariable::curve){
+        if (postfixExpression->memberVariable1 == MemberVariable::curve) {
             strPostfixExpression += "Curve.";
             if (postfixExpression->memberVariable2 == MemberVariable::a) {
                 strPostfixExpression += "a";
@@ -219,12 +223,12 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             } else if (postfixExpression->memberVariable2 == MemberVariable::type) {
                 strPostfixExpression += "type";
             }
-        } else if(postfixExpression->memberVariable1 == MemberVariable::center || postfixExpression->memberVariable1 == MemberVariable::focus || postfixExpression->memberVariable1 == MemberVariable::vertex){
-            if(postfixExpression->memberVariable1 == MemberVariable::center){
+        } else if (postfixExpression->memberVariable1 == MemberVariable::center || postfixExpression->memberVariable1 == MemberVariable::focus || postfixExpression->memberVariable1 == MemberVariable::vertex) {
+            if (postfixExpression->memberVariable1 == MemberVariable::center) {
                 strPostfixExpression += "center";
-            } else if(postfixExpression->memberVariable1 == MemberVariable::focus){
+            } else if (postfixExpression->memberVariable1 == MemberVariable::focus) {
                 strPostfixExpression += "focus";
-            } else if(postfixExpression->memberVariable1 == MemberVariable::vertex){
+            } else if (postfixExpression->memberVariable1 == MemberVariable::vertex) {
                 strPostfixExpression += "vertex";
             }
             strPostfixExpression += ".";
@@ -235,10 +239,10 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
             }
         }
     }
-    for(auto op : *postfixExpression->opList){
-        if(op == UnaryOperator::inc_op){
+    for (auto op : *postfixExpression->opList) {
+        if (op == UnaryOperator::inc_op) {
             strPostfixExpression += "++";
-        } else if(op == UnaryOperator::dec_op){
+        } else if (op == UnaryOperator::dec_op) {
             strPostfixExpression += "--";
         }
     }
@@ -263,7 +267,7 @@ string cgFunctionCall(FunctionCall *functionCall) {
     vector<Expression *> *argumentList = functionCall->argumentList;
     for (auto argument : *argumentList) {
         strFunctionCall += cgExpression(argument);
-        if(argument != argumentList->back()){
+        if (argument != argumentList->back()) {
             strFunctionCall += ", ";
         }
     }
@@ -306,12 +310,11 @@ string cgUnaryExpression(UnaryExpression *unaryExpression) {
             strUnaryExpression += "--";
         } else if (op == UnaryOperator::not_op) {
             strUnaryExpression += "!";
-        } else if(op == UnaryOperator::minus_op){
+        } else if (op == UnaryOperator::minus_op) {
             strUnaryExpression += "-";
-        } else if(op == UnaryOperator::plus_op){
+        } else if (op == UnaryOperator::plus_op) {
             strUnaryExpression += "+";
         }
-
     }
     strUnaryExpression += cgPostFixExpression(postfixExpression);
     return strUnaryExpression;

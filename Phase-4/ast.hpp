@@ -243,6 +243,7 @@ public:
     PostfixExpression(int flagPostfix, FunctionCall *functionCall, int row, int column);
     PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, string scope, int row, int column);
     PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, MemberVariable memberVariable2, string scope, int row, int column);
+    PostfixExpression(int flagPostfix, char *postfixIdentifier, Expression *expression, string scope, int row, int column);
     virtual ~PostfixExpression() = default;
 };
 
@@ -279,7 +280,7 @@ public:
     char *declarationType;
     char *isInFunction;
     vector<DeclarationIndex *> *declarationList;
-    Declaration(char *declarationType, vector<DeclarationIndex *> *declarationList, char *isInFunction, int row, int column);
+    Declaration(int isVector, char *declarationType, char *isInFunction, vector<DeclarationIndex *> *declarationList, int row, int column);
     virtual ~Declaration() = default;
 };
 

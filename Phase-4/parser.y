@@ -333,8 +333,8 @@ declarationList
     ;
 
 declaration
-    : declarationType declarationList                               { $$ = new Declaration($1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
-    | VECTOR LESS_THAN declarationType GREATER_THAN declarationList { $$ = new Declaration(1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
+    : declarationType declarationList                               { $$ = new Declaration(0, $1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
+    | VECTOR LESS_THAN declarationType GREATER_THAN declarationList { $$ = new Declaration(1, $3, $5, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
     ;
 
 defaultFunction
