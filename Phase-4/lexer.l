@@ -18,7 +18,7 @@ comment_Start "#*"
 comment_End "*#"
 
 primitive_Data_Types ("void"|"string"|"bool")
-non_Primitive_Data_Types ("num"|"point"|"line"|"circle"|"parabola"|"hyperbola"|"ellipse"|"curve")
+non_Primitive_Data_Types ("num"|"point"|"line"|"circle"|"parabola"|"hyperbola"|"ellipse"|"curve"|"vector")
 
 key_Words ("if"|"elif"|"el"|"loop"|"stop"|"skip"|"return"|"write"|"read"|"bool"|"include"|"define"|"null"|"main"|"true"|"false")
 
@@ -60,6 +60,24 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     else return -1;
 }
 
+{non_Primitive_Data_Types} {
+    count();
+    tokenFile << yylineno << " : Non-Primitive Data Type : " << yytext << endl;
+    outputFile << yytext;
+
+    string non_primitive_data_type(yytext);
+    if(non_primitive_data_type == "num") return NUM;
+    else if(non_primitive_data_type == "point") return POINT;
+    else if(non_primitive_data_type == "line") return LINE;
+    else if(non_primitive_data_type == "circle") return CIRCLE;
+    else if(non_primitive_data_type == "parabola") return PARABOLA;
+    else if(non_primitive_data_type == "hyperbola") return HYPERBOLA;
+    else if(non_primitive_data_type == "ellipse") return ELLIPSE;
+    else if(non_primitive_data_type == "curve") return CURVE;
+    else if(non_primitive_data_type == "vector") return VECTOR;
+    else return -1;
+}
+
 {key_Words} {
     count();
     tokenFile << yylineno << " : Keyword : " << yytext << endl;
@@ -82,23 +100,6 @@ member_Variables ("_x"|"_y"|"_slope"|"_equation"|"_center"|"_radius"|"_a"|"_b"|"
     else if(key_word == "main") return MAIN;
     else if(key_word == "true") return TRUE;
     else if(key_word == "false") return FALSE;
-    else return -1;
-}
-
-{non_Primitive_Data_Types} {
-    count();
-    tokenFile << yylineno << " : Non-Primitive Data Type : " << yytext << endl;
-    outputFile << yytext;
-
-    string non_primitive_data_type(yytext);
-    if(non_primitive_data_type == "num") return NUM;
-    else if(non_primitive_data_type == "point") return POINT;
-    else if(non_primitive_data_type == "line") return LINE;
-    else if(non_primitive_data_type == "circle") return CIRCLE;
-    else if(non_primitive_data_type == "parabola") return PARABOLA;
-    else if(non_primitive_data_type == "hyperbola") return HYPERBOLA;
-    else if(non_primitive_data_type == "ellipse") return ELLIPSE;
-    else if(non_primitive_data_type == "curve") return CURVE;
     else return -1;
 }
 

@@ -275,6 +275,7 @@ public:
 
 class Declaration : public Node {
 public:
+    int isVector; // 0: declaration, 1: vectorDeclaration
     char *declarationType;
     char *isInFunction;
     vector<DeclarationIndex *> *declarationList;

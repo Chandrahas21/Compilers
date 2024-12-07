@@ -95,7 +95,7 @@
 %token <str_val> IF ELIF ELSE 
 %token <str_val> LOOP STOP SKIP RETURN
 %token <str_val> WRITE READ INCLUDE DEFINE NULL_TOK MAIN DOLLAR TILDE MEMBER_ACCESS
-%token <str_val> NUM POINT CURVE LINE CIRCLE PARABOLA HYPERBOLA ELLIPSE
+%token <str_val> NUM POINT CURVE LINE CIRCLE PARABOLA HYPERBOLA ELLIPSE VECTOR
 %token <str_val> TO_STRING DISTANCE SOLVE SQRT ISPOINT INTERSECTION TANGENT ANGLE
 %token <str_val> X Y SLOPE EQUATION RADIUS A B C F G H DELTA ECCENTRICITY LATUS_RECTUM VERTEX CENTER FOCUS TYPE   
 %token <str_val> COLON SEMICOLON COMMA SINGLE_QUOTE DOUBLE_QUOTE IMPLIES
@@ -257,12 +257,13 @@ functionCall
     ;
 
 postfixExpression
-    : basicExpression                          { $$ = new PostfixExpression(0, $1, yylineno, yycolumnno); }
-    | functionCall                             { $$ = new PostfixExpression(1, $1, yylineno, yycolumnno); }
-    | IDENTIFIER MEMBER_ACCESS memberVariable  { $$ = new PostfixExpression(2, $1, $3, scope, yylineno, yycolumnno); }
-    | IDENTIFIER MEMBER_ACCESS memberVariable MEMBER_ACCESS memberVariable { $$ = new PostfixExpression(3, $1, $3, $5, scope, yylineno, yycolumnno); }
-    | postfixExpression INCREMENT              { $$->opList->push_back(UnaryOperator::inc_op); $$ = $1; }
-    | postfixExpression DECREMENT              { $$->opList->push_back(UnaryOperator::dec_op); $$ = $1; }
+    : basicExpression                                                       { $$ = new PostfixExpression(0, $1, yylineno, yycolumnno); }
+    | functionCall                                                          { $$ = new PostfixExpression(1, $1, yylineno, yycolumnno); }
+    | IDENTIFIER MEMBER_ACCESS memberVariable                               { $$ = new PostfixExpression(2, $1, $3, scope, yylineno, yycolumnno); }
+    | IDENTIFIER MEMBER_ACCESS memberVariable MEMBER_ACCESS memberVariable  { $$ = new PostfixExpression(3, $1, $3, $5, scope, yylineno, yycolumnno); }
+    | IDENTIFIER LEFT_BRACKET expression RIGHT_BRACKET                      { $$ = new PostfixExpression(4, $1, $3, yylineno, yycolumnno); }
+    | postfixExpression INCREMENT                                           { $$->opList->push_back(UnaryOperator::inc_op); $$ = $1; }
+    | postfixExpression DECREMENT                                           { $$->opList->push_back(UnaryOperator::dec_op); $$ = $1; }
     ;
 
 unaryOperator
@@ -332,7 +333,8 @@ declarationList
     ;
 
 declaration
-    : declarationType declarationList { $$ = new Declaration($1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
+    : declarationType declarationList                               { $$ = new Declaration($1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
+    | VECTOR LESS_THAN declarationType GREATER_THAN declarationList { $$ = new Declaration(1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
     ;
 
 defaultFunction
