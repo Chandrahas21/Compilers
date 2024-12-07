@@ -709,8 +709,7 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
             checkExpression(postfixExpression->expression, functionEntry);
             return matchFound;
         }
-    }
-    else {
+    } else {
         cerr << "\033[1;31m" << "Invalid Postfix Expression" << "\033[0m" << endl;
         exit(0);
     }
@@ -773,7 +772,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
 
     if (inBuiltFunctions.find(functionCallIdentifier) != inBuiltFunctions.end()) {
         if (functionCallIdentifier == "distance") {
-            if(argumentList->size() != 2) {
+            if (argumentList->size() != 2) {
                 printError(INVALID_NO_OF_ARGS_FUNCTION, functionCall->row, functionCall->column);
                 exit(0);
             } else {
@@ -791,7 +790,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
         } else if (functionCallIdentifier == "sqrt") {
             return "num";
         } else if (functionCallIdentifier == "isPoint") {
-            if(argumentList->size() != 2) {
+            if (argumentList->size() != 2) {
                 printError(INVALID_NO_OF_ARGS_FUNCTION, functionCall->row, functionCall->column);
                 exit(0);
             } else {
@@ -807,7 +806,7 @@ string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *function
         } else if (functionCallIdentifier == "intersection") {
             return "point";
         } else if (functionCallIdentifier == "tangent") {
-            if(argumentList->size() != 2) {
+            if (argumentList->size() != 2) {
                 printError(INVALID_NO_OF_ARGS_FUNCTION, functionCall->row, functionCall->column);
                 exit(0);
             } else {
@@ -903,11 +902,11 @@ string checkBinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op
     if (lhsType != rhsType) {
         printError(TYPE_MISMATCH_BINARYEXP, lhs->row, lhs->column);
         exit(0);
-    } else if(lhsType == "num" && rhsType == "num") {
+    } else if (lhsType == "num" && rhsType == "num") {
         return "num";
-    } else if(lhsType == "boolean" && rhsType == "boolean" && (op != BinaryOperator::div_op || op != BinaryOperator::mod_op)) {
+    } else if (lhsType == "boolean" && rhsType == "boolean" && (op != BinaryOperator::div_op || op != BinaryOperator::mod_op)) {
         return "boolean";
-    } else if(lhsType == "point" && rhsType == "point" && (op == BinaryOperator::add_op || op == BinaryOperator::sub_op)) {
+    } else if (lhsType == "point" && rhsType == "point" && (op == BinaryOperator::add_op || op == BinaryOperator::sub_op)) {
         return "point";
     } else {
         return "";

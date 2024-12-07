@@ -310,7 +310,7 @@ PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, M
     this->column = column;
 }
 
-PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, Expression *expression, string scope, int row, int column){
+PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, Expression *expression, string scope, int row, int column) {
     this->flagPostfix = flagPostfix;
     this->basicExpression = nullptr;
     this->functionCall = nullptr;
@@ -321,7 +321,6 @@ PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, E
     this->row = row;
     this->column = column;
 }
-
 
 UnaryExpression::UnaryExpression(PostfixExpression *postfixExpression, int row, int column) {
     this->postfixExpression = postfixExpression;
@@ -354,7 +353,7 @@ BinaryExpression::BinaryExpression(Expression *lhs, Expression *rhs, BinaryOpera
     this->column = column;
 }
 
-Declaration::Declaration(int isVector, char* declarationType, char* isInFunction, vector<DeclarationIndex *> *declarationList, int row, int column) {
+Declaration::Declaration(int isVector, char *declarationType, char *isInFunction, vector<DeclarationIndex *> *declarationList, int row, int column) {
     this->isVector = isVector;
     this->declarationType = declarationType;
     this->isInFunction = isInFunction;

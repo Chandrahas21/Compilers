@@ -15,9 +15,8 @@ void insertGlobalSymTab(unordered_map<string, GlobalSymTabEntry> *globalSymbolTa
         ref[key].rowNum = yylineno;
         ref[key].colNum = yycolumnno;
         if (isGlobal == "Function") {
-        ref[key].symbolTable = new unordered_map<string, SymTabEntry>;
-        }
-        else {
+            ref[key].symbolTable = new unordered_map<string, SymTabEntry>;
+        } else {
             ref[key].symbolTable = nullptr;
         }
     } else {
