@@ -2,6 +2,7 @@
 #include "error.hpp"
 #include "symbolTable.hpp"
 #include <algorithm>
+#include <unordered_set>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -24,9 +25,9 @@ void checkHeader(vector<Header *> *headerList) {
     for (auto headerItem : *headerList) {
         if (headerItem->isHeader == 1) {
             string header = string(headerItem->header);
-            if (header.size() >= 2 && (header.substr(header.size() - 2) == ".h\"")) {
+            if (header.size() >= 2 && (header.substr(header.size() - 6) == ".core\"")) {
                 out << "Correct Header.h" << endl;
-            } else if (header.size() >= 4 && header.substr(header.size() - 5) == ".hpp\"") {
+            } else if (header.size() >= 4 && header.substr(header.size() - 7) == ".utils\"") {
                 out << "Correct Header.hpp" << endl;
             } else {
                 printError(INVALID_HEADER, headerItem->row, headerItem->column);
@@ -398,6 +399,8 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                             if (typeCheck) {
                                 out << "Inserting variable into function local symbol table: " << declarationIdentifier << " in " << functionEntry->name << endl;
                                 insertLocalSymTab(functionEntry->symbolTable, declarationIdentifier, dataType, declarationscope, declarationItem->row, declarationItem->column);
+                            } else {
+                                exit(0);
                             }
                         } else {
                             printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
@@ -762,8 +765,35 @@ string checkConstantValue(ConstantValue *constantValue) {
 
 string checkFunctionCall(FunctionCall *functionCall, GlobalSymTabEntry *functionEntry) {
     out << "Checking Function Call" << endl;
+
     string functionCallIdentifier = string(functionCall->functionCallIdentifier);
     vector<Expression *> *argumentList = functionCall->argumentList;
+
+    unordered_set<string> inBuiltFunctions = {"toString", "distance", "solve", "sqrt", "isPoint", "intersection", "tangent", "angle"};
+
+    if (inBuiltFunctions.find(functionCallIdentifier) != inBuiltFunctions.end()) {
+        for (auto argument : *argumentList) {
+            checkExpression(argument, functionEntry);
+        }
+        if (functionCallIdentifier == "toString") {
+            return "string";
+        } else if (functionCallIdentifier == "distance") {
+            return "num";
+        } else if (functionCallIdentifier == "solve") {
+            return "point";
+        } else if (functionCallIdentifier == "sqrt") {
+            return "num";
+        } else if (functionCallIdentifier == "isPoint") {
+            return "boolean";
+        } else if (functionCallIdentifier == "intersection") {
+            return "point";
+        } else if (functionCallIdentifier == "tangent") {
+            return "line";
+        } else if (functionCallIdentifier == "angle") {
+            return "num";
+        }
+    }
+
     string functionCallKey = functionCallIdentifier;
     GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, functionCallKey);
     if (entry == NULL) {
@@ -840,10 +870,15 @@ string checkBinaryExpression(Expression *lhs, Expression *rhs, BinaryOperator op
     if (lhsType != rhsType) {
         printError(TYPE_MISMATCH_BINARYEXP, lhs->row, lhs->column);
         exit(0);
+    } else if(lhsType == "num" && rhsType == "num") {
+        return "num";
+    } else if(lhsType == "boolean" && rhsType == "boolean" && (op != BinaryOperator::div_op || op != BinaryOperator::mod_op)) {
+        return "boolean";
+    } else if(lhsType == "point" && rhsType == "point" && (op == BinaryOperator::add_op || op == BinaryOperator::sub_op)) {
+        return "point";
     } else {
-        return lhsType;
+        return "";
     }
-    return "";
 }
 
 void checkCompoundStatement(CompoundStatement *compoundStatement, GlobalSymTabEntry *functionEntry) {
@@ -991,7 +1026,7 @@ string checkConditionalBinaryExpression(Expression *lhs, Expression *rhs, Binary
         printError(TYPE_MISMATCH_BINARYEXP, lhs->row, lhs->column);
         exit(0);
     } else {
-        if (op == BinaryOperator::equal_op or op == BinaryOperator::not_equal_op or op == BinaryOperator::less_equal_op or op == BinaryOperator::less_op or op == BinaryOperator::greater_equal_op or op == BinaryOperator::greater_op) {
+        if (op == BinaryOperator::equal_op or op == BinaryOperator::not_equal_op or op == BinaryOperator::less_equal_op or op == BinaryOperator::less_op or op == BinaryOperator::greater_equal_op or op == BinaryOperator::greater_op or op == BinaryOperator::and_op or op == BinaryOperator::or_op) {
             return "boolean";
         } else {
             printError(INVALID_CONDITIONAL_EXP, lhs->row, lhs->column);
