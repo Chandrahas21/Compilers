@@ -1,7 +1,7 @@
 ## Given n Circles , output no of Disjoint shapes(connected componenets) in __cpp_threadsafe_static_init
 ## Here let N be 4
 
-$include "ast.hpp";
+$include "geox.hpp";
 
 <num> sq_distance(point p1, point p2) <=> {
     num x1 = p1._x, x2 = p2._x ;

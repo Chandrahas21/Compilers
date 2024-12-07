@@ -261,7 +261,7 @@ postfixExpression
     | functionCall                                                          { $$ = new PostfixExpression(1, $1, yylineno, yycolumnno); }
     | IDENTIFIER MEMBER_ACCESS memberVariable                               { $$ = new PostfixExpression(2, $1, $3, scope, yylineno, yycolumnno); }
     | IDENTIFIER MEMBER_ACCESS memberVariable MEMBER_ACCESS memberVariable  { $$ = new PostfixExpression(3, $1, $3, $5, scope, yylineno, yycolumnno); }
-    | IDENTIFIER LEFT_BRACKET expression RIGHT_BRACKET                      { $$ = new PostfixExpression(4, $1, $3, yylineno, yycolumnno); }
+    | IDENTIFIER LEFT_BRACKET expression RIGHT_BRACKET                      { $$ = new PostfixExpression(4, $1, $3, scope, yylineno, yycolumnno); }
     | postfixExpression INCREMENT                                           { $$->opList->push_back(UnaryOperator::inc_op); $$ = $1; }
     | postfixExpression DECREMENT                                           { $$->opList->push_back(UnaryOperator::dec_op); $$ = $1; }
     ;
@@ -333,8 +333,8 @@ declarationList
     ;
 
 declaration
-    : declarationType declarationList                               { $$ = new Declaration(0, $1, $2, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
-    | VECTOR LESS_THAN declarationType GREATER_THAN declarationList { $$ = new Declaration(1, $3, $5, strdup(isInFunction.c_str()), yylineno, yycolumnno); }
+    : declarationType declarationList                               { $$ = new Declaration(0, $1, strdup(isInFunction.c_str()), $2, yylineno, yycolumnno); }
+    | VECTOR LESS_THAN declarationType GREATER_THAN declarationList { $$ = new Declaration(1, $3, strdup(isInFunction.c_str()), $5, yylineno, yycolumnno); }
     ;
 
 defaultFunction

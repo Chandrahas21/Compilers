@@ -1,6 +1,6 @@
 ## If given 3 points,Check weather it is a right angled triangle
 
-$include "ast.hpp";
+$include "geox.hpp";
 $define IN 12;
 
 <num> slope(point p1, point p2) <=> {

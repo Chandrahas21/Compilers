@@ -267,6 +267,7 @@ PostfixExpression::PostfixExpression(int flagPostfix, BasicExpression *basicExpr
     this->functionCall = nullptr;
     this->postfixIdentifier = nullptr;
     this->opList = new vector<UnaryOperator>();
+    this->expression = nullptr;
     this->row = row;
     this->column = column;
 }
@@ -277,6 +278,7 @@ PostfixExpression::PostfixExpression(int flagPostfix, FunctionCall *functionCall
     this->functionCall = functionCall;
     this->postfixIdentifier = nullptr;
     this->opList = new vector<UnaryOperator>();
+    this->expression = nullptr;
     this->row = row;
     this->column = column;
 }
@@ -288,6 +290,7 @@ PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, M
     this->postfixIdentifier = postfixIdentifier;
     this->memberVariable1 = memberVariable1;
     this->opList = new vector<UnaryOperator>();
+    this->expression = nullptr;
     this->scope = scope;
     this->row = row;
     this->column = column;
@@ -301,10 +304,24 @@ PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, M
     this->memberVariable1 = memberVariable1;
     this->memberVariable2 = memberVariable2;
     this->opList = new vector<UnaryOperator>();
+    this->expression = nullptr;
     this->scope = scope;
     this->row = row;
     this->column = column;
 }
+
+PostfixExpression::PostfixExpression(int flagPostfix, char *postfixIdentifier, Expression *expression, string scope, int row, int column){
+    this->flagPostfix = flagPostfix;
+    this->basicExpression = nullptr;
+    this->functionCall = nullptr;
+    this->postfixIdentifier = postfixIdentifier;
+    this->expression = expression;
+    this->opList = new vector<UnaryOperator>();
+    this->scope = scope;
+    this->row = row;
+    this->column = column;
+}
+
 
 UnaryExpression::UnaryExpression(PostfixExpression *postfixExpression, int row, int column) {
     this->postfixExpression = postfixExpression;

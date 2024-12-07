@@ -1,12 +1,15 @@
-$include "ast.hpp";
+$include "geox.hpp";
 $define IN 12;
 
 <void> check(num l, num k) <=> {
     num a;
-    point p(1,2);
+    point p(1, 2);
     circle c(p, a);
     num b;
-    b = 10+1;
+    b = 10 + 1;
     b = c._center._x;
+    vector <num> manoo, pru;
+    manoo[0] = 1;
+    pru[6.788] = 9898;
 }
 

@@ -419,7 +419,7 @@ void checkDeclaration(Declaration *declaration, GlobalSymTabEntry *functionEntry
                     GlobalSymTabEntry *entry = searchGlobalSymTab(root->globalSymbolTable, declarationKey);
                     if (entry == NULL) {
                         out << "Inserting variable into Global symbol table: " << declarationIdentifier << endl;
-                        insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Variable", "", NULL, declarationItem->row, declarationItem->column);
+                        insertGlobalSymTab(root->globalSymbolTable, declarationIdentifier, dataType, "Vector", "", NULL, declarationItem->row, declarationItem->column);
                     } else {
                         printError(VARIABLE_REDECLARATION, declarationItem->row, declarationItem->column);
                         exit(0);
@@ -695,7 +695,19 @@ string checkPostfixExpression(PostfixExpression *postfixExpression, GlobalSymTab
                 exit(0);
             }
         }
-    } else {
+    } else if (postfixExpression->flagPostfix == 4) {
+        string postfixIdentifier = string(postfixExpression->postfixIdentifier);
+        string scope = postfixExpression->scope;
+        string matchFound = checkDeclarationInParentScope(postfixIdentifier, scope, 1, functionEntry);
+        if (matchFound == "") {
+            printError(VARIABLE_NOT_DECLARED, postfixExpression->row, postfixExpression->column);
+            exit(0);
+        } else {
+            checkExpression(postfixExpression->expression, functionEntry);
+            return matchFound;
+        }
+    }
+    else {
         cerr << "\033[1;31m" << "Invalid Postfix Expression" << "\033[0m" << endl;
         exit(0);
     }

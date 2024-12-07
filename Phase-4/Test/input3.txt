@@ -1,4 +1,4 @@
-$include "ast.hpp";
+$include "geox.hpp";
 $define IN 12;
 
 <num> slope(point p1, point p2) <=> {

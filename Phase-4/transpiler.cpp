@@ -200,7 +200,7 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
         } else if (postfixExpression->memberVariable2 == MemberVariable::latus_rectum) {
             strPostfixExpression += "latus_rectum";
         }
-    } else {
+    } else if (postfixExpression->flagPostfix == 3) {
         strPostfixExpression += string(postfixExpression->postfixIdentifier) + ".";
         if (postfixExpression->memberVariable1 == MemberVariable::curve) {
             strPostfixExpression += "Curve.";
@@ -238,6 +238,8 @@ string cgPostFixExpression(PostfixExpression *postfixExpression) {
                 strPostfixExpression += "y";
             }
         }
+    } else if (postfixExpression->flagPostfix == 4) {
+        strPostfixExpression += string(postfixExpression->postfixIdentifier) + "[" + cgExpression(postfixExpression->expression) + "]";
     }
     for (auto op : *postfixExpression->opList) {
         if (op == UnaryOperator::inc_op) {

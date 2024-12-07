@@ -239,6 +239,7 @@ public:
     MemberVariable memberVariable1;
     MemberVariable memberVariable2;
     vector<UnaryOperator> *opList;
+    Expression *expression;
     PostfixExpression(int flagPostfix, BasicExpression *basicExpression, int row, int column);
     PostfixExpression(int flagPostfix, FunctionCall *functionCall, int row, int column);
     PostfixExpression(int flagPostfix, char *postfixIdentifier, MemberVariable memberVariable1, string scope, int row, int column);
